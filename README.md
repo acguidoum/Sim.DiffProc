@@ -74,22 +74,22 @@ use `citation()` for information on how to cite the software;
 
 ```r
 citation("Sim.DiffProc")
-#> 
-#> To cite package 'Sim.DiffProc' in publications use:
-#> 
-#>   Arsalane Chouaib Guidoum and Kamal Boukhetala (2018).
-#>   Sim.DiffProc: Simulation of Diffusion Processes.R package
-#>   version 4.1.https://cran.r-project.org/package=Sim.DiffProc
-#> 
-#> A BibTeX entry for LaTeX users is
-#> 
-#>   @Manual{,
-#>     title = {Sim.DiffProc: Simulation of Diffusion Processes.},
-#>     author = {Arsalane Chouaib Guidoum and Kamal Boukhetala},
-#>     year = {2018},
-#>     note = {R package version 4.1},
-#>     url = {https://cran.r-project.org/package=Sim.DiffProc},
-#>   }
+ 
+To cite package 'Sim.DiffProc' in publications use:
+
+  Arsalane Chouaib Guidoum and Kamal Boukhetala (2018).
+  Sim.DiffProc: Simulation of Diffusion Processes.R package
+  version 4.1.https://cran.r-project.org/package=Sim.DiffProc
+
+A BibTeX entry for LaTeX users is
+
+  @Manual{,
+    title = {Sim.DiffProc: Simulation of Diffusion Processes.},
+    author = {Arsalane Chouaib Guidoum and Kamal Boukhetala},
+    year = {2018},
+    note = {R package version 4.1},
+    url = {https://cran.r-project.org/package=Sim.DiffProc},
+  }
 ```
 
 Note
