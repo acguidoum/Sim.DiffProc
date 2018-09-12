@@ -1,0 +1,328 @@
+################################################
+## NAMESPACE file for the Sim.DiffProc package.
+################################################
+
+################################################
+## C code.
+################################################
+
+useDynLib(Sim.DiffProc, .registration=TRUE, .fixes="C_")
+
+################################################
+## import name space
+################################################
+
+import("rgl")
+import("scatterplot3d")
+import("MASS")
+import("Deriv")
+import("parallel")
+
+importFrom("grDevices", "dev.new","rgb", "heat.colors", "terrain.colors","colorRampPalette")
+importFrom("graphics", "Axis", "axis", "legend", "lines", "plot","plot.default","points","box", 
+           "curve", "polygon","image","contour","filled.contour","persp","title","abline",
+		   "boxplot","bxp","arrows","text","grid", "par")
+importFrom("stats", "end", "time", "start", "median","median.default", "quantile","vcov","AIC","BIC","coef","logLik","confint",
+           "D", "approxfun", "deltat", "dnorm", "is.ts","density","density.default",
+           "optim", "qnorm", "rnorm", "sd", "ts", "ts.union",
+           "uniroot", "var","na.omit","qqplot","setNames")
+importFrom("utils", packageVersion,vignette,modifyList,head,tail)
+
+  
+################################################
+## export name space
+################################################
+
+export(plot3D,plot3D.default,plot2d,lines2d,points2d,plot2d.default,lines2d.default,points2d.default,
+       bconfint,moment,cv,skewness,kurtosis,bconfint.default,moment.default,cv.default,skewness.default,kurtosis.default,
+	   Median,Median.default,Mode,Mode.default,
+       BM,ABM,BB,GBM,OU,HWV,BM.default,ABM.default,BB.default,GBM.default,OU.default,HWV.default,
+       bridgesde1d,bridgesde1d.default,print.bridgesde1d,summary.bridgesde1d,min.bridgesde1d,max.bridgesde1d,cv.bridgesde1d,time.bridgesde1d,
+	   mean.bridgesde1d,Median.bridgesde1d,Mode.bridgesde1d,quantile.bridgesde1d,kurtosis.bridgesde1d,skewness.bridgesde1d,moment.bridgesde1d,
+	   bconfint.bridgesde1d,plot.bridgesde1d,points.bridgesde1d,lines.bridgesde1d,
+	   bridgesde2d,bridgesde2d.default,print.bridgesde2d,summary.bridgesde2d,min.bridgesde2d,max.bridgesde2d,cv.bridgesde2d,time.bridgesde2d,
+	   mean.bridgesde2d,Median.bridgesde2d,Mode.bridgesde2d,quantile.bridgesde2d,kurtosis.bridgesde2d,skewness.bridgesde2d,moment.bridgesde2d,
+	   bconfint.bridgesde2d,plot.bridgesde2d,points.bridgesde2d,lines.bridgesde2d,plot2d.bridgesde2d,points2d.bridgesde2d,
+	   lines2d.bridgesde2d,
+	   bridgesde3d,bridgesde3d.default,print.bridgesde3d,summary.bridgesde3d,min.bridgesde3d,max.bridgesde3d,cv.bridgesde3d,time.bridgesde3d,
+	   mean.bridgesde3d,Median.bridgesde3d,Mode.bridgesde3d,quantile.bridgesde3d,kurtosis.bridgesde3d,skewness.bridgesde3d,moment.bridgesde3d,
+	   bconfint.bridgesde3d,plot.bridgesde3d,points.bridgesde3d,lines.bridgesde3d,plot3D.bridgesde3d,
+	   fptsde1d,fptsde1d.default,print.fptsde1d,summary.fptsde1d,min.fptsde1d,max.fptsde1d,cv.fptsde1d,mean.fptsde1d,Median.fptsde1d,
+	   quantile.fptsde1d,kurtosis.fptsde1d,skewness.fptsde1d,moment.fptsde1d,Mode.fptsde1d,
+	   fptsde2d,fptsde2d.default,print.fptsde2d,summary.fptsde2d,min.fptsde2d,max.fptsde2d,cv.fptsde2d,mean.fptsde2d,Median.fptsde2d,
+	   quantile.fptsde2d,kurtosis.fptsde2d,skewness.fptsde2d,moment.fptsde2d,Mode.fptsde2d,
+	   fptsde3d,fptsde3d.default,print.fptsde3d,summary.fptsde3d,min.fptsde3d,max.fptsde3d,cv.fptsde3d,mean.fptsde3d,Median.fptsde3d,
+	   quantile.fptsde3d,kurtosis.fptsde3d,skewness.fptsde3d,moment.fptsde3d,Mode.fptsde3d,
+	   dfptsde1d,dfptsde1d.default,print.dfptsde1d,plot.dfptsde1d,
+	   dfptsde2d,dfptsde2d.default,print.dfptsde2d,plot.dfptsde2d,
+	   dfptsde3d,dfptsde3d.default,print.dfptsde3d,plot.dfptsde3d,
+	   rsde1d,rsde1d.default,
+	   rsde2d,rsde2d.default,
+	   rsde3d,rsde3d.default,
+	   dsde1d,dsde1d.default,print.dsde1d,plot.dsde1d,
+	   dsde2d,dsde2d.default,print.dsde2d,plot.dsde2d,
+	   dsde3d,dsde3d.default,print.dsde3d,plot.dsde3d,
+	   st.int,st.int.default,summary.st.int,print.st.int,time.st.int,mean.st.int,Median.st.int,Mode.st.int,quantile.st.int,kurtosis.st.int,skewness.st.int,
+	   min.st.int,max.st.int,cv.st.int,moment.st.int,bconfint.st.int,plot.st.int,points.st.int,lines.st.int,	   
+	   snssde1d,snssde1d.default,summary.snssde1d,print.snssde1d,time.snssde1d,mean.snssde1d,Median.snssde1d,Mode.snssde1d,quantile.snssde1d,kurtosis.snssde1d,
+	    skewness.snssde1d,max.snssde1d,min.snssde1d,moment.snssde1d,cv.snssde1d,bconfint.snssde1d,plot.snssde1d,points.snssde1d,lines.snssde1d,
+	   snssde2d,snssde2d.default,summary.snssde2d,print.snssde2d,time.snssde2d,mean.snssde2d,Median.snssde2d,Mode.snssde2d,quantile.snssde2d,kurtosis.snssde2d,
+	    skewness.snssde2d,max.snssde2d,min.snssde2d,moment.snssde2d,cv.snssde2d,bconfint.snssde2d,plot.snssde2d,points.snssde2d,lines.snssde2d,
+	    plot2d.snssde2d,points2d.snssde2d,lines2d.snssde2d,
+	   snssde3d,snssde3d.default,summary.snssde3d,print.snssde3d,time.snssde3d,mean.snssde3d,Median.snssde3d,Mode.snssde3d,quantile.snssde3d,kurtosis.snssde3d,
+	    skewness.snssde3d,max.snssde3d,min.snssde3d,moment.snssde3d,cv.snssde3d,bconfint.snssde3d,plot.snssde3d,points.snssde3d,lines.snssde3d,plot3D.snssde3d,
+	    fitsde.default,fitsde,summary.fitsde,print.fitsde,vcov.fitsde,AIC.fitsde,BIC.fitsde,logLik.fitsde,coef.fitsde,confint.fitsde,
+		MCM.sde,MCM.sde.default,print.MCM.sde,plot.MCM.sde,
+		MEM.sde,MEM.sde.default,print.MEM.sde,summary.MEM.sde,
+		TEX.sde,TEX.sde.default)
+		
+S3method(TEX.sde, default)
+		
+S3method(MCM.sde, default)
+S3method(print, MCM.sde)
+S3method(plot, MCM.sde)
+
+S3method(MEM.sde, default)
+S3method(print, MEM.sde)
+S3method(summary, MEM.sde)
+		
+S3method(bconfint, default)		
+S3method(kurtosis, default)	
+S3method(skewness, default)	
+S3method(moment, default)
+S3method(Median, default)
+S3method(Mode, default)
+S3method(cv, default)	
+S3method(plot2d, default)		
+S3method(points2d, default)	
+S3method(lines2d, default)	
+S3method(plot3D, default)
+
+S3method(fitsde, default)
+S3method(summary, fitsde)
+S3method(print, fitsde)
+S3method(vcov, fitsde)
+S3method(AIC, fitsde)
+S3method(BIC, fitsde)
+S3method(logLik, fitsde)
+S3method(coef, fitsde)
+S3method(confint, fitsde)	   
+	   
+S3method(snssde3d, default)
+S3method(summary, snssde3d)
+S3method(print, snssde3d)
+S3method(time, snssde3d)
+S3method(mean, snssde3d)
+S3method(Median, snssde3d)
+S3method(Mode, snssde3d)
+S3method(quantile, snssde3d)
+S3method(kurtosis, snssde3d)
+S3method(skewness, snssde3d)
+S3method(moment, snssde3d)
+S3method(cv, snssde3d)
+S3method(max, snssde3d)
+S3method(min, snssde3d)
+S3method(bconfint, snssde3d)
+S3method(plot, snssde3d)
+S3method(points, snssde3d)
+S3method(lines, snssde3d)
+S3method(plot3D, snssde3d)
+	   
+S3method(snssde2d, default)
+S3method(summary, snssde2d)
+S3method(print, snssde2d)
+S3method(time, snssde2d)
+S3method(mean, snssde2d)
+S3method(Median, snssde2d)
+S3method(Mode, snssde2d)
+S3method(quantile, snssde2d)
+S3method(kurtosis, snssde2d)
+S3method(skewness, snssde2d)
+S3method(moment, snssde2d)
+S3method(cv, snssde2d)
+S3method(max, snssde2d)
+S3method(min, snssde2d)
+S3method(bconfint, snssde2d)
+S3method(plot, snssde2d)
+S3method(points, snssde2d)
+S3method(lines, snssde2d)
+S3method(plot2d, snssde2d)
+S3method(points2d, snssde2d)
+S3method(lines2d, snssde2d)
+	   
+S3method(snssde1d, default)
+S3method(summary, snssde1d)
+S3method(print, snssde1d)
+S3method(time, snssde1d)
+S3method(mean, snssde1d)
+S3method(Median, snssde1d)
+S3method(Mode, snssde1d)
+S3method(quantile, snssde1d)
+S3method(kurtosis, snssde1d)
+S3method(skewness, snssde1d)
+S3method(moment, snssde1d)
+S3method(cv, snssde1d)
+S3method(max, snssde1d)
+S3method(min, snssde1d)
+S3method(bconfint, snssde1d)
+S3method(plot, snssde1d)
+S3method(points, snssde1d)
+S3method(lines, snssde1d)
+	   
+S3method(st.int, default)
+S3method(summary, st.int)
+S3method(print, st.int)
+S3method(time, st.int)
+S3method(mean, st.int)
+S3method(Median, st.int)
+S3method(Mode, st.int)
+S3method(quantile, st.int)
+S3method(kurtosis, st.int)
+S3method(skewness, st.int)
+S3method(moment, st.int)
+S3method(cv, st.int)
+S3method(max, st.int)
+S3method(min, st.int)
+S3method(bconfint, st.int)
+S3method(plot, st.int)
+S3method(points, st.int)
+S3method(lines, st.int)
+	   	   
+S3method(rsde3d, default)
+S3method(rsde2d, default)
+S3method(rsde1d, default)
+
+S3method(dsde1d, default)
+S3method(print, dsde1d)
+S3method(plot, dsde1d)
+
+S3method(dsde2d, default)
+S3method(print, dsde2d)
+S3method(plot, dsde2d)
+
+S3method(dsde3d, default)
+S3method(print, dsde3d)
+S3method(plot, dsde3d)
+
+S3method(fptsde3d, default)
+S3method(print, fptsde3d)
+S3method(summary, fptsde3d)
+S3method(mean, fptsde3d)
+S3method(Median, fptsde3d)
+S3method(Mode, fptsde3d)
+S3method(quantile, fptsde3d)
+S3method(kurtosis, fptsde3d)
+S3method(skewness, fptsde3d)
+S3method(moment, fptsde3d)
+S3method(cv, fptsde3d)
+S3method(max, fptsde3d)
+S3method(min, fptsde3d)
+
+S3method(fptsde2d, default)
+S3method(print, fptsde2d)
+S3method(summary, fptsde2d)
+S3method(mean, fptsde2d)
+S3method(Median, fptsde2d)
+S3method(Mode, fptsde2d)
+S3method(quantile, fptsde2d)
+S3method(kurtosis, fptsde2d)
+S3method(skewness, fptsde2d)
+S3method(moment, fptsde2d)
+S3method(cv, fptsde2d)
+S3method(max, fptsde2d)
+S3method(min, fptsde2d)
+
+S3method(fptsde1d, default)
+S3method(print, fptsde1d)
+S3method(summary, fptsde1d)
+S3method(mean, fptsde1d)
+S3method(Median, fptsde1d)
+S3method(Mode, fptsde1d)
+S3method(quantile, fptsde1d)
+S3method(kurtosis, fptsde1d)
+S3method(skewness, fptsde1d)
+S3method(moment, fptsde1d)
+S3method(cv, fptsde1d)
+S3method(max, fptsde1d)
+S3method(min, fptsde1d)
+
+S3method(dfptsde3d, default)
+S3method(print, dfptsde3d)
+S3method(plot, dfptsde3d)
+	
+S3method(dfptsde2d, default)
+S3method(print, dfptsde2d)
+S3method(plot, dfptsde2d)
+
+S3method(dfptsde1d, default)
+S3method(print, dfptsde1d)
+S3method(plot, dfptsde1d)
+	   
+S3method(BM, default)
+S3method(ABM, default)
+S3method(BB, default)
+S3method(GBM, default)
+S3method(OU, default)
+S3method(HWV, default)
+
+S3method(bridgesde1d, default)
+S3method(print, bridgesde1d)
+S3method(time, bridgesde1d)
+S3method(mean, bridgesde1d)
+S3method(Median, bridgesde1d)
+S3method(Mode, bridgesde1d)
+S3method(quantile, bridgesde1d)
+S3method(kurtosis, bridgesde1d)
+S3method(skewness, bridgesde1d)
+S3method(moment, bridgesde1d)
+S3method(cv, bridgesde1d)
+S3method(max, bridgesde1d)
+S3method(min, bridgesde1d)
+S3method(summary, bridgesde1d)
+S3method(bconfint, bridgesde1d)
+S3method(plot, bridgesde1d)
+S3method(points, bridgesde1d)
+S3method(lines, bridgesde1d)
+
+S3method(bridgesde2d, default)
+S3method(print, bridgesde2d)
+S3method(time, bridgesde2d)
+S3method(mean, bridgesde2d)
+S3method(Median, bridgesde2d)
+S3method(Mode, bridgesde2d)
+S3method(quantile, bridgesde2d)
+S3method(kurtosis, bridgesde2d)
+S3method(skewness, bridgesde2d)
+S3method(moment, bridgesde2d)
+S3method(cv, bridgesde2d)
+S3method(max, bridgesde2d)
+S3method(min, bridgesde2d)
+S3method(summary, bridgesde2d)
+S3method(bconfint, bridgesde2d)
+S3method(plot, bridgesde2d)
+S3method(points, bridgesde2d)
+S3method(lines, bridgesde2d)
+S3method(plot2d, bridgesde2d)
+S3method(points2d, bridgesde2d)
+S3method(lines2d, bridgesde2d)
+
+S3method(bridgesde3d, default)
+S3method(print, bridgesde3d)
+S3method(time, bridgesde3d)
+S3method(mean, bridgesde3d)
+S3method(Median, bridgesde3d)
+S3method(Mode, bridgesde3d)
+S3method(quantile, bridgesde3d)
+S3method(kurtosis, bridgesde3d)
+S3method(skewness, bridgesde3d)
+S3method(moment, bridgesde3d)
+S3method(cv, bridgesde3d)
+S3method(max, bridgesde3d)
+S3method(min, bridgesde3d)
+S3method(summary, bridgesde3d)
+S3method(bconfint, bridgesde3d)
+S3method(plot, bridgesde3d)
+S3method(points, bridgesde3d)
+S3method(lines, bridgesde3d)
+S3method(plot3D, bridgesde3d)
+
