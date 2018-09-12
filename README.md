@@ -11,7 +11,7 @@
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-2.15.1-blue.svg?style=flat-plastic)](https://cran.r-project.org/) 
 
 ------------------------------------------------------------------------
-
+![Github](https://img.shields.io/badge/Github-4.2-green.svg)
 ![](http://www.r-pkg.org/badges/version-last-release/Sim.DiffProc?color=blue) [![Rdoc](http://www.rdocumentation.org/badges/version/Sim.DiffProc)](http://www.rdocumentation.org/packages/Sim.DiffProc)
 
 
