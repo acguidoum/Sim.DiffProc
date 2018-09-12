@@ -3,3 +3,26 @@
 language: R
 sudo: false
 cache: packages
+
+warnings_are_errors: true
+
+jobs:
+  include:
+  - r: oldrel
+    warnings_are_errors: false
+  - r: release
+    warnings_are_errors: false
+  - r: devel
+    warnings_are_errors: false
+    
+r_packages:
+  - covr
+  
+env:
+  global:
+    - _R_BUILD_ARGS="--no-build-vignettes --no-manual --no-resave-data"
+    - _R_CHECK_ARGS="--no-build-vignettes --no-manual --timings"
+    - _R_CHECK_FORCE_SUGGESTS_=false
+  
+after_success:
+  - Rscript -e 'library(covr); codecov()'
