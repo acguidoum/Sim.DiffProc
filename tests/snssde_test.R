@@ -1,5 +1,5 @@
 options(prompt="R> ",scipen=16,digits=4,warning=FALSE, message=FALSE)
-library(Sim.DiffProc)
+library(Sim.DiffProc) 
 
 
 meth <- eval(formals(snssde1d.default)$method)
@@ -176,6 +176,16 @@ plot(mod1,type="n")
 lines(mod1,col=2)
 points(mod1,cex=0.1,pch=19)
 
+mean(mod1)
+moment(mod1, center = TRUE , order = 2) ## variance
+Median(mod1)
+quantile(mod1)
+kurtosis(mod1)
+skewness(mod1)
+cv(mod1)
+min(mod1)
+max(mod1)
+
 
 ####
 
@@ -189,6 +199,16 @@ lines(mod2,col=2)
 points(mod2,cex=0.1,pch=19)
 plot2d(mod2)
 
+mean(mod2)
+moment(mod2, center = TRUE , order = 2) ## variance
+Median(mod2)
+quantile(mod2)
+kurtosis(mod2)
+skewness(mod2)
+cv(mod2)
+min(mod2)
+max(mod2)
+
 ####
 
 fx <- expression(4*(-1-x), 4*(1-y), 4*(1-z))
@@ -201,6 +221,14 @@ lines(mod3,col=2)
 points(mod3,cex=0.1,pch=19)
 plot3D(mod3,display="rgl")
 
-
+mean(mod3)
+moment(mod3, center = TRUE , order = 2) ## variance
+Median(mod3)
+quantile(mod3)
+kurtosis(mod3)
+skewness(mod3)
+cv(mod3)
+min(mod3)
+max(mod3)
 
 

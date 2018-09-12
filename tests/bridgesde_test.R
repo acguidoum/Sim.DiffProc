@@ -1,5 +1,5 @@
 options(prompt="R> ",scipen=16,digits=4,warning=FALSE, message=FALSE)
-library(Sim.DiffProc)
+library(Sim.DiffProc) 
 
 
 
@@ -162,31 +162,61 @@ bconfint(mod3, at =s)
 f <- expression( 2*(1-x) )
 g <- expression( 1 )
 
-mod1 <- bridgesde1d(drift=f,diffusion=g,x0=2,y=2,M=1,N=50,Dt=0.05)			
+mod1 <- bridgesde1d(drift=f,diffusion=g,x0=2,y=2,M=1,N=50,Dt=0.05,method="predcorr")			
 plot(mod1,type="n")
 lines(mod1,col=2)
 points(mod1,cex=0.1,pch=19)
+
+mean(mod1)
+moment(mod1, center = TRUE , order = 2) ## variance
+Median(mod1)
+quantile(mod1)
+kurtosis(mod1)
+skewness(mod1)
+cv(mod1)
+min(mod1)
+max(mod1)
 
 ####
 
 fx <- expression(4*(-1-x) , x)
 gx <- expression(0.2 , 0)
 
-mod2 <- bridgesde2d(drift=fx,diffusion=gx,M=1,Dt=0.05,N=50)
+mod2 <- bridgesde2d(drift=fx,diffusion=gx,M=1,Dt=0.05,N=50,method="predcorr")
 plot(mod2,union = FALSE)
 plot(mod2,type="n")
 lines(mod2,col=2)
 points(mod2,cex=0.1,pch=19)
 plot2d(mod2)
 
+mean(mod2)
+moment(mod2, center = TRUE , order = 2) ## variance
+Median(mod2)
+quantile(mod2)
+kurtosis(mod2)
+skewness(mod2)
+cv(mod2)
+min(mod2)
+max(mod2)
+
 ####
 
 fx <- expression(4*(-1-x), 4*(1-y), 4*(1-z))
 gx <- rep(expression(0.2),3)
 
-mod3 <- bridgesde3d(drift=fx,diffusion=gx,M=1,Dt=0.05,N=50)
+mod3 <- bridgesde3d(drift=fx,diffusion=gx,M=1,Dt=0.05,N=50,method="predcorr")
 plot(mod3,union = FALSE)
 plot(mod3,type="n")
 lines(mod3,col=2)
 points(mod3,cex=0.1,pch=19)
 plot3D(mod3)
+
+mean(mod3)
+moment(mod3, center = TRUE , order = 2) ## variance
+Median(mod3)
+quantile(mod3)
+kurtosis(mod3)
+skewness(mod3)
+cv(mod3)
+min(mod3)
+max(mod3)

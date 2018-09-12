@@ -2,6 +2,12 @@ options(prompt="R> ",scipen=16,digits=4,warning=FALSE, message=FALSE)
 library(Sim.DiffProc)
 
 
+f <- expression(0)
+g <- expression(1)
+res1 <- snssde1d(drift=f,diffusion=g,M=1)
+x <- rsde1d(res1, at = 1)
+x <- rsde1d(res1, at = 0.02154)
+
 #####1d
 
 f <- expression(0)
@@ -21,6 +27,14 @@ plot(dsde1d(res1, at = 0.02154),dens=function(x) dnorm(x,0,sqrt(0.02154)),hist=T
 
 ## 2-dim SDE
 set.seed(1234)
+
+fx <- expression(3*(2-y),2*x)
+gx <- expression(1,y)
+mod2d <- snssde2d(drift=fx,diffusion=gx,x0=c(1,2),M=1)
+
+# random 
+r2d <- rsde2d(mod2d,at=0.5)
+r2d <- rsde2d(mod2d,at=0.51475)
 
 # SDE's 2d
 fx <- expression(3*(2-y),2*x)
@@ -54,6 +68,14 @@ plot(denJ,display="rgl")
 plot(denJ,display="image")
 
 ######## 3d
+
+fx <- expression(4*(-1-x)*y, 4*(1-y)*x, 4*(1-z)*y)
+gx <- rep(expression(0.2),3)
+mod3d <- snssde3d(drift=fx,diffusion=gx,x0=c(1,2,1),M=1)
+
+# random 
+r3d <- rsde3d(mod3d ,at=0.5)
+r3d <- rsde3d(mod3d ,at=0.51475)
 
 fx <- expression(4*(-1-x)*y, 4*(1-y)*x, 4*(1-z)*y)
 gx <- rep(expression(0.2),3)
