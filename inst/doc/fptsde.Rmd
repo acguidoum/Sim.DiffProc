@@ -1,0 +1,492 @@
+---
+title: "Monte-Carlo Simulation and Kernel Density Estimation of First passage time"
+author: 
+- A.C. Guidoum^[Department of Probabilities & Statistics, Faculty of Mathematics, University of Science and Technology Houari Boumediene, BP 32 El-Alia, U.S.T.H.B, Algeria, E-mail  (acguidoum@usthb.dz)] and K. Boukhetala^[Faculty of Mathematics, University of Science and Technology Houari Boumediene, BP 32 El-Alia, U.S.T.H.B, Algeria, E-mail (kboukhetala@usthb.dz)]
+date: "`r Sys.Date()`"
+output: 
+  knitr:::html_vignette:
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Monte-Carlo Simulation and Kernel Density Estimation of First passage time}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{latin1}
+---
+
+```{r setup, echo = F, message = F, results = 'hide'}
+library(Sim.DiffProc)
+library(knitr)
+knitr::opts_chunk$set(comment="", prompt=TRUE, fig.show='hold',warning=FALSE, message=FALSE)
+options(prompt="R> ",scipen=16,digits=5,warning=FALSE, message=FALSE,
+        width = 70)
+```
+
+
+# The `fptsdekd()` functions
+
+A new algorithm based on the Monte Carlo technique to generate the random variable FPT of a time homogeneous diffusion process (1, 2 and 3D) through a time-dependent boundary, order to estimate her probability density function.
+
+
+Let \(X_t\) be a diffusion process which is the unique solution of the
+following stochastic differential equation:
+
+\begin{equation}\label{eds01}
+  dX_t = \mu(t,X_t) dt + \sigma(t,X_t) dW_t,\quad X_{t_{0}}=x_{0}
+\end{equation}
+
+if \(S(t)\) is a time-dependent boundary, we are interested in
+generating the first passage time (FPT) of the diffusion process through
+this boundary that is we will study the following random variable:
+
+\[
+\tau_{S(t)}=
+\left\{
+  \begin{array}{ll}
+    inf \left\{t: X_{t} \geq S(t)|X_{t_{0}}=x_{0} \right\} & \hbox{if} \quad x_{0} \leq S(t_{0}) \\
+    inf \left\{t: X_{t} \leq S(t)|X_{t_{0}}=x_{0} \right\} & \hbox{if} \quad x_{0} \geq S(t_{0})
+  \end{array}
+\right.
+\]
+
+The main arguments to 'random' `fptsdekd()` (where `k=1,2,3`) consist: 
+
+- `object` an object inheriting from class `snssde1d`, `snssde2d` and `snssde3d`.
+- `boundary` an expression of a constant or time-dependent boundary $S(t)$.
+
+The following statistical measures (`S3 method`) for class `fptsdekd()` can be approximated for F.P.T $\tau_{S(t)}$:
+
+* The expected value $\text{E}(\tau_{S(t)})$, using the command `mean`.
+* The variance $\text{Var}(\tau_{S(t)})$, using the command `moment` with `order=2` and `center=TRUE`.
+* The median $\text{Med}(\tau_{S(t)})$, using the command `Median`.
+* The mode $\text{Mod}(\tau_{S(t)})$, using the command `Mode`.
+* The quartile of $\tau_{S(t)}$, using the command `quantile`.
+* The maximum and minimum of $\tau_{S(t)}$, using the command  `min` and `max`.
+* The skewness and the kurtosis of $\tau_{S(t)}$, using the command `skewness` and `kurtosis`.
+* The coefficient of variation (relative variability) of $\tau_{S(t)}$, using the command `cv`.
+* The central moments up to order $p$ of $\tau_{S(t)}$, using the command `moment`.
+* The result summaries of the results of Monte-Carlo simulation, using the command `summary`.
+
+The main arguments to 'density' `dfptsdekd()` (where `k=1,2,3`) consist: 
+
+- `object` an object inheriting from class `fptsdekd()` (where `k=1,2,3`).
+- `pdf` probability density function `Joint` or `Marginal`.
+
+# Examples
+
+## FPT for 1-Dim SDE
+
+Consider the following SDE and linear boundary:
+
+\begin{align*}
+  dX_{t}= & (1-0.5 X_{t}) dt + dW_{t},~x_{0} =1.7.\\
+  S(t)= & 2(1-sinh(0.5t))
+\end{align*}
+
+Generating the first passage time (FPT) of this model through this
+boundary: \[
+\tau_{S(t)}=
+    \inf \left\{t: X_{t} \geq S(t) |X_{t_{0}}=x_{0} \right\} ~~ \text{if} \quad x_{0} \leq S(t_{0})
+\]
+
+Set the model $X_t$:
+```{r}
+f <- expression( (1-0.5*x) )
+g <- expression( 1 )
+mod1d <- snssde1d(drift=f,diffusion=g,x0=1.7,M=10000,method="taylor")
+```
+Generate the first-passage-time $\tau_{S(t)}$, with `fptsde1d()` function ( based on `density()` function in [base] package):
+```{r}
+St  <- expression(2*(1-sinh(0.5*t)) )
+fpt1d <- fptsde1d(mod1d, boundary = St)
+fpt1d
+head(fpt1d$fpt, n = 10)
+```
+The following statistical measures (`S3 method`) for class `fptsde1d()` can be approximated for the first-passage-time $\tau_{S(t)}$:
+
+```{r}
+mean(fpt1d)
+moment(fpt1d , center = TRUE , order = 2) ## variance
+Median(fpt1d)
+Mode(fpt1d)
+quantile(fpt1d)
+kurtosis(fpt1d)
+skewness(fpt1d)
+cv(fpt1d)
+min(fpt1d)
+max(fpt1d)
+moment(fpt1d , center= TRUE , order = 4)
+moment(fpt1d , center= FALSE , order = 4)
+```
+The result summaries of the first-passage-time $\tau_{S(t)}$:
+
+```{r}
+summary(fpt1d)
+```
+
+Display the exact first-passage-time $\tau_{S(t)}$, see Figure 1:
+
+```{r 1 ,fig.env='figure*', fig.cap='  '}
+plot(time(mod1d),mod1d$X[,1],type="l",lty=3,ylab="X(t)",xlab="time",axes=F)
+curve(2*(1-sinh(0.5*x)),add=TRUE,col=2)
+points(fpt1d$fpt[1],2*(1-sinh(0.5*fpt1d$fpt[1])),pch=19,col=4,cex=0.5)
+lines(c(fpt1d$fpt[1],fpt1d$fpt[1]),c(0,2*(1-sinh(0.5*fpt1d$fpt[1]))),lty=2,col=4)
+axis(1, fpt1d$fpt[1], bquote(tau[S(t)]==.(fpt1d$fpt[1])),col=4,col.ticks=4)
+legend('topleft',col=c(1,2,4),lty=c(1,1,NA),pch=c(NA,NA,19),legend=c(expression(X[t]),expression(S(t)),expression(tau[S(t)])),cex=0.8,bty = 'n')
+box()
+```
+
+The kernel density approximation of 'fpt1d', using `dfptsde1d()` function (`hist=TRUE` based on `truehist()` function in [MASS](https://cran.r-project.org/package=MASS) package),  see e.g. Figure 2. 
+```{r 2,fig.env='figure*', fig.cap='  '}
+plot(dfptsde1d(fpt1d),hist=TRUE,nbins="FD")  ## histogramm
+plot(dfptsde1d(fpt1d))              ## kernel density
+```
+
+Since [fptdApprox](https://cran.r-project.org/package=fptdApprox) and [DiffusionRgqd](https://cran.r-project.org/package=DiffusionRgqd) packages can very effectively handle first passage time problems for diffusions with analytically tractable transitional densities we use it to compare some of the results from the Sim.DiffProc package.
+
+### `fptsde1d()` vs `Approx.fpt.density()`
+
+Consider for example a diffusion process with SDE:
+
+\begin{align*}
+  dX_{t}= &  0.48 X_{t} dt + 0.07 X_{t} dW_{t},~x_{0} =1.\\
+  S(t)= & 7 + 3.2  t + 1.4  t  \sin(1.75  t)
+\end{align*}
+The resulting object is then used by the `Approx.fpt.density()` function in package [fptdApprox](https://cran.r-project.org/package=fptdApprox) to approximate the first passage time density:
+```{r,eval=FALSE, include=TRUE}
+require(fptdApprox)
+x <- character(4)
+x[1] <- "m * x"
+x[2] <- "(sigma^2) * x^2"
+x[3] <- "dnorm((log(x) - (log(y) + (m - sigma^2/2) * (t- s)))/(sigma * sqrt(t - s)),0,1)/(sigma * sqrt(t - s) * x)"
+x[4] <- "plnorm(x,log(y) + (m - sigma^2/2) * (t - s),sigma * sqrt(t - s))"
+Lognormal <- diffproc(x)
+res1 <- Approx.fpt.density(Lognormal, 0, 10, 1, "7 + 3.2 * t + 1.4 * t * sin(1.75 * t)",list(m = 0.48,sigma = 0.07))
+```
+Using `fptsde1d()` and `dfptsde1d()` functions in the [Sim.DiffProc](https://cran.r-project.org/package=Sim.DiffProc) package:
+```{r}
+## Set the model X(t)
+f <- expression( 0.48*x )
+g <- expression( 0.07*x )
+mod1 <- snssde1d(drift=f,diffusion=g,x0=1,T=10,M=10000)
+## Set the boundary S(t)
+St  <- expression( 7 + 3.2 * t + 1.4 * t * sin(1.75 * t) )
+## Generate the fpt
+fpt1 <- fptsde1d(mod1, boundary = St)
+fpt1
+head(fpt1$fpt, n = 10)
+summary(fpt1)
+```
+By plotting the approximations:
+```{r 3,fig.env='figure*', fig.cap='  ',eval=FALSE, include=TRUE}
+plot(res1$y ~ res1$x, type = 'l',main = 'Approximation First-Passage-Time Density', ylab = 'Density', xlab = expression(tau[S(t)]),cex.main = 0.95,lwd=2)
+plot(dfptsde1d(fpt1,bw="bcv"),add=TRUE)
+legend('topright', lty = c(1, NA), col = c(1,'#BBCCEE'),pch=c(NA,15),legend = c('Approx.fpt.density()', 'fptsde1d()'), lwd = 2, bty = 'n')
+```
+
+```{r 33, echo=FALSE, fig.cap=' `fptsde1d()` vs `Approx.fpt.density()` ', fig.env='figure*',fig.width=7,fig.height=7}
+knitr::include_graphics("Figures/fig01.png")
+```
+
+### `fptsde1d()` vs `GQD.TIpassage()`
+
+Consider for example a diffusion process with SDE:
+
+\begin{align*}
+  dX_{t}= &  \theta_{1}X_{t}(10+0.2\sin(2\pi t)+0.3\sqrt(t)(1+\cos(3\pi t))-X_{t}) )  dt + \sqrt(0.1) X_{t} dW_{t},~x_{0} =8.\\
+  S(t)= & 12
+\end{align*}
+The resulting object is then used by the `GQD.TIpassage()` function in package [DiffusionRgqd](https://cran.r-project.org/package=DiffusionRgqd) to approximate the first passage time density:
+```{r,eval=FALSE, include=TRUE}
+require(DiffusionRgqd)
+G1 <- function(t)
+     {
+ theta[1] * (10+0.2 * sin(2 * pi * t) + 0.3 * prod(sqrt(t),
+ 1+cos(3 * pi * t)))
+ }
+G2 <- function(t){-theta[1]}
+Q2 <- function(t){0.1}
+res2 = GQD.TIpassage(8, 12, 1, 4, 1 / 100, theta = c(0.5))
+```
+Using `fptsde1d()` and `dfptsde1d()` functions in the [Sim.DiffProc](https://cran.r-project.org/package=Sim.DiffProc) package:
+```{r}
+## Set the model X(t)
+theta1=0.5
+f <- expression( theta1*x*(10+0.2*sin(2*pi*t)+0.3*sqrt(t)*(1+cos(3*pi*t))-x) )
+g <- expression( sqrt(0.1)*x )
+mod2 <- snssde1d(drift=f,diffusion=g,x0=8,t0=1,T=4,M=10000)
+## Set the boundary S(t)
+St  <- expression( 12 )
+## Generate the fpt
+fpt2 <- fptsde1d(mod2, boundary = St)
+fpt2
+head(fpt2$fpt, n = 10)
+summary(fpt2)
+```
+By plotting the approximations (`hist=TRUE` based on `truehist()` function in [MASS](https://cran.r-project.org/package=MASS) package):
+```{r 4,fig.env='figure*', fig.cap='  ',eval=FALSE, include=TRUE}
+plot(dfptsde1d(fpt2),hist=TRUE,nbins = "Scott",main = 'Approximation First-Passage-Time Density', ylab = 'Density', xlab = expression(tau[S(t)]), cex.main = 0.95)
+lines(res2$density ~ res2$time, type = 'l',lwd=2)
+legend('topright', lty = c(1, NA), col = c(1,'#FF00004B'),pch=c(NA,15),legend = c('GQD.TIpassage()', 'fptsde1d()'), lwd = 2, bty = 'n')
+```
+
+```{r 44, echo=FALSE, fig.cap='`fptsde1d()` vs `GQD.TIpassage()` ', fig.env='figure*',fig.width=7,fig.height=7}
+knitr::include_graphics("Figures/fig02.png")
+```
+
+## FPT for 2-Dim SDE's
+
+The following $2$-dimensional SDE's with a vector of drift and a diagonal matrix of diffusion coefficients:
+
+\begin{equation}\label{eq:09}
+\begin{cases}
+dX_t = f_{x}(t,X_{t},Y_{t}) dt +  g_{x}(t,X_{t},Y_{t}) dW_{1,t}\\
+dY_t = f_{y}(t,X_{t},Y_{t}) dt +  g_{y}(t,X_{t},Y_{t}) dW_{2,t}
+\end{cases}
+\end{equation}
+
+$W_{1,t}$ and $W_{2,t}$ is a two independent standard Wiener process. First passage time (2D) \((\tau_{(S(t),X_{t})},\tau_{(S(t),Y_{t})})\) is
+defined as:
+
+\[
+\left\{
+  \begin{array}{ll}
+    \tau_{S(t),X_{t}}=\inf \left\{t: X_{t} \geq S(t)|X_{t_{0}}=x_{0} \right\} & \hbox{if} \quad x_{0} \leq S(t_{0}) \\
+    \tau_{S(t),Y_{t}}=\inf \left\{t: Y_{t} \geq S(t)|Y_{t_{0}}=y_{0} \right\} & \hbox{if} \quad y_{0} \leq S(t_{0})
+  \end{array}
+\right.
+\] and \[
+\left\{
+  \begin{array}{ll}
+   \tau_{S(t),X_{t}}= \inf \left\{t: X_{t} \leq S(t)|X_{t_{0}}=x_{0} \right\} & \hbox{if} \quad x_{0} \geq S(t_{0}) \\
+   \tau_{S(t),Y_{t}}= \inf \left\{t: Y_{t} \leq S(t)|Y_{t_{0}}=y_{0} \right\} & \hbox{if} \quad y_{0} \geq S(t_{0})
+  \end{array}
+\right.
+\]
+
+Assume that we want to describe the following Stratonovich SDE's (2D):
+
+\begin{equation}\label{eq016}
+\begin{cases}
+dX_t = 5 (-1-Y_{t}) X_{t} dt + 0.5 Y_{t} \circ dW_{1,t}\\
+dY_t = 5 (-1-X_{t}) Y_{t} dt + 0.5 X_{t} \circ dW_{2,t}
+\end{cases}
+\end{equation}
+
+and \[
+S(t)=\sin(2\pi t)
+\]
+
+Set the system $(X_t , Y_t)$:
+```{r}
+fx <- expression(5*(-1-y)*x , 5*(-1-x)*y)
+gx <- expression(0.5*y,0.5*x)
+mod2d <- snssde2d(drift=fx,diffusion=gx,x0=c(x=1,y=-1),M=10000,type="str")
+```
+Generate the couple \((\tau_{(S(t),X_{t})},\tau_{(S(t),Y_{t})})\), with `fptsde2d()` function::
+```{r}
+St <- expression(sin(2*pi*t))
+fpt2d <- fptsde2d(mod2d, boundary = St)
+fpt2d
+head(fpt2d$fpt, n = 10)
+```
+The following statistical measures (`S3 method`) for class `fptsde2d()` can be approximated for the couple \((\tau_{(S(t),X_{t})},\tau_{(S(t),Y_{t})})\):
+
+```{r}
+mean(fpt2d)
+moment(fpt2d , center = TRUE , order = 2) ## variance
+Median(fpt2d)
+Mode(fpt2d)
+quantile(fpt2d)
+kurtosis(fpt2d)
+skewness(fpt2d)
+cv(fpt2d)
+min(fpt2d)
+max(fpt2d)
+moment(fpt2d , center= TRUE , order = 4)
+moment(fpt2d , center= FALSE , order = 4)
+```
+The result summaries of the couple \((\tau_{(S(t),X_{t})},\tau_{(S(t),Y_{t})})\):
+
+```{r}
+summary(fpt2d)
+```
+
+Display the exact first-passage-time $\tau_{S(t)}$, see Figure 5:
+
+```{r 5 ,fig.env='figure*', fig.cap='  '}
+plot(ts.union(mod2d$X[,1],mod2d$Y[,1]),col=1:2,lty=3,plot.type="single",type="l",ylab= "",xlab="time",axes=F)
+curve(sin(2*pi*x),add=TRUE,col=3)
+points(fpt2d$fpt$x[1],sin(2*pi*fpt2d$fpt$x[1]),pch=19,col=4,cex=0.5)
+lines(c(fpt2d$fpt$x[1],fpt2d$fpt$x[1]),c(sin(2*pi*fpt2d$fpt$x[1]),-10),lty=2,col=4)
+axis(1, fpt2d$fpt$x[1], bquote(tau[X[S(t)]]==.(fpt2d$fpt$x[1])),col=4,col.ticks=4)
+points(fpt2d$fpt$y[1],sin(2*pi*fpt2d$fpt$y[1]),pch=19,col=5,cex=0.5)
+lines(c(fpt2d$fpt$y[1],fpt2d$fpt$y[1]),c(sin(2*pi*fpt2d$fpt$y[1]),-10),lty=2,col=5)
+axis(1, fpt2d$fpt$y[1], bquote(tau[Y[S(t)]]==.(fpt2d$fpt$y[1])),col=5,col.ticks=5)
+legend('topright',col=1:5,lty=c(1,1,1,NA,NA),pch=c(NA,NA,NA,19,19),legend=c(expression(X[t]),expression(Y[t]),expression(S(t)),expression(tau[X[S(t)]]),expression(tau[Y[S(t)]])),cex=0.8,inset = .01)
+box()
+```
+
+The marginal density of \((\tau_{(S(t),X_{t})}\) and \(\tau_{(S(t),Y_{t})})\) are reported using `dfptsde2d()` function, see e.g. Figure 6.
+
+```{r 6,fig.env='figure*', fig.cap='  '}
+denM <- dfptsde2d(fpt2d, pdf = 'M')
+plot(denM)
+```
+A `contour` and `image` plot of density obtained from a realization of system \((\tau_{(S(t),X_{t})},\tau_{(S(t),Y_{t})})\).
+
+```{r 7,fig.env='figure*', fig.cap='  '}
+denJ <- dfptsde2d(fpt2d, pdf = 'J',n=100)
+plot(denJ,display="contour",main="Bivariate Density of F.P.T",xlab=expression(tau[x]),ylab=expression(tau[y]))
+plot(denJ,display="image",main="Bivariate Density of F.P.T",xlab=expression(tau[x]),ylab=expression(tau[y]))
+```
+
+A $3$D plot of the Joint density with: 
+
+```{r 8, echo=TRUE, fig.cap='  ', fig.env='figure*', message=FALSE, warning=FALSE}
+plot(denJ,display="persp",main="Bivariate Density of F.P.T",xlab=expression(tau[x]),ylab=expression(tau[y]))
+```
+[Return to fptsde2d()](#FPT for 2-Dim SDE)
+
+## FPT for 3-Dim SDE's
+
+The following $3$-dimensional SDE's with a vector of drift and a diagonal matrix of diffusion coefficients:
+
+\begin{equation}\label{eq17}
+\begin{cases}
+dX_t = f_{x}(t,X_{t},Y_{t},Z_{t}) dt +  g_{x}(t,X_{t},Y_{t},Z_{t}) dW_{1,t}\\
+dY_t = f_{y}(t,X_{t},Y_{t},Z_{t}) dt +  g_{y}(t,X_{t},Y_{t},Z_{t}) dW_{2,t}\\
+dZ_t = f_{z}(t,X_{t},Y_{t},Z_{t}) dt +  g_{z}(t,X_{t},Y_{t},Z_{t}) dW_{3,t}
+\end{cases}
+\end{equation}
+$W_{1,t}$, $W_{2,t}$ and $W_{3,t}$ is a 3 independent standard Wiener process. First passage time (3D) $(\tau_{(S(t),X_{t})},\tau_{(S(t),Y_{t})},\tau_{(S(t),Z_{t})})$ is defined as:
+
+$$
+\left\{
+  \begin{array}{ll}
+    \tau_{S(t),X_{t}}=\inf \left\{t: X_{t} \geq S(t)|X_{t_{0}}=x_{0} \right\} & \hbox{if} \quad x_{0} \leq S(t_{0}) \\
+    \tau_{S(t),Y_{t}}=\inf \left\{t: Y_{t} \geq S(t)|Y_{t_{0}}=y_{0} \right\} & \hbox{if} \quad y_{0} \leq S(t_{0}) \\
+ \tau_{S(t),Z_{t}}=\inf \left\{t: Z_{t} \geq S(t)|Z_{t_{0}}=z_{0} \right\} & \hbox{if} \quad z_{0} \leq S(t_{0})
+  \end{array}
+\right.
+$$
+and
+$$
+\left\{
+  \begin{array}{ll}
+   \tau_{S(t),X_{t}}= \inf \left\{t: X_{t} \leq S(t)|X_{t_{0}}=x_{0} \right\} & \hbox{if} \quad x_{0} \geq S(t_{0}) \\
+   \tau_{S(t),Y_{t}}= \inf \left\{t: Y_{t} \leq S(t)|Y_{t_{0}}=y_{0} \right\} & \hbox{if} \quad y_{0} \geq S(t_{0}) \\
+   \tau_{S(t),Z_{t}}= \inf \left\{t: Z_{t} \leq S(t)|Z_{t_{0}}=z_{0} \right\} & \hbox{if} \quad z_{0} \geq S(t_{0}) \\
+  \end{array}
+\right.
+$$
+
+Assume that we want to describe the following SDE's (3D):
+\begin{equation}\label{eq0166}
+\begin{cases}
+dX_t = 4 (-1-X_{t}) Y_{t} dt + 0.2 dW_{1,t}\\
+dY_t = 4 (1-Y_{t}) X_{t} dt + 0.2 dW_{2,t}\\
+dZ_t = 4 (1-Z_{t}) Y_{t} dt + 0.2 dW_{3,t}
+\end{cases}
+\end{equation}
+and 
+$$
+S(t)=-1.5+3t
+$$
+
+Set the system $(X_t , Y_t , Z_t)$:
+```{r}
+fx <- expression(4*(-1-x)*y , 4*(1-y)*x , 4*(1-z)*y) 
+gx <- rep(expression(0.2),3)
+mod3d <- snssde3d(drift=fx,diffusion=gx,x0=c(x=2,y=-2,z=0),M=10000)
+```
+Generate the triplet $(\tau_{(S(t),X_{t})},\tau_{(S(t),Y_{t})},\tau_{(S(t),Z_{t})})$, with `fptsde3d()` function::
+```{r}
+St <- expression(-1.5+3*t)
+fpt3d <- fptsde3d(mod3d, boundary = St)
+fpt3d
+head(fpt3d$fpt, n = 10)
+```
+The following statistical measures (`S3 method`) for class `fptsde3d()` can be approximated for the triplet $(\tau_{(S(t),X_{t})},\tau_{(S(t),Y_{t})},\tau_{(S(t),Z_{t})})$:
+
+```{r}
+mean(fpt3d)
+moment(fpt3d , center = TRUE , order = 2) ## variance
+Median(fpt3d)
+Mode(fpt3d)
+quantile(fpt3d)
+kurtosis(fpt3d)
+skewness(fpt3d)
+cv(fpt3d)
+min(fpt3d)
+max(fpt3d)
+moment(fpt3d , center= TRUE , order = 4)
+moment(fpt3d , center= FALSE , order = 4)
+```
+The result summaries of the triplet $(\tau_{(S(t),X_{t})},\tau_{(S(t),Y_{t})},\tau_{(S(t),Z_{t})})$:
+
+```{r}
+summary(fpt3d)
+```
+Display the exact first-passage-time $\tau_{S(t)}$, see Figure 9:
+
+```{r 9 ,fig.env='figure*', fig.cap='  '}
+plot(ts.union(mod3d$X[,1],mod3d$Y[,1],mod3d$Z[,1]),col=1:3,lty=3,plot.type="single",type="l",ylab="",xlab="time",axes=F)
+curve(-1.5+3*x,add=TRUE,col=4)
+points(fpt3d$fpt$x[1],-1.5+3*fpt3d$fpt$x[1],pch=19,col=5,cex=0.5)
+lines(c(fpt3d$fpt$x[1],fpt3d$fpt$x[1]),c(-1.5+3*fpt3d$fpt$x[1],-10),lty=2,col=5)
+axis(1, fpt3d$fpt$x[1], bquote(tau[X[S(t)]]==.(fpt3d$fpt$x[1])),col=5,col.ticks=5)
+points(fpt3d$fpt$y[1],-1.5+3*fpt3d$fpt$y[1],pch=19,col=6,cex=0.5)
+lines(c(fpt3d$fpt$y[1],fpt3d$fpt$y[1]),c(-1.5+3*fpt3d$fpt$y[1],-10),lty=2,col=6)
+axis(1, fpt3d$fpt$y[1], bquote(tau[Y[S(t)]]==.(fpt3d$fpt$y[1])),col=6,col.ticks=6)
+points(fpt3d$fpt$z[1],-1.5+3*fpt3d$fpt$z[1],pch=19,col=7,cex=0.5)
+lines(c(fpt3d$fpt$z[1],fpt3d$fpt$z[1]),c(-1.5+3*fpt3d$fpt$z[1],-10),lty=2,col=7)
+axis(1, fpt3d$fpt$z[1], bquote(tau[Z[S(t)]]==.(fpt3d$fpt$z[1])),col=7,col.ticks=7)
+legend('topright',col=1:7,lty=c(1,1,1,1,NA,NA,NA),pch=c(NA,NA,NA,NA,19,19,19),legend=c(expression(X[t]),expression(Y[t]),expression(Z[t]),expression(S(t)),expression(tau[X[S(t)]]),expression(tau[Y[S(t)]]),expression(tau[Z[S(t)]])),cex=0.8,inset = .01)
+box()
+```
+
+The marginal density of $\tau_{(S(t),X_{t})}$ ,$\tau_{(S(t),Y_{t})}$ and $\tau_{(S(t),Z_{t})})$ are reported using `dfptsde3d()` function, see e.g. Figure 10.
+
+```{r 10,fig.env='figure*', fig.cap='  '}
+denM <- dfptsde3d(fpt3d, pdf = "M")
+denM
+plot(denM)
+```
+
+For an approximate joint density for $(\tau_{(S(t),X_{t})},\tau_{(S(t),Y_{t})},\tau_{(S(t),Z_{t})})$ (for more details, see package  [sm](https://cran.r-project.org/package=sm) or  [ks](https://cran.r-project.org/package=ks).)
+
+```{r 111,fig.env='figure*', fig.cap='  ',eval=FALSE, include=TRUE}
+denJ <- dfptsde3d(fpt3d,pdf="J")
+plot(denJ,display="rgl")
+```
+
+
+[Return to fptsde3d()](#fptsde3d)
+
+# Further reading
+
+1. [`snssdekd()` & `dsdekd()` & `rsdekd()`- Monte-Carlo Simulation and Analysis of Stochastic Differential Equations](snssde.html).
+2. [`bridgesdekd()` & `dsdekd()` & `rsdekd()` - Constructs and Analysis of Bridges Stochastic Differential Equations](bridgesde.html).
+3. [`fptsdekd()` & `dfptsdekd()` - Monte-Carlo Simulation and Kernel Density Estimation of First passage time](fptsde.html).
+4. [`MCM.sde()` & `MEM.sde()` - Parallel Monte-Carlo and Moment Equations for SDEs](mcmsde.html).
+5. [`TEX.sde()` - Converting Sim.DiffProc Objects to LaTeX](sdetotex.html).
+6. [`fitsde()` - Parametric Estimation of 1-D Stochastic Differential Equation](fitsde.html).
+
+
+
+
+# References
+
+1. Boukhetala K (1996). Modelling and Simulation of a Dispersion Pollutant with Attractive Centre, volume 3, pp. 245-252. Computer Methods and Water Resources, Computational Mechanics Publications, Boston, USA.
+
+2. Boukhetala K (1998). Estimation of the first passage time distribution for a simulated diffusion process. Maghreb Mathematical Review, 7, pp. 1-25.
+
+3. Boukhetala K (1998). Kernel density of the exit time in a simulated diffusion. The Annals of The Engineer Maghrebian, 12, pp. 587-589.
+
+4. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.1, URL https://cran.r-project.org/package=Sim.DiffProc.
+
+5. Pienaar EAD, Varughese MM (2016). DiffusionRgqd: An R Package for Performing Inference and Analysis on Time-Inhomogeneous Quadratic Diffusion Processes. R package version 0.1.3, URL https://CRAN.R-project.org/package=DiffusionRgqd.
+
+6. Roman, R.P., Serrano, J. J., Torres, F. (2008). First-passage-time location function: Application to determine first-passage-time densities in diffusion processes. Computational Statistics and Data Analysis. 52, 4132-4146.
+  
+7. Roman, R.P., Serrano, J. J., Torres, F. (2012). An R package for an efficient approximation of first-passage-time densities for diffusion processes based on the FPTL function. Applied Mathematics and Computation, 218, 8408-8428.
+    

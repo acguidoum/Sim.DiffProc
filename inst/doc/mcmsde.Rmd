@@ -1,0 +1,213 @@
+---
+title: "Parallel Monte-Carlo and Moment Equations for SDEs"
+author: 
+- A.C. Guidoum^[Department of Probabilities & Statistics, Faculty of Mathematics, University of Science and Technology Houari Boumediene, BP 32 El-Alia, U.S.T.H.B, Algeria, E-mail  (acguidoum@usthb.dz)] and K. Boukhetala^[Faculty of Mathematics, University of Science and Technology Houari Boumediene, BP 32 El-Alia, U.S.T.H.B, Algeria, E-mail (kboukhetala@usthb.dz)]
+date: "`r Sys.Date()`"
+output: 
+  knitr:::html_vignette:
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Parallel Monte-Carlo and Moment Equations for SDEs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{latin1}
+---
+
+```{r setup, echo = F, message = F, results = 'hide'}
+library(Sim.DiffProc)
+library(knitr)
+library(deSolve)
+knitr::opts_chunk$set(comment="", prompt=TRUE, fig.show='hold',warning=FALSE, message=FALSE)
+options(prompt="R> ",scipen=16,digits=5,warning=FALSE, message=FALSE,mc.cores=2)
+```
+
+
+# The `MCM.sde()` function
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+MCM.sde(model, statistic, R = 1000, time, exact = NULL, names = NULL,level = 0.95, 
+        parallel = c("no", "multicore", "snow"),ncpus = getOption("ncpus", 1L), cl = NULL, ...)
+```
+
+The main arguments of `MCM.sde()` function in  [Sim.DiffProc](https://cran.r-project.org/package=Sim.DiffProc) package consist: 
+
+- `model`: an object from classes `snssde1d()`, `snssde2d()` and `snssde3d()`.
+- `statistic`: a function which when applied to the model (SDEs) returns a vector containing the statistic(s) of interest. Any further arguments can be passed to statistic(s) through the `...` argument.
+- `R`: number of Monte Carlo replicates (`R` batches), this will be a single positive integer.
+- `time`: fixed time at which the estimate of the statistic(s).
+- `exact`: a named list giving the exact statistic(s), if it exists the bias calculation will be performed.
+- `names`: named the statistic(s) of interest. Default `names=c("mu1","mu2",...)`.
+- `level`: confidence level of the required interval(s).
+- `parallel`: the type of parallel operation to be used. `"multicore"` does not work on Microsoft Windows operating systems, but on Unix is allowed and uses parallel operations. Default `parallel="no"`.
+- `ncpus`: an integer value specifying the number of cores to be used in the parallelized procedure. Default is 1 core of the machine.
+- `cl`: an optional parallel cluster for use if `parallel = "snow"`. Default `cl = makePSOCKcluster(rep("localhost", ncpus))`.
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+plot(x,index = 1,type=c("all","hist","qqplot","boxplot","CI"), ...)
+```
+This takes a `MCM.sde()` object and produces plots for the `R` replicates of the interesting quantity.
+
+- `x`: an object from the class `MCM.sde()`.
+- `index`: the index of the variable of interest within the output of class `MCM.sde()`.
+- `type`: type of plots. Default `type="all"`.
+
+## One-dimensional SDE
+
+```{r}
+theta = 0.75; x0 = 1
+fx <- expression( 0.5*theta^2*x )
+gx <- expression( theta*x )
+mod1 <- snssde1d(drift=fx,diffusion=gx,x0=x0,M=500,type="ito")
+mod2 <- snssde1d(drift=fx,diffusion=gx,x0=x0,M=500,type="str")
+## True values of means and variance for mod1 and mod2
+E.mod1 <- function(t) x0*exp(0.5*theta^2*t)
+E.mod2 <- function(t) x0
+V.mod1 <- function(t) x0^2*exp(theta^2*t)*(exp(theta^2*t)-1)
+V.mod2 <- function(t) x0^2 *(exp(theta^2*t)-1)
+## function of the statistic(s) of interest.
+sde.fun1d <- function(data, i){
+     d <- data[i, ]
+     return(c(mean(d),var(d)))
+}
+# Parallel MOnte Carlo for mod1
+mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=100, exact=list(m=E.mod1(1),S=V.mod1(1)),parallel="snow",ncpus=2)
+mcm.mod1
+# Parallel MOnte Carlo for mod2
+mcm.mod2 = MCM.sde(model=mod2,statistic=sde.fun1d,R=100, exact=list(m=E.mod2(1),S=V.mod2(1)),parallel="snow",ncpus=2)
+mcm.mod2
+```
+
+```{r,fig.cap=' MC output of mean and variance of `mod1`', fig.env='figure*'}
+# plot(s) of Monte Carlo outputs of mod1
+plot(mcm.mod1,index = 1)  # mean
+plot(mcm.mod1,index = 2)  # variance
+```
+
+```{r,fig.cap=' MC output of mean and variance of `mod2`', fig.env='figure*'}
+# plot(s) of Monte Carlo outputs of mod2
+plot(mcm.mod2,index = 1)  # mean
+plot(mcm.mod2,index = 2)  # variance
+```
+
+## Two-dimensional SDEs
+
+```{r}
+mu=1;sigma=0.5;theta=2
+x0=0;y0=0;init=c(x0,y0)
+f <- expression(1/mu*(theta-x), x)  
+g <- expression(sqrt(sigma),0)
+OUI <- snssde2d(drift=f,diffusion=g,M=500,Dt=0.015,x0=c(x=0,y=0))
+## true values of first and second moment at time 10
+Ex <- function(t) theta+(x0-theta)*exp(-t/mu)
+Vx <- function(t) 0.5*sigma*mu *(1-exp(-2*(t/mu)))
+Ey <- function(t) y0+theta*t+(x0-theta)*mu*(1-exp(-t/mu))
+Vy <- function(t) sigma*mu^3*((t/mu)-2*(1-exp(-t/mu))+0.5*(1-exp(-2*(t/mu))))
+covxy <- function(t) 0.5*sigma*mu^2 *(1-2*exp(-t/mu)+exp(-2*(t/mu)))
+tvalue = list(m1=Ex(10),m2=Ey(10),S1=Vx(10),S2=Vy(10),C12=covxy(10))
+## function of the statistic(s) of interest.
+sde.fun2d <- function(data, i){
+  d <- data[i,]
+  return(c(mean(d$x),mean(d$y),var(d$x),var(d$y),cov(d$x,d$y)))
+}
+## Parallel Monte-Carlo of 'OUI' at time 10
+mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=100,exact=tvalue,parallel="snow",ncpus=2)
+mcm.mod2d
+```
+
+## Three-dimensional SDEs
+
+```{r}
+mu=0.5;sigma=0.25
+fx <- expression(mu*y,0,0) 
+gx <- expression(sigma*z,1,1)
+modtra <- snssde3d(drift=fx,diffusion=gx,M=500,type="str")
+## function of the statistic(s) of interest.
+sde.fun3d <- function(data, i){
+  d <- data[i,]
+  return(c(mean(d$x),median(d$x),Mode(d$x),var(d$x),cov(d$x,d$y),cov(d$x,d$z)))
+}
+## Monte-Carlo at time = 10
+mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=100,parallel="snow",ncpus=2)
+mcm.mod3d
+```
+
+
+# The `MEM.sde()` function
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+MEM.sde(drift, diffusion, type = c("ito", "str"), solve = FALSE,
+        parms = NULL, init = NULL, time = NULL, ...)
+```
+
+The main arguments of `MEM.sde()` function in  [Sim.DiffProc](https://cran.r-project.org/package=Sim.DiffProc) package consist: 
+
+- `drift`: an `R` vector of `expressions` which contains the drift specification (1D, 2D and 3D).
+- `diffusion`: an `R` vector of `expressions` which contains the diffusion specification (1D, 2D and 3D).
+- `type`: type of SDEs to be used `"ito"` for Itô form and `"str"` for Stratonovich form. The default `type="ito"`.
+- `solve`: if `solve=FALSE` only the symbolic computational of system will be made. And if `solve=TRUE` a numerical approximation of the obtained system will be performed.
+- `parms`: parameters passed to `drift` and `diffusion`.
+- `init`: initial (state) values of system.
+- `time`: time sequence (`vector`) for which output is sought; the first value of time must be the initial time.
+- `...`: arguments to be passed to `ode()` function available in [deSolve](https://cran.r-project.org/package=deSolve) package, if `solve=TRUE`.
+
+## One-dimensional SDE
+
+```{r}
+fx <- expression( 0.5*theta^2*x )
+gx <- expression( theta*x )
+start = c(m=1,S=0)
+t = seq(0,1,by=0.001)
+mem.mod1 = MEM.sde(drift=fx,diffusion=gx,type="ito",solve = TRUE,parms = c(theta=0.75), init = start, time = t)
+mem.mod1
+mem.mod2 = MEM.sde(drift=fx,diffusion=gx,type="str",solve = TRUE,parms = c(theta=0.75), init = start, time = t)
+mem.mod2
+```
+```{r}
+plot(mem.mod1$sol.ode, mem.mod2$sol.ode,ylab = c("m(t)"),select="m", xlab = "Time",main="",col = 2:3,lty=1)
+legend("topleft",c(expression(m[mod1](t),m[mod2](t))),inset = .05, col=2:3,lty=1)
+plot(mem.mod1$sol.ode, mem.mod2$sol.ode,ylab = c("S(t)"),select="S", xlab = "Time",main="",col = 2:3,lty=1)
+legend("topleft",c(expression(S[mod1](t),S[mod2](t))),inset = .05, col=2:3,lty=1)
+```
+
+## Two-dimensional SDEs
+
+
+```{r}
+fx <- expression(1/mu*(theta-x), x)  
+gx <- expression(sqrt(sigma),0)
+start = c(m1=0,m2=0,S1=0,S2=0,C12=0)
+t = seq(0,10,by=0.001)
+mem.mod2d = MEM.sde(drift=fx,diffusion=gx,type="ito",solve = TRUE,parms = c(mu=1,sigma=0.5,theta=2), init = start, time = t)
+mem.mod2d
+matplot.0D(mem.mod2d$sol.ode,main="")
+```
+
+## Three-dimensional SDEs
+
+```{r}
+fx <- expression(mu*y,0,0) 
+gx <- expression(sigma*z,1,1)
+start = c(m1=5,m2=0,m3=0,S1=0,S2=0,S3=0,C12=0,C13=0,C23=0)
+t = seq(0,1,by=0.001)
+mem.mod3d = MEM.sde(drift=fx,diffusion=gx,type="ito",solve = TRUE,parms = c(mu=0.5,sigma=0.25), init = start, time = t)
+mem.mod3d
+matplot.0D(mem.mod3d$sol.ode,main="",select=c("m1","m2","m3"))
+matplot.0D(mem.mod3d$sol.ode,main="",select=c("S1","S2","S3"))
+matplot.0D(mem.mod3d$sol.ode,main="",select=c("C12","C13","C23"))
+```
+
+# Further reading
+
+1. [`snssdekd()` & `dsdekd()` & `rsdekd()`- Monte-Carlo Simulation and Analysis of Stochastic Differential Equations](snssde.html).
+2. [`bridgesdekd()` & `dsdekd()` & `rsdekd()` - Constructs and Analysis of Bridges Stochastic Differential Equations](bridgesde.html).
+3. [`fptsdekd()` & `dfptsdekd()` - Monte-Carlo Simulation and Kernel Density Estimation of First passage time](fptsde.html).
+4. [`MCM.sde()` & `MEM.sde()` - Parallel Monte-Carlo and Moment Equations for SDEs](mcmsde.html).
+5. [`TEX.sde()` - Converting Sim.DiffProc Objects to LaTeX](sdetotex.html).
+6. [`fitsde()` - Parametric Estimation of 1-D Stochastic Differential Equation](fitsde.html).
+
+
+# References
+
+1. Guidoum AC, Boukhetala K (2017). Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
+
+2. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.1, URL https://cran.r-project.org/package=Sim.DiffProc.
+    
