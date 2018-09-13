@@ -2,7 +2,7 @@
 
 [![Project Status](https://www.repostatus.org/badges/latest/active.svg?style=popout)](https://cran.r-project.org/src/contrib/Archive/Sim.DiffProc/)
 [![Travis Build Status](https://travis-ci.org/acguidoum/Sim.DiffProc.svg?branch=master)](https://travis-ci.org/acguidoum/Sim.DiffProc)
-[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/65glhgavh266hkyk/branch/master?svg=true)](https://ci.appveyor.com/project/acguidoum/sim-diffproc/branch/master) [![codecov](https://codecov.io/gh/acguidoum/Sim.DiffProc/branch/master/graph/badge.svg)](https://codecov.io/gh/acguidoum/Sim.DiffProc)
+[![Build status](https://ci.appveyor.com/api/projects/status/16a70vyf8rk7nn1i?svg=true)](https://ci.appveyor.com/project/acguidoum/sim-diffproc-xal8n) [![codecov](https://codecov.io/gh/acguidoum/Sim.DiffProc/branch/master/graph/badge.svg)](https://codecov.io/gh/acguidoum/Sim.DiffProc)
 
 
 ------------------------------------------------------------------------
@@ -11,7 +11,7 @@
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-2.15.1-blue.svg?style=flat-plastic)](https://cran.r-project.org/) 
 
 ------------------------------------------------------------------------
-
+![Github](https://img.shields.io/badge/Github-4.2(at:10.10.2018)-blue.svg)
 ![](http://www.r-pkg.org/badges/version-last-release/Sim.DiffProc?color=blue) [![Rdoc](http://www.rdocumentation.org/badges/version/Sim.DiffProc)](http://www.rdocumentation.org/packages/Sim.DiffProc)
 
 
@@ -74,22 +74,22 @@ use `citation()` for information on how to cite the software;
 
 ```r
 citation("Sim.DiffProc")
-#> 
-#> To cite package 'Sim.DiffProc' in publications use:
-#> 
-#>   Arsalane Chouaib Guidoum and Kamal Boukhetala (2018).
-#>   Sim.DiffProc: Simulation of Diffusion Processes.R package
-#>   version 4.1.https://cran.r-project.org/package=Sim.DiffProc
-#> 
-#> A BibTeX entry for LaTeX users is
-#> 
-#>   @Manual{,
-#>     title = {Sim.DiffProc: Simulation of Diffusion Processes.},
-#>     author = {Arsalane Chouaib Guidoum and Kamal Boukhetala},
-#>     year = {2018},
-#>     note = {R package version 4.1},
-#>     url = {https://cran.r-project.org/package=Sim.DiffProc},
-#>   }
+ 
+To cite package 'Sim.DiffProc' in publications use:
+
+  Arsalane Chouaib Guidoum and Kamal Boukhetala (2018).
+  Sim.DiffProc: Simulation of Diffusion Processes.R package
+  version 4.1.https://cran.r-project.org/package=Sim.DiffProc
+
+A BibTeX entry for LaTeX users is
+
+  @Manual{,
+    title = {Sim.DiffProc: Simulation of Diffusion Processes.},
+    author = {Arsalane Chouaib Guidoum and Kamal Boukhetala},
+    year = {2018},
+    note = {R package version 4.1},
+    url = {https://cran.r-project.org/package=Sim.DiffProc},
+  }
 ```
 
 Note
