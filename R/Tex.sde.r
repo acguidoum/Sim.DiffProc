@@ -131,12 +131,24 @@ TEX.sde.default <- function(object, ...)
     cat(knitr::kable(object, format = "latex",...),
         "\n")
     }else if (class(object) == "MCM.sde"){
-    mod <- object$MC
+    tab <- object$MC
+    greek_test <- as.list(c(mem_sde,mem_sde_tex,greek,greek1,greek2,greek3,greek4,greek5,
+               greek6,greek7,greek8,greek9,greek10,greek_list,
+              greek_list1,greek_list2,greek_list3,greek_list4,greek_list5,
+             greek_list6,greek_list7,greek_list8,greek_list9,greek_list10))
+    expr <- parse(text = rownames(tab))
+    names <- all.names(expr )
+    symbol_list   <- setNames(as.list(names), names)
+    symbol_env  <- list2env(symbol_list, parent = f_env)
+    greek_env   <- clone_env(greek_env, parent = symbol_env)
+    rownames(tab)  <- sapply(1:length(names),function(i) eval(expr[i], latex_env(expr[i])))
+    rownames(tab)  <- sapply(1:length(names),function(i) ifelse(rownames(tab)[i]%in%greek_test,paste0("$", rownames(tab)[i],"$") ,rownames(tab)[i]) )
+    colnames(tab)[length(names(tab))] <- "CI( 2.5 \\% , 97.5 \\% )"
     cat("%%% LaTeX table generated in R",strsplit(version[['version.string']], ' ')[[1]][3],"by TEX.sde() method",
         "\n")
     cat("%%% Copy and paste the following output in your LaTeX file",
         "\n\n")
-    cat(knitr::kable(mod, format = "latex",...),
+    cat(knitr::kable(tab, format = "latex", escape = FALSE,...),
         "\n")
     }else if (class(object) == "expression"){
     expr <- object
