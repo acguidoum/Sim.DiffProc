@@ -281,7 +281,8 @@ print.MCM.sde <- function(x, digits=NULL, ...)
     if (length(index) > 1) {
        index <- index[1]
        warning("The first element of 'index' will be used")}
-    if (index >  dim(data)[1] | index < 1 ) stop("Subscript out of bounds")
+    if (index >  dim(data)[1] | index < 1 ) 
+	        stop("Subscript out of bounds")
     #if (is.null(x$call$names)) {name <- paste("t",1:dim(data)[1],"*",sep="")}else{
     #name <- sapply(2:length(x$call$names),function(i) x$call$names[[i]])}
     type <- match.arg(type)

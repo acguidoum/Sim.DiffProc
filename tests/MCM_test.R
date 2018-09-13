@@ -1,7 +1,7 @@
 options(prompt="R> ",scipen=16,digits=4,warning=FALSE, message=FALSE)
 library(Sim.DiffProc)
 
-
+RNGkind(kind="L'Ecuyer-CMRG")
 ######
 
 theta = 0.75; x0 = 1
@@ -20,6 +20,8 @@ sde.fun1d <- function(data, i){
      return(c(mean(d),var(d)))
 }
 # Parallel MOnte Carlo for mod1
+mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5, exact=list(m=E.mod1(1),S=V.mod1(1)))
+mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5, exact=list(m=E.mod1(1),S=V.mod1(1)),parallel="snow",cl= parallel::makeCluster(getOption("cl.cores", 2)),ncpus=2)
 mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5, exact=list(m=E.mod1(1),S=V.mod1(1)),parallel="snow",ncpus=2)
 print(mcm.mod1)
 # Parallel MOnte Carlo for mod2
@@ -55,6 +57,8 @@ sde.fun2d <- function(data, i){
   return(c(mean(d$x),mean(d$y),var(d$x),var(d$y),cov(d$x,d$y)))
 }
 ## Parallel Monte-Carlo of 'OUI' at time 10
+mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,exact=tvalue)
+mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,exact=tvalue,parallel="snow",cl= parallel::makeCluster(getOption("cl.cores", 2)),ncpus=2)
 mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,exact=tvalue,parallel="snow",ncpus=2)
 print(mcm.mod2d)
 plot(mcm.mod2d)
@@ -94,6 +98,8 @@ sde.fun3d <- function(data, i){
   return(c(mean(d$x),median(d$x),Mode(d$x),var(d$x),cov(d$x,d$y),cov(d$x,d$z)))
 }
 ## Monte-Carlo at time = 10
+mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5)
+mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5,parallel="snow",cl= parallel::makeCluster(getOption("cl.cores", 2)),ncpus=2)
 mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5,parallel="snow",ncpus=2)
 print(mcm.mod3d)
 plot(mcm.mod3d)
@@ -113,4 +119,5 @@ sde.fun3d <- function(data, i){
 mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5,parallel="snow",ncpus=2)
 print(mcm.mod3d)
 plot(mcm.mod3d)
+plot(mcm.mod3d,index=c(1,7))
 

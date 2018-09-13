@@ -1,4 +1,4 @@
-options(prompt="R> ",scipen=16,digits=4,warning=FALSE, message=FALSE)
+options(prompt="R> ",scipen=16,digits=8,warning=FALSE, message=FALSE)
 library(Sim.DiffProc) 
 
 
@@ -42,7 +42,7 @@ plot(mod1[[1]],type="n",plot.type="single")
 lines(mod1[[1]],col=2,lwd=2)
 points(mod1[[1]],pch=21,col=5,cex=0.5)
 
-s = 0.05547
+s = 0.0554747
 mean(mod1[[1]], at = s)
 moment(mod1[[1]], at = s , center = TRUE , order = 2) ## variance
 Median(mod1[[1]], at = s)
@@ -167,7 +167,7 @@ moment(mod3[[1]], at = s , center= FALSE , order = 4)
 bconfint(mod3[[1]], at =s)
 
 #############################
-
+s= 0.00458
 f <- expression( 2*(1-x) )
 g <- expression( 1 )
 
@@ -176,15 +176,15 @@ plot(mod1,type="n")
 lines(mod1,col=2)
 points(mod1,cex=0.1,pch=19)
 
-mean(mod1)
-moment(mod1, center = TRUE , order = 2) ## variance
-Median(mod1)
-quantile(mod1)
-kurtosis(mod1)
-skewness(mod1)
-cv(mod1)
-min(mod1)
-max(mod1)
+mean(mod1,at = s)
+moment(mod1,at = s, center = TRUE , order = 2) ## variance
+Median(mod1,at = s)
+quantile(mod1,at = s)
+kurtosis(mod1,at = s)
+skewness(mod1,at = s)
+cv(mod1,at = s)
+min(mod1,at = s)
+max(mod1,at = s)
 
 
 ####
@@ -199,15 +199,15 @@ lines(mod2,col=2)
 points(mod2,cex=0.1,pch=19)
 plot2d(mod2)
 
-mean(mod2)
-moment(mod2, center = TRUE , order = 2) ## variance
-Median(mod2)
-quantile(mod2)
-kurtosis(mod2)
-skewness(mod2)
-cv(mod2)
-min(mod2)
-max(mod2)
+mean(mod2,at = s)
+moment(mod2,at = s, center = TRUE , order = 2) ## variance
+Median(mod2,at = s)
+quantile(mod2,at = s)
+kurtosis(mod2,at = s)
+skewness(mod2,at = s)
+cv(mod2,at = s)
+min(mod2,at = s)
+max(mod2,at = s)
 
 ####
 
@@ -221,14 +221,14 @@ lines(mod3,col=2)
 points(mod3,cex=0.1,pch=19)
 plot3D(mod3,display="rgl")
 
-mean(mod3)
-moment(mod3, center = TRUE , order = 2) ## variance
-Median(mod3)
-quantile(mod3)
-kurtosis(mod3)
-skewness(mod3)
-cv(mod3)
-min(mod3)
-max(mod3)
+mean(mod3,at = s)
+moment(mod3,at = s, center = TRUE , order = 2) ## variance
+Median(mod3,at = s)
+quantile(mod3,at = s)
+kurtosis(mod3,at = s)
+skewness(mod3,at = s)
+cv(mod3,at = s)
+min(mod3,at = s)
+max(mod3,at = s)
 
 
