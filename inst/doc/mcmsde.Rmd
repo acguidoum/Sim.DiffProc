@@ -142,7 +142,7 @@ The main arguments of `MEM.sde()` function in  [Sim.DiffProc](https://cran.r-pro
 
 - `drift`: an `R` vector of `expressions` which contains the drift specification (1D, 2D and 3D).
 - `diffusion`: an `R` vector of `expressions` which contains the diffusion specification (1D, 2D and 3D).
-- `type`: type of SDEs to be used `"ito"` for Itô form and `"str"` for Stratonovich form. The default `type="ito"`.
+- `type`: type of SDEs to be used `"ito"` for It? form and `"str"` for Stratonovich form. The default `type="ito"`.
 - `solve`: if `solve=FALSE` only the symbolic computational of system will be made. And if `solve=TRUE` a numerical approximation of the obtained system will be performed.
 - `parms`: parameters passed to `drift` and `diffusion`.
 - `init`: initial (state) values of system.
@@ -207,7 +207,7 @@ matplot.0D(mem.mod3d$sol.ode,main="",select=c("C12","C13","C23"))
 
 # References
 
-1. Guidoum AC, Boukhetala K (2017). Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
+1. Guidoum AC, Boukhetala K (2017). Performing Parallel Monte Carlo and Moment Equations Methods for It? and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
 
-2. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.1, URL https://cran.r-project.org/package=Sim.DiffProc.
+2. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.2, URL https://cran.r-project.org/package=Sim.DiffProc.
     

@@ -113,7 +113,7 @@ In this section, we will convert the R expressions of a SDEs, i.e., drift and di
 ```{r}
 f <- expression((alpha*x *(1 - x / beta)- delta * x^2 * y / (kappa + x^2)),
                 (gamma * x^2 * y / (kappa + x^2) - mu * y^2)) 
-g <- expression(sqrt(sigma1)*x*(1-y), sqrt(sigma2)*y*(1-x))  
+g <- expression(sqrt(sigma1)*x*(1-y), abs(sigma2)*y*(1-x))  
 TEX.sde(object=c(drift = f, diffusion = g))
 ```
 under LaTeX will create this system:
@@ -122,7 +122,7 @@ under LaTeX will create this system:
 \begin{cases}
 \begin{split}
 dX_{t} &= \left( \alpha \, X_{t} \, \left( 1 - \frac{X_{t}}{\beta} \right) - \frac{\delta \, X_{t}^2 \, Y_{t}}{\left( \kappa + X_{t}^2 \right)} \right) \:dt +  \sqrt{\sigma_{1}} \, X_{t} \, \left( 1 - Y_{t} \right) \:dW_{1,t} \\
-dY_{t} &= \left( \frac{\gamma \, X_{t}^2 \, Y_{t}}{\left( \kappa + X_{t}^2 \right)} - \mu \, Y_{t}^2 \right) \:dt +  \sqrt{\sigma_{2}} \, Y_{t} \, \left( 1 - X_{t} \right) \:dW_{2,t}
+dY_{t} &= \left( \frac{\gamma \, X_{t}^2 \, Y_{t}}{\left( \kappa + X_{t}^2 \right)} - \mu \, Y_{t}^2 \right) \:dt +  \left| \sigma_{2}\right| \, Y_{t} \, \left( 1 - X_{t} \right) \:dW_{2,t}
 \end{split}
 \end{cases}
 \end{equation*}
@@ -143,4 +143,4 @@ dY_{t} &= \left( \frac{\gamma \, X_{t}^2 \, Y_{t}}{\left( \kappa + X_{t}^2 \righ
 
 2. Wickham H (2015). Advanced R. Chapman & Hall/CRC The R Series. CRC Press. ISBN 9781498759809.
 
-3. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.1, URL https://cran.r-project.org/package=Sim.DiffProc.
+3. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.2, URL https://cran.r-project.org/package=Sim.DiffProc.

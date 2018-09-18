@@ -196,7 +196,7 @@ MCM.sde.default <- function(model,statistic,R=1000,time,exact=NULL,names=NULL,
        Conf   <- paste("(",INF,",",SUP,")",sep=" ")
        if (!is.null(exact)){
 	      rmse_f <- function(error) sqrt(mean(error^2))
-          Exact = as.numeric(exact)
+          Exact = round(as.numeric(exact),digits=options()$digits)
           Bias = round(Exact - Est,digits=options()$digits)
           Rmse = round(apply(Stat-Exact,1, rmse_f ),digits=options()$digits)
           TAB  <- data.frame(Exact,Est,Bias,SErr,Rmse,Conf)

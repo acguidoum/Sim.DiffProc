@@ -17,7 +17,7 @@ A package for symbolic and numerical computations on scalar and multivariate sys
 Package: \tab Sim.DiffProc \cr
 Type: \tab Package \cr
 Version: \tab 4.2 \cr
-Date: \tab 2018-10-10 \cr
+Date: \tab 2018-10-15 \cr
 License: \tab GPL (>= 2) \cr
 Depends: \tab R (>= 2.15.1) \cr
 Imports: \tab Deriv (>= 3.8.0), MASS, parallel, rgl (>= 0.93.991), scatterplot3d (>= 0.3-36) \cr

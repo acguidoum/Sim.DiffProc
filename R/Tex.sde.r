@@ -37,6 +37,7 @@ TEX.sde.default <- function(object, ...)
            "mu", "sigma", "psi", "zeta", "nu", "varsigma", "omega", "eta",
            "xi", "Gamma", "Lambda", "Sigma", "Psi", "Delta", "Xi", 
            "Upsilon", "Omega", "Theta", "Pi", "Phi")
+   greek0 <- c(paste0(greek,"0"))
    greek1 <- c(paste0(greek,"1"))
    greek2 <- c(paste0(greek,"2"))
    greek3 <- c(paste0(greek,"3"))
@@ -48,6 +49,7 @@ TEX.sde.default <- function(object, ...)
    greek9 <- c(paste0(greek,"9"))
    greek10 <- c(paste0(greek,"10"))
    greek_list  <- setNames(paste0("\\", greek),greek)
+   greek_list0 <- setNames(paste0("\\", greek,"_","{0}"), greek1)
    greek_list1 <- setNames(paste0("\\", greek,"_","{1}"), greek1)
    greek_list2 <- setNames(paste0("\\", greek,"_","{2}"), greek2)
    greek_list3 <- setNames(paste0("\\", greek,"_","{3}"), greek3)
@@ -66,7 +68,10 @@ TEX.sde.default <- function(object, ...)
                  "W_{3,t}","X_{t}","Y_{t}","Z_{t}","W_{t}","W_{1,t}","W_{2,t}",
                  "W_{3,t}")
    var_sde_list <- setNames(var_sde_tex, var_sde)
-   greek_env   <- list2env(as.list(c(greek_list,greek_list1,greek_list2,greek_list3,greek_list4,greek_list5,
+   #fct_sde <- c("P")
+   #fct_sde_tex <- c("\\mathbb{P}")
+   #fct_sde_list <- setNames(fct_sde_tex, fct_sde)
+   greek_env   <- list2env(as.list(c(greek_list,greek_list0,greek_list1,greek_list2,greek_list3,greek_list4,greek_list5,
                                      greek_list6,greek_list7,greek_list8,greek_list9,greek_list10,
                                      mem_sde_list,var_sde_list)), parent = emptyenv())
    unary_op <- function(left, right) {
@@ -98,7 +103,15 @@ TEX.sde.default <- function(object, ...)
    f_env$"^" <- binary_op("^")
    f_env$"[" <- binary_op("_")
    f_env$"==" <- binary_op("=")
-
+   f_env$"<=" <- binary_op(" \\leq ")
+   f_env$">=" <- binary_op(" \\geq ")
+   f_env$"&" <- binary_op(" \\,\\&\\, ")
+   f_env$"|" <- binary_op(" \\mid ")
+   f_env$"," <- binary_op(" \\, ")
+   # f_env$"," <- function(a, b) {
+          # paste0( a, ",", b)
+     # }   
+   
    # Grouping
    f_env$"{" <- unary_op("\\left{ ", " \\right}")
    f_env$"(" <- unary_op("\\left( ", " \\right)")
@@ -115,6 +128,15 @@ TEX.sde.default <- function(object, ...)
    f_env$"/"  <- function(a, b) {
           paste0("\\frac{", a, "}{", b, "}")
      }
+   f_env$"P"  <- unary_op(" \\mathsf{P}(",")")
+   f_env$"F"  <- unary_op(" \\mathsf{F}(",")")
+   f_env$"f"  <- unary_op(" \\mathsf{f}(",")")
+   f_env$"S"  <- unary_op(" \\mathsf{S}(",")")
+   f_env$"H"  <- unary_op(" \\mathsf{H}(",")")
+   f_env$"h"  <- unary_op(" \\mathsf{h}(",")")
+   f_env$"E"  <- unary_op(" \\mathsf{E}(",")")
+   f_env$"V"  <- unary_op(" \\mathsf{V}(",")")  
+   f_env$"COV"  <- unary_op(" \\mathsf{COV}(",")")    
 
    clone_env <- function(env, parent = parent.env(env)) {
        list2env(as.list(env), parent = parent)
@@ -132,17 +154,26 @@ TEX.sde.default <- function(object, ...)
         "\n")
     }else if (class(object) == "MCM.sde"){
     tab <- object$MC
-    greek_test <- as.list(c(mem_sde,mem_sde_tex,greek,greek1,greek2,greek3,greek4,greek5,
-               greek6,greek7,greek8,greek9,greek10,greek_list,
-              greek_list1,greek_list2,greek_list3,greek_list4,greek_list5,
-             greek_list6,greek_list7,greek_list8,greek_list9,greek_list10))
     expr <- parse(text = rownames(tab))
+    # greek_test <- as.list(c(mem_sde,mem_sde_tex,expr,
+	           # greek,greek1,greek2,greek3,greek4,greek5,
+               # greek6,greek7,greek8,greek9,greek10,greek_list,
+               # greek_list1,greek_list2,greek_list3,greek_list4,greek_list5,
+               # greek_list6,greek_list7,greek_list8,greek_list9,greek_list10))
     names <- all.names(expr )
+	greek_env   <- list2env(as.list(c(greek_list,greek_list1,greek_list2,greek_list3,greek_list4,greek_list5,
+                                     greek_list6,greek_list7,greek_list8,greek_list9,greek_list10,
+                                     mem_sde_list)), parent = emptyenv())
     symbol_list   <- setNames(as.list(names), names)
     symbol_env  <- list2env(symbol_list, parent = f_env)
     greek_env   <- clone_env(greek_env, parent = symbol_env)
-    rownames(tab)  <- sapply(1:length(names),function(i) eval(expr[i], latex_env(expr[i])))
-    rownames(tab)  <- sapply(1:length(names),function(i) ifelse(rownames(tab)[i]%in%greek_test,paste0("$", rownames(tab)[i],"$") ,rownames(tab)[i]) )
+    rownames(tab)  <- sapply(1:length(expr),function(i) eval(expr[i], latex_env(expr[i])))
+	greek_test <- as.list(c(mem_sde,mem_sde_tex,
+	           greek,greek1,greek2,greek3,greek4,greek5,
+               greek6,greek7,greek8,greek9,greek10,greek_list,
+               greek_list1,greek_list2,greek_list3,greek_list4,greek_list5,
+               greek_list6,greek_list7,greek_list8,greek_list9,greek_list10))
+    rownames(tab)  <- sapply(1:length(expr),function(i) ifelse(rownames(tab)[i]%in%greek_test,paste0("$", rownames(tab)[i],"$") ,rownames(tab)[i]) )
     colnames(tab)[length(names(tab))] <- "CI( 2.5 \\% , 97.5 \\% )"
     cat("%%% LaTeX table generated in R",strsplit(version[['version.string']], ' ')[[1]][3],"by TEX.sde() method",
         "\n")
