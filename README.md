@@ -87,7 +87,7 @@ A BibTeX entry for LaTeX users is
     title = {Sim.DiffProc: Simulation of Diffusion Processes.},
     author = {Arsalane Chouaib Guidoum and Kamal Boukhetala},
     year = {2018},
-    note = {R package version 4.1},
+    note = {R package version 4.2},
     url = {https://cran.r-project.org/package=Sim.DiffProc},
   }
 ```
@@ -102,6 +102,6 @@ References
 
 1. Guidoum AC, Boukhetala K (2017). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
 
-2. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.1, URL https://cran.r-project.org/package=Sim.DiffProc.
+2. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.2, URL https://cran.r-project.org/package=Sim.DiffProc.
 
 
