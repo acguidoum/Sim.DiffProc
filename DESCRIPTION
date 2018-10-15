@@ -1,7 +1,7 @@
 Package: Sim.DiffProc
 Type: Package
 Version: 4.2
-Date: 2018-10-15
+Date: 2018-10-17
 Title: Simulation of Diffusion Processes
 Authors@R: c(
     person("Arsalane Chouaib", "Guidoum",
@@ -13,8 +13,8 @@ Author: Arsalane Chouaib Guidoum [cre, aut],
   Kamal Boukhetala [aut]
 Maintainer: Arsalane Chouaib Guidoum <acguidoum@usthb.dz>
 Depends: R (>= 2.15.1)
-Imports: Deriv (>= 3.8.0), MASS, parallel, rgl (>= 0.93.991), scatterplot3d (>= 0.3-36)
-Suggests: deSolve (>= 1.11), knitr, sm (>= 2.2-5.3)
+Imports: Deriv (>= 3.8.0), MASS (>= 7.3-30), parallel 
+Suggests: deSolve (>= 1.11), knitr (>= 1.10), rgl (>= 0.93.991), scatterplot3d (>= 0.3-36), sm (>= 2.2-5.3)
 BugReports: https://github.com/acguidoum/Sim.DiffProc/issues
 URL: https://github.com/acguidoum/Sim.DiffProc
 VignetteBuilder: knitr

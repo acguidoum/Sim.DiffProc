@@ -12,7 +12,7 @@ vignette: >
   %\VignetteEncoding{latin1}
 ---
 
-```{r setup, echo = F, message = F, results = 'hide'}
+```{r setup, echo = F, message = F, results = 'hide',screenshot.force=FALSE}
 library(Sim.DiffProc)
 library(knitr)
 knitr::opts_chunk$set(comment="",prompt=TRUE, fig.show='hold', warning=FALSE, message=FALSE)
@@ -550,6 +550,6 @@ filled.contour(time(modtra), time(modtra), cov(t(modtra$X)), color.palette=color
 
 1. Boukhetala K (1996). Modelling and Simulation of a Dispersion Pollutant with Attractive Centre, volume 3, pp. 245-252. Computer Methods and Water Resources, Computational Mechanics Publications, Boston, USA.
 
-2. Guidoum AC, Boukhetala K (2017). Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
+2. Guidoum AC, Boukhetala K (2018). Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
 
 3. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.2, URL https://cran.r-project.org/package=Sim.DiffProc.

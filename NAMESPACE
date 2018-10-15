@@ -6,14 +6,14 @@
 ## C code.
 ################################################
 
-#useDynLib("Sim.DiffProc", .registration=TRUE, .fixes="C_")
+## useDynLib("Sim.DiffProc", .registration=TRUE, .fixes="C_")
 
 ################################################
 ## import name space
 ################################################
 
 ## import("rgl")
-import("scatterplot3d")
+## import("scatterplot3d")
 import("MASS")
 import("Deriv")
 import("parallel")
@@ -27,7 +27,7 @@ importFrom("stats", "end", "time", "start", "median","median.default", "quantile
            "optim", "qnorm", "rnorm", "sd", "ts", "ts.union",
            "uniroot", "var","na.omit","qqplot","setNames")
 importFrom("utils", packageVersion,vignette,modifyList,head,tail)
-importFrom("rgl",plot3d,persp3d)
+## importFrom("rgl",plot3d,persp3d)
   
 ################################################
 ## export name space

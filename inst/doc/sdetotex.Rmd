@@ -1,5 +1,5 @@
 ---
-title: "Converting [Sim.DiffProc](https://cran.r-project.org/package=Sim.DiffProc) Objects to LaTeX"
+title: "Converting Sim.DiffProc Objects to LaTeX"
 author: 
 - A.C. Guidoum^[Department of Probabilities & Statistics, Faculty of Mathematics, University of Science and Technology Houari Boumediene, BP 32 El-Alia, U.S.T.H.B, Algeria, E-mail  (acguidoum@usthb.dz)] and K. Boukhetala^[Faculty of Mathematics, University of Science and Technology Houari Boumediene, BP 32 El-Alia, U.S.T.H.B, Algeria, E-mail (kboukhetala@usthb.dz)]
 date: "`r Sys.Date()`"
@@ -13,7 +13,7 @@ vignette: >
   %\VignetteEncoding{latin1}
 ---
 
-```{r setup, echo = F, message = F, results = 'hide'}
+```{r setup, echo = F, message = F, results = 'hide',screenshot.force=FALSE}
 library(Sim.DiffProc)
 library(knitr)
 knitr::opts_chunk$set(comment="",prompt=TRUE, fig.show='hold',warning=FALSE, message=FALSE)
@@ -143,4 +143,6 @@ dY_{t} &= \left( \frac{\gamma \, X_{t}^2 \, Y_{t}}{\left( \kappa + X_{t}^2 \righ
 
 2. Wickham H (2015). Advanced R. Chapman & Hall/CRC The R Series. CRC Press. ISBN 9781498759809.
 
-3. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.2, URL https://cran.r-project.org/package=Sim.DiffProc.
+3. Guidoum AC, Boukhetala K (2018). Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
+
+4. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.2, URL https://cran.r-project.org/package=Sim.DiffProc.
