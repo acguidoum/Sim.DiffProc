@@ -79,7 +79,7 @@ To cite package 'Sim.DiffProc' in publications use:
 
   Arsalane Chouaib Guidoum and Kamal Boukhetala (2018).
   Sim.DiffProc: Simulation of Diffusion Processes.R package
-  version 4.1.https://cran.r-project.org/package=Sim.DiffProc
+  version 4.2.https://cran.r-project.org/package=Sim.DiffProc
 
 A BibTeX entry for LaTeX users is
 
