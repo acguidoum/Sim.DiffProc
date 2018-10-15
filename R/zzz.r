@@ -25,16 +25,16 @@
 
 #############
 #############
-.noGenerics <- TRUE
+## .noGenerics <- TRUE
 
-.onLoad <- function(libname, pkgname)
-          {
-   library.dynam("Sim.DiffProc", pkgname, libname, local = FALSE) 
-}
+## .onLoad <- function(libname, pkgname)
+##           {
+##    library.dynam("Sim.DiffProc", pkgname, libname, local = FALSE) 
+## }
 
-.onUnload <- function(libpath) {
-    library.dynam.unload("Sim.DiffProc", libpath)
-}
+## .onUnload <- function(libpath) {
+##     library.dynam.unload("Sim.DiffProc", libpath)
+## }
 
 # .onAttach <- function(libname, pkgname) {
     # packageStartupMessage(paste0("This is package 'Sim.DiffProc', v",packageVersion(pkgname)));
