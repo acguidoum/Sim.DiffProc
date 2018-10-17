@@ -345,7 +345,7 @@ legend("topleft",c("real data","mean path",paste("bound of", 95,"% confidence"))
 
 1. Brouste A, Fukasawa M, Hino H, Iacus SM, Kamatani K, Koike Y, Masuda H, Nomura R,Ogihara T, Shimuzu Y, Uchida M, Yoshida N (2014). The YUIMA Project: A ComputationalFramework for Simulation and Inference of Stochastic Differential Equations." Journal of Statistical Software, 57(4), 1-51. URL http://www.jstatsoft.org/v57/i04.
 
-2. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.2, URL https://cran.r-project.org/package=Sim.DiffProc.
+2. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.3, URL https://cran.r-project.org/package=Sim.DiffProc.
 
 3. Iacus SM (2008). Simulation and Inference for Stochastic Differential Equations: With R Examples. Springer-Verlag, New York.
 

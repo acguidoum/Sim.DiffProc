@@ -100,7 +100,7 @@ MCM.sde.default <- function(model,statistic,R=1000,time,exact=NULL,names=NULL,
          rand[i,] = run1d()
          }
         }
-        Stat      <- do.call("cbind",lapply(1:R,function(i) fn1d(rand,i)))
+        Stat      <- do.call("cbind",lapply(1:R,function(i) fn1d(rand,i,...)))
       }else if (class(model)=="snssde2d"){
        statistic <- match.fun(statistic)
        fn2d      <- function(x,...) statistic(x, ...)
@@ -141,7 +141,7 @@ MCM.sde.default <- function(model,statistic,R=1000,time,exact=NULL,names=NULL,
        }
         rand1 <- list(x=rand[seq(1,2*R,by=2),],y=rand[seq(2,2*R,by=2),])
         rand2 <- lapply(1:R,function(i) data.frame(x=rand1$x[i,], y=rand1$y[i,]))
-        Stat  <- do.call("cbind",lapply(1:R,function(i) fn2d(rand2[[i]])))
+        Stat  <- do.call("cbind",lapply(1:R,function(i) fn2d(rand2[[i]],...)))
       }else if (class(model)=="snssde3d"){
         statistic <- match.fun(statistic)
         fn3d      <- function(x,...) statistic(x, ...)
@@ -186,7 +186,7 @@ MCM.sde.default <- function(model,statistic,R=1000,time,exact=NULL,names=NULL,
 		}
         rand1 <- list(x=rand[seq(1,3*R,by=3),],y=rand[seq(2,3*R,by=3),],z=rand[seq(3,3*R,by=3),])
         rand3 <- lapply(1:R,function(i) data.frame(x=rand1$x[i,], y=rand1$y[i,],z=rand1$z[i,]))
-        Stat  <- do.call("cbind",lapply(1:R,function(i) fn3d(rand3[[i]])))
+        Stat  <- do.call("cbind",lapply(1:R,function(i) fn3d(rand3[[i]],...)))
        }
        Est    <- round(apply(Stat,1,mean),digits=options()$digits)
        #Sdev  <- round(apply(Stat,1,sd),options()$digits)
