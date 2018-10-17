@@ -27,10 +27,10 @@
 #############
 ## .noGenerics <- TRUE
 
-## .onLoad <- function(libname, pkgname)
-##           {
-##    library.dynam("Sim.DiffProc", pkgname, libname, local = FALSE) 
-## }
+# .onLoad <- function(libname, pkgname)
+           # {
+    # if (!interactive()) options(rgl.useNULL = TRUE)
+ # }
 
 ## .onUnload <- function(libpath) {
 ##     library.dynam.unload("Sim.DiffProc", libpath)
