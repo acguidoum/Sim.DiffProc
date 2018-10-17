@@ -1,5 +1,5 @@
 ---
-title: "Parametric Estimation of 1-D Stochastic Differential Equation"
+title: "Parametric Estimation of 1-D Stochastic Differential Equation" 
 author: 
 - A.C. Guidoum^[Department of Probabilities & Statistics, Faculty of Mathematics, University of Science and Technology Houari Boumediene, BP 32 El-Alia, U.S.T.H.B, Algeria, E-mail  (acguidoum@usthb.dz)] and K. Boukhetala^[Faculty of Mathematics, University of Science and Technology Houari Boumediene, BP 32 El-Alia, U.S.T.H.B, Algeria, E-mail (kboukhetala@usthb.dz)]
 date: "`r Sys.Date()`"

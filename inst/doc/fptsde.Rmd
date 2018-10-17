@@ -91,7 +91,7 @@ Set the model $X_t$:
 ```{r}
 f <- expression( (1-0.5*x) )
 g <- expression( 1 )
-mod1d <- snssde1d(drift=f,diffusion=g,x0=1.7,M=10000,method="taylor")
+mod1d <- snssde1d(drift=f,diffusion=g,x0=1.7,M=1000,method="taylor")
 ```
 Generate the first-passage-time $\tau_{S(t)}$, with `fptsde1d()` function ( based on `density()` function in [base] package):
 ```{r}
@@ -166,7 +166,7 @@ Using `fptsde1d()` and `dfptsde1d()` functions in the [Sim.DiffProc](https://cra
 ## Set the model X(t)
 f <- expression( 0.48*x )
 g <- expression( 0.07*x )
-mod1 <- snssde1d(drift=f,diffusion=g,x0=1,T=10,M=10000)
+mod1 <- snssde1d(drift=f,diffusion=g,x0=1,T=10,M=1000)
 ## Set the boundary S(t)
 St  <- expression( 7 + 3.2 * t + 1.4 * t * sin(1.75 * t) )
 ## Generate the fpt
@@ -212,7 +212,7 @@ Using `fptsde1d()` and `dfptsde1d()` functions in the [Sim.DiffProc](https://cra
 theta1=0.5
 f <- expression( theta1*x*(10+0.2*sin(2*pi*t)+0.3*sqrt(t)*(1+cos(3*pi*t))-x) )
 g <- expression( sqrt(0.1)*x )
-mod2 <- snssde1d(drift=f,diffusion=g,x0=8,t0=1,T=4,M=10000)
+mod2 <- snssde1d(drift=f,diffusion=g,x0=8,t0=1,T=4,M=1000)
 ## Set the boundary S(t)
 St  <- expression( 12 )
 ## Generate the fpt
@@ -279,7 +279,7 @@ Set the system $(X_t , Y_t)$:
 ```{r}
 fx <- expression(5*(-1-y)*x , 5*(-1-x)*y)
 gx <- expression(0.5*y,0.5*x)
-mod2d <- snssde2d(drift=fx,diffusion=gx,x0=c(x=1,y=-1),M=10000,type="str")
+mod2d <- snssde2d(drift=fx,diffusion=gx,x0=c(x=1,y=-1),M=1000,type="str")
 ```
 Generate the couple \((\tau_{(S(t),X_{t})},\tau_{(S(t),Y_{t})})\), with `fptsde2d()` function::
 ```{r}
@@ -396,7 +396,7 @@ Set the system $(X_t , Y_t , Z_t)$:
 ```{r}
 fx <- expression(4*(-1-x)*y , 4*(1-y)*x , 4*(1-z)*y) 
 gx <- rep(expression(0.2),3)
-mod3d <- snssde3d(drift=fx,diffusion=gx,x0=c(x=2,y=-2,z=0),M=10000)
+mod3d <- snssde3d(drift=fx,diffusion=gx,x0=c(x=2,y=-2,z=0),M=1000)
 ```
 Generate the triplet $(\tau_{(S(t),X_{t})},\tau_{(S(t),Y_{t})},\tau_{(S(t),Z_{t})})$, with `fptsde3d()` function::
 ```{r}

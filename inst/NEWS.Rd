@@ -4,7 +4,7 @@
 
 \section{CHANGES IN \pkg{Sim.DiffProc} VERSION 4.2}{
     \itemize{
-	  \item{Release date: 2018-10-17.}
+	  \item{Release date: 2018-10-18.}
       \item{Manual update.}
       \item{Minor bug fixes: R (>= 3.5.0).}
     }

@@ -40,7 +40,7 @@ In the above $f(t,x)=\frac{1}{2}\theta^{2} x$ and $g(t,x)= \theta x$ ($\theta > 
 
 - The `drift` and `diffusion` coefficients as R expressions that depend on the state variable `x` and time variable `t`.
 - The number of simulation steps `N=1000` (by default: `N=1000`).
-- The number of the solution trajectories to be simulated by `M=10000` (by default: `M=1`).
+- The number of the solution trajectories to be simulated by `M=1000` (by default: `M=1`).
 - The initial conditions `t0=0`, `x0=10` and end time `T=1` (by default: `t0=0`, `x0=0` and `T=1`).
 - The integration step size `Dt=0.001` (by default: `Dt=(T-t0)/N`).
 - The choice of process types by the argument `type="ito"` for Ito or `type="str"` for Stratonovich (by default `type="ito"`).
@@ -50,8 +50,8 @@ In the above $f(t,x)=\frac{1}{2}\theta^{2} x$ and $g(t,x)= \theta x$ ($\theta > 
 theta = 0.5
 f <- expression( (0.5*theta^2*x) )
 g <- expression( theta*x )
-mod1 <- snssde1d(drift=f,diffusion=g,x0=10,M=10000,type="ito") # Using Itô
-mod2 <- snssde1d(drift=f,diffusion=g,x0=10,M=10000,type="str") # Using Stratonovich 
+mod1 <- snssde1d(drift=f,diffusion=g,x0=10,M=1000,type="ito") # Using Itô
+mod2 <- snssde1d(drift=f,diffusion=g,x0=10,M=1000,type="str") # Using Stratonovich 
 mod1
 mod2
 ```
@@ -186,14 +186,14 @@ dY_t = X_{t} dt
 \end{cases}
 \end{equation}
 
-We simulate a flow of $10000$ trajectories of $(X_{t},Y_{t})$, with integration step size $\Delta t = 0.01$, and using  second Milstein method.
+We simulate a flow of $1000$ trajectories of $(X_{t},Y_{t})$, with integration step size $\Delta t = 0.01$, and using  second Milstein method.
 
 ```{r}
 x0=5;y0=0
 mu=3;sigma=0.5
 fx <- expression(-(x/mu),x)  
 gx <- expression(sqrt(sigma),0)
-mod2d <- snssde2d(drift=fx,diffusion=gx,Dt=0.01,M=10000,x0=c(x0,y0),method="smilstein")
+mod2d <- snssde2d(drift=fx,diffusion=gx,Dt=0.01,M=1000,x0=c(x0,y0),method="smilstein")
 mod2d
 ```
 The following statistical measures (`S3 method`) for class `snssde2d()` can be approximated for the $(X_{t},Y_{t})$ process at any time $t$, for example `at=5`:
@@ -379,7 +379,7 @@ We simulate a flow of $10000$ trajectories, with integration step size $\Delta t
 ```{r}
 fx <- expression(4*(-1-x)*y , 4*(1-y)*x , 4*(1-z)*y) 
 gx <- rep(expression(0.2),3)
-mod3d <- snssde3d(x0=c(x=2,y=-2,z=-2),drift=fx,diffusion=gx,M=10000)
+mod3d <- snssde3d(x0=c(x=2,y=-2,z=-2),drift=fx,diffusion=gx,M=1000)
 mod3d
 ```
 The following statistical measures (`S3 method`) for class `snssde3d()` can be approximated for the $(X_{t},Y_{t},Z_{t})$ process at any time $t$, for example `at=1`:
@@ -492,7 +492,7 @@ run by calling the function `snssde3d()` to produce a simulation of the solution
 ```{r}
 fx <- expression(y,0,0) 
 gx <- expression(z,1,1)
-modtra <- snssde3d(drift=fx,diffusion=gx,M=10000,type="str")
+modtra <- snssde3d(drift=fx,diffusion=gx,M=1000,type="str")
 modtra
 summary(modtra)
 ```

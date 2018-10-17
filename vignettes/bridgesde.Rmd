@@ -74,12 +74,12 @@ Assume that we want to describe the following bridge sde in Itô form:
 \begin{equation}\label{eq0166}
 dX_t = \frac{1-X_t}{1-t} dt + X_t dW_{t},\quad X_{t_{0}}=3 \quad\text{and}\quad X_{T}=1
 \end{equation}
-We simulate a flow of $5000$ trajectories, with integration step size $\Delta t = 0.001$, and $x_0 = 3$ at time $t_0 = 0$, $y = 1$ at terminal time $T=1$.
+We simulate a flow of $1000$ trajectories, with integration step size $\Delta t = 0.001$, and $x_0 = 3$ at time $t_0 = 0$, $y = 1$ at terminal time $T=1$.
 
 ```{r}
 f <- expression((1-x)/(1-t))
 g <- expression(x)
-mod <- bridgesde1d(drift=f,diffusion=g,x0=3,y=1,M=5000,method="milstein")
+mod <- bridgesde1d(drift=f,diffusion=g,x0=3,y=1,M=1000,method="milstein")
 mod
 summary(mod) ## default: summary at time = (T-t0)/2
 ```
@@ -179,12 +179,12 @@ dY_t = -(1+X_{t}) Y_{t} dt +  0.1 (1-X_{t}) \circ dW_{2,t},\quad Y_{t_{0}}=-0.5 
 \end{cases}
 \end{equation}
 
-We simulate a flow of $5000$ trajectories, with integration step size $\Delta t = 0.01$, and using Runge-Kutta method order 1:
+We simulate a flow of $1000$ trajectories, with integration step size $\Delta t = 0.01$, and using Runge-Kutta method order 1:
 
 ```{r}
 fx <- expression(-(1+y)*x , -(1+x)*y)
 gx <- expression(0.2*(1-y),0.1*(1-x))
-mod2 <- bridgesde2d(drift=fx,diffusion=gx,x0=c(1,-0.5),y=c(1,0.5),Dt=0.01,M=5000,type="str",method="rk1")
+mod2 <- bridgesde2d(drift=fx,diffusion=gx,x0=c(1,-0.5),y=c(1,0.5),Dt=0.01,M=1000,type="str",method="rk1")
 mod2
 summary(mod2) ## default: summary at time = (T-t0)/2
 ```
@@ -297,12 +297,12 @@ dZ_t = 4 (1-Z_{t}) Y_{t} dt + 0.2 dW_{3,t},\quad Z_{t_{0}}=0.5 \quad\text{and}\q
 \end{cases}
 \end{equation}
 
-We simulate a flow of $5000$ trajectories, with integration step size $\Delta t = 0.001$.
+We simulate a flow of $1000$ trajectories, with integration step size $\Delta t = 0.001$.
 
 ```{r}
 fx <- expression(-4*(1+x)*y, 4*(1-y)*x, 4*(1-z)*y)
 gx <- rep(expression(0.2),3)
-mod3 <- bridgesde3d(x0=c(0,-1,0.5),y=c(0,-2,0.5),drift=fx,diffusion=gx,M=5000)
+mod3 <- bridgesde3d(x0=c(0,-1,0.5),y=c(0,-2,0.5),drift=fx,diffusion=gx,M=1000)
 mod3
 summary(mod3) ## default: summary at time = (T-t0)/2
 ```
