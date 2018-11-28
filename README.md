@@ -11,15 +11,9 @@
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-2.15.1-blue.svg?style=flat-plastic)](https://cran.r-project.org/) 
 
 ------------------------------------------------------------------------
-<<<<<<< HEAD
+
 ![Github](https://img.shields.io/badge/Github-4.3(at:2018.11.28)-blue.svg)
 ![](http://www.r-pkg.org/badges/version-last-release/Sim.DiffProc?color=blue) [![Rdoc](http://www.rdocumentation.org/badges/version/Sim.DiffProc)](http://www.rdocumentation.org/packages/Sim.DiffProc)
-=======
-![Github](https://img.shields.io/badge/Github-4.3(at:2018.11.24)-blue.svg)
-![](http://www.r-pkg.org/badges/version-last-release/Sim.DiffProc?color=blue) 
-[![Rdoc](http://www.rdocumentation.org/badges/version/Sim.DiffProc)](http://www.rdocumentation.org/packages/Sim.DiffProc)
->>>>>>> 40631b2591c14c000a2552e39c3d3ed52b63514f
-
 
 ![](https://cranlogs.r-pkg.org/badges/grand-total/Sim.DiffProc?color=yellow)
 ![](https://cranlogs.r-pkg.org/badges/Sim.DiffProc?color=yellow)
