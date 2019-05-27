@@ -12,7 +12,7 @@
 
 ------------------------------------------------------------------------
 
-![Github](https://img.shields.io/badge/Github-4.4 (at:2019.05.28)-blue.svg)
+![Github](https://img.shields.io/badge/Github-4.4(at:2019.05.28)-blue.svg)
 ![](http://www.r-pkg.org/badges/version-last-release/Sim.DiffProc?color=blue) [![Rdoc](http://www.rdocumentation.org/badges/version/Sim.DiffProc)](http://www.rdocumentation.org/packages/Sim.DiffProc)
 
 ![](https://cranlogs.r-pkg.org/badges/grand-total/Sim.DiffProc?color=yellow)
