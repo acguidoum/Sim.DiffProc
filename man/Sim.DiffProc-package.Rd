@@ -16,8 +16,8 @@ A package for symbolic and numerical computations on scalar and multivariate sys
 \tabular{ll}{
 Package: \tab Sim.DiffProc \cr
 Type: \tab Package \cr
-Version: \tab 4.2 \cr
-Date: \tab 2018-10-18 \cr
+Version: \tab 4.4 \cr
+Date: \tab 2019-05-27 \cr
 License: \tab GPL (>= 2) \cr
 Depends: \tab R (>= 2.15.1) \cr
 Imports: \tab Deriv (>= 3.8.0), MASS (>= 7.3-30), parallel \cr
@@ -539,7 +539,7 @@ General Public License", a copy of which is distributed with the package.
    \emph{Numerical Solution of Stochastic Differential Equations with Jumps in Finance.} 
    Springer-Verlag, New York.
 
-   SaItô, Y, and Mitsui, T. (1993).
+   Itô, Y, and Mitsui, T. (1993).
    Simulation of Stochastic Differential Equations. 
    \emph{The Annals of the Institute of Statistical Mathematics}, \bold{3}, 419--432.
    

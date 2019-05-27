@@ -1,5 +1,5 @@
-## Fri Sep 07 20:46:20 2018
-## Original file Copyright © 2018 A.C. Guidoum, K. Boukhetala
+## Mon May 27 03:39:04 2019
+## Original file Copyright © 2019 A.C. Guidoum, K. Boukhetala
 ## This file is part of the R package Sim.DiffProc
 ## Department of Probabilities & Statistics
 ## Faculty of Mathematics
@@ -49,7 +49,7 @@ TEX.sde.default <- function(object, ...)
    greek9 <- c(paste0(greek,"9"))
    greek10 <- c(paste0(greek,"10"))
    greek_list  <- setNames(paste0("\\", greek),greek)
-   greek_list0 <- setNames(paste0("\\", greek,"_","{0}"), greek1)
+   greek_list0 <- setNames(paste0("\\", greek,"_","{0}"), greek0)
    greek_list1 <- setNames(paste0("\\", greek,"_","{1}"), greek1)
    greek_list2 <- setNames(paste0("\\", greek,"_","{2}"), greek2)
    greek_list3 <- setNames(paste0("\\", greek,"_","{3}"), greek3)

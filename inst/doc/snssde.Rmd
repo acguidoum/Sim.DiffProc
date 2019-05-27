@@ -9,7 +9,7 @@ output:
 vignette: >
   %\VignetteIndexEntry{Monte-Carlo Simulation and Analysis of Stochastic Differential Equations}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{latin1}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, echo = F, message = F, results = 'hide',screenshot.force=FALSE}
@@ -25,7 +25,7 @@ options(prompt="R> ",scipen=16,digits=5,warning=FALSE, message=FALSE,
 
 Assume that we want to describe the following SDE:
 
-Itô form^[The equivalently of $X_{t}^{\text{mod1}}$ the following Stratonovich SDE: $dX_{t} =  \theta X_{t} \circ dW_{t}$.]:
+It? form^[The equivalently of $X_{t}^{\text{mod1}}$ the following Stratonovich SDE: $dX_{t} =  \theta X_{t} \circ dW_{t}$.]:
 
 \begin{equation}\label{eq:05}
 dX_{t} = \frac{1}{2}\theta^{2} X_{t} dt + \theta X_{t} dW_{t},\qquad X_{0}=x_{0} > 0
@@ -50,7 +50,7 @@ In the above $f(t,x)=\frac{1}{2}\theta^{2} x$ and $g(t,x)= \theta x$ ($\theta > 
 theta = 0.5
 f <- expression( (0.5*theta^2*x) )
 g <- expression( theta*x )
-mod1 <- snssde1d(drift=f,diffusion=g,x0=10,M=1000,type="ito") # Using Itô
+mod1 <- snssde1d(drift=f,diffusion=g,x0=10,M=1000,type="ito") # Using It?
 mod2 <- snssde1d(drift=f,diffusion=g,x0=10,M=1000,type="str") # Using Stratonovich 
 mod1
 mod2
@@ -95,7 +95,7 @@ summary(mod2, at = 1)
 
 Hence we can just make use of the `rsde1d()` function to build our random number generator for the conditional density of the $X_{t}|X_{0}$ ($X_{t}^{\text{mod1}}| X_{0}$ and $X_{t}^{\text{mod2}}|X_{0}$) at time $t = 1$.
 ```{r}
-x1 <- rsde1d(object = mod1, at = 1)  # X(t=1) | X(0)=x0 (Itô SDE)
+x1 <- rsde1d(object = mod1, at = 1)  # X(t=1) | X(0)=x0 (It? SDE)
 x2 <- rsde1d(object = mod2, at = 1)  # X(t=1) | X(0)=x0 (Stratonovich SDE)
 head(x1,n=10)
 head(x2,n=10)
@@ -114,7 +114,7 @@ plot(AppdensS , dens = function(x) dlnorm(x,meanlog=mu2,sdlog = sigma2))
 In Figure 2, we present the flow of trajectories, the mean path (red lines) of solution of \eqref{eq:05} and \eqref{eq:06}, with their empirical $95\%$ confidence bands, that is to say from the $2.5th$ to the $97.5th$ percentile for each observation at time $t$ (blue lines):
 
 ```{r 02,fig.env='figure*', fig.cap=' ',eval=FALSE, include=TRUE}
-## Itô
+## It?
 plot(mod1,ylab=expression(X^mod1))
 lines(time(mod1),apply(mod1$X,1,mean),col=2,lwd=2)
 lines(time(mod1),apply(mod1$X,1,bconfint,level=0.95)[1,],col=4,lwd=2)
@@ -132,7 +132,7 @@ legend("topleft",c("mean path",paste("bound of",95,"% confidence")),col=c(2,4),i
 knitr::include_graphics("Figures/fig07.png")
 ```
 
-```{r 101, echo=FALSE, fig.cap=' mod1: Itô and mod2: Stratonovich ', fig.env='figure*',fig.width=7,fig.height=7}
+```{r 101, echo=FALSE, fig.cap=' mod1: It? and mod2: Stratonovich ', fig.env='figure*',fig.width=7,fig.height=7}
 knitr::include_graphics("Figures/fig08.png")
 ```
 
@@ -142,7 +142,7 @@ knitr::include_graphics("Figures/fig08.png")
 
 The following $2$-dimensional SDE's with a vector of drift and a diagonal matrix of diffusion coefficients:
 
-Itô form:
+It? form:
 \begin{equation}\label{eq:09}
 \begin{cases}
 dX_t = f_{x}(t,X_{t},Y_{t}) dt +  g_{x}(t,X_{t},Y_{t}) dW_{1,t}\\
@@ -337,7 +337,7 @@ plot(mod2d)   ## back in time
 
 The following $3$-dimensional SDE's with a vector of drift and a diagonal matrix of diffusion coefficients:
 
-Itô form:
+It? form:
 \begin{equation}\label{eq17}
 \begin{cases}
 dX_t = f_{x}(t,X_{t},Y_{t},Z_{t}) dt +  g_{x}(t,X_{t},Y_{t},Z_{t}) dW_{1,t}\\
@@ -366,7 +366,7 @@ $W_{1,t}$, $W_{2,t}$ and $W_{3,t}$ is a 3 independent standard Wiener process. T
 
 ## Basic example
 
-Assume that we want to describe the following SDE's (3D) in Itô form:
+Assume that we want to describe the following SDE's (3D) in It? form:
 \begin{equation}\label{eq0166}
 \begin{cases}
 dX_t = 4 (-1-X_{t}) Y_{t} dt + 0.2 dW_{1,t}\\
@@ -550,6 +550,6 @@ filled.contour(time(modtra), time(modtra), cov(t(modtra$X)), color.palette=color
 
 1. Boukhetala K (1996). Modelling and Simulation of a Dispersion Pollutant with Attractive Centre, volume 3, pp. 245-252. Computer Methods and Water Resources, Computational Mechanics Publications, Boston, USA.
 
-2. Guidoum AC, Boukhetala K (2018). Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
+2. Guidoum AC, Boukhetala K (2018). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
 
-3. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.3, URL https://cran.r-project.org/package=Sim.DiffProc.
+3. Guidoum AC, Boukhetala K (2019). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.4, URL https://cran.r-project.org/package=Sim.DiffProc.

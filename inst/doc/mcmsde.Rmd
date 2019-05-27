@@ -9,7 +9,7 @@ output:
 vignette: >
   %\VignetteIndexEntry{Parallel Monte-Carlo and Moment Equations for SDEs}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{latin1}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, echo = F, message = F, results = 'hide',screenshot.force=FALSE}
@@ -196,7 +196,7 @@ matplot.0D(mem.mod3d$sol.ode,main="",select=c("C12","C13","C23"))
 
 # References
 
-1. Guidoum AC, Boukhetala K (2018). Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
+1. Guidoum AC, Boukhetala K (2018). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
 
-2. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.3, URL https://cran.r-project.org/package=Sim.DiffProc.
+2. Guidoum AC, Boukhetala K (2019). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.4, URL https://cran.r-project.org/package=Sim.DiffProc.
     

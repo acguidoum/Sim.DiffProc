@@ -9,7 +9,7 @@ output:
 vignette: >
   %\VignetteIndexEntry{Constructs and Analysis of Bridges Stochastic Differential Equations}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{latin1}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, echo = F, message = F, results = 'hide',screenshot.force=FALSE}
@@ -30,7 +30,7 @@ where $T$ is a deterministic fixed time and $a \in \mathbb{R}^d$ is fixed too.
 
 # The `bridgesdekd()` functions
 
-The (S3) generic function `bridgesdekd()` (where `k=1,2,3`) for simulation of 1,2 and 3-dim bridge stochastic differential equations,Itô or Stratonovich type, with different methods. The main arguments consist: 
+The (S3) generic function `bridgesdekd()` (where `k=1,2,3`) for simulation of 1,2 and 3-dim bridge stochastic differential equations,It? or Stratonovich type, with different methods. The main arguments consist: 
 
 
 - The `drift` and `diffusion` coefficients as R expressions that depend on the state variable `x` (`y` and `z`) and time variable `t`.
@@ -70,7 +70,7 @@ The following we explain how to use this functions.
 
 # `bridgesde1d()`
 
-Assume that we want to describe the following bridge sde in Itô form:
+Assume that we want to describe the following bridge sde in It? form:
 \begin{equation}\label{eq0166}
 dX_t = \frac{1-X_t}{1-t} dt + X_t dW_{t},\quad X_{t_{0}}=3 \quad\text{and}\quad X_{T}=1
 \end{equation}
@@ -287,7 +287,7 @@ plot(dsde2d(mod2, at = i,n=100),display="contour",main=paste0('Transition Densit
 
 # `bridgesde3d()`
 
-Assume that we want to describe the following bridges SDE's (3D) in Itô form:
+Assume that we want to describe the following bridges SDE's (3D) in It? form:
 
 \begin{equation}
 \begin{cases}
@@ -414,4 +414,4 @@ plot(denJ,display="rgl")
 
 1. Bladt, M. and Sorensen, M. (2007). Simple simulation of diffusion bridges with application to likelihood inference for diffusions. Working Paper, University of Copenhagen.
 
-2. Guidoum AC, Boukhetala K (2018). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.3, URL https://cran.r-project.org/package=Sim.DiffProc.
+2. Guidoum AC, Boukhetala K (2019). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.4, URL https://cran.r-project.org/package=Sim.DiffProc.
