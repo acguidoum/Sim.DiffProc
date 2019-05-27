@@ -1,4 +1,4 @@
-## Wed Oct 17 12:16:40 2018
+## Fri Sep 15 23:08:50 2017
 options(prompt="R> ",scipen=20,digits=5,scientific = 5,width = 70,warning=FALSE, message=FALSE)
 ############################################################################
 #                               Demo 1                                     # 
