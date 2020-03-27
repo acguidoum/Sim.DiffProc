@@ -10,8 +10,8 @@
 
 ------------------------------------------------------------------------
 
-![Github](https://img.shields.io/badge/Github-4.4(at:2019.05.27)-blue.svg)
-![](http://www.r-pkg.org/badges/version-last-release/Sim.DiffProc?color=blue) [![Rdoc](http://www.rdocumentation.org/badges/version/Sim.DiffProc)](http://www.rdocumentation.org/packages/Sim.DiffProc)
+![Github](https://img.shields.io/badge/Github-4.5(at:2020.03.27)-blue.svg)
+![](http://www.r-pkg.org/badges/version-last-release/Sim.DiffProc?color=blue) 
 
 ![](https://cranlogs.r-pkg.org/badges/grand-total/Sim.DiffProc?color=yellow)
 ![](https://cranlogs.r-pkg.org/badges/Sim.DiffProc?color=yellow)
@@ -75,17 +75,17 @@ citation("Sim.DiffProc")
  
 To cite package 'Sim.DiffProc' in publications use:
 
-  Arsalane Chouaib Guidoum and Kamal Boukhetala (2019).
+  Arsalane Chouaib Guidoum and Kamal Boukhetala (2020).
   Sim.DiffProc: Simulation of Diffusion Processes.R package
-  version 4.4.https://cran.r-project.org/package=Sim.DiffProc
+  version 4.5.https://cran.r-project.org/package=Sim.DiffProc
 
 A BibTeX entry for LaTeX users is
 
   @Manual{,
     title = {Sim.DiffProc: Simulation of Diffusion Processes.},
     author = {Arsalane Chouaib Guidoum and Kamal Boukhetala},
-    year = {2019},
-    note = {R package version 4.4},
+    year = {2020},
+    note = {R package version 4.5},
     url = {https://cran.r-project.org/package=Sim.DiffProc},
   }
 ```
@@ -98,8 +98,8 @@ Please send comments, error reports, etc. to the author via the addresses email.
 References
 ----------
 
-1. Guidoum AC, Boukhetala K (2018). Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
+1. Guidoum AC, Boukhetala K (2020). Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Accept Submission to Journal of Statistical Software.
 
-2. Guidoum AC, Boukhetala K (2019). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.4, URL https://cran.r-project.org/package=Sim.DiffProc.
+2. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.5, URL https://cran.r-project.org/package=Sim.DiffProc.
 
 
