@@ -235,3 +235,26 @@ plot(mem.mod1$sol.ode, mem.mod2$sol.ode,ylab = c("S(t)"),select="S",
        xlab = "Time",main="",col = 2:3,lty=1)
 legend("topleft",c(expression(S[mod1](t),S[mod2](t))),inset = .05,
          col=2:3,lty=1)
+		 
+############################################################################
+#                               Demo 13                                    # 
+#                  Converting Sim.DiffProc Objects to LaTeX                #
+############################################################################  
+
+f <- expression(-mu1 * x) 
+g <- expression(mu2 * sqrt(x)) 
+TEX.sde(object = c(drift = f, diffusion = g))
+
+# Example 2
+
+f <- expression(mu1*cos(mu2+z),mu1*sin(mu2+z),0) 
+g <- expression(sigma,sigma,alpha) 
+TEX.sde(object = c(drift = f, diffusion = g))
+
+## LaTeX mathematic for object of class 'MEM.sde'
+## Copy and paste the following output in your LaTeX file
+
+# Example 3
+
+mem.mod3d <- MEM.sde(drift = f, diffusion = g)
+TEX.sde(object = mem.mod3d)
