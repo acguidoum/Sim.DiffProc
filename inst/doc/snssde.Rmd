@@ -20,7 +20,7 @@ options(prompt="R> ",scipen=16,digits=5,warning=FALSE, message=FALSE,
         width = 70)
 ```
 
-
+ 
 # `snssde1d()`
 
 Assume that we want to describe the following SDE:
@@ -550,6 +550,6 @@ filled.contour(time(modtra), time(modtra), cov(t(modtra$X)), color.palette=color
 
 1. Boukhetala K (1996). Modelling and Simulation of a Dispersion Pollutant with Attractive Centre, volume 3, pp. 245-252. Computer Methods and Water Resources, Computational Mechanics Publications, Boston, USA.
 
-2. Guidoum AC, Boukhetala K (2018). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
+2. Guidoum AC, Boukhetala K (2020). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Accept Submission to Journal of Statistical Software.
 
-3. Guidoum AC, Boukhetala K (2019). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.4, URL https://cran.r-project.org/package=Sim.DiffProc.
+3. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.5, URL https://cran.r-project.org/package=Sim.DiffProc.

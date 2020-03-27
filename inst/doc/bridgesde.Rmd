@@ -396,7 +396,7 @@ For an approximate joint density for triplet $X_{t},Y_{t},Z_{t}|X_{0}=0,Y_{0}=-1
 denJ <- dsde3d(mod3,pdf="J",at=0.75)
 plot(denJ,display="rgl")
 ```
-
+ 
 [Return to bridgesde3d()](#bridgesde3d)
 
 # Further reading
@@ -414,4 +414,4 @@ plot(denJ,display="rgl")
 
 1. Bladt, M. and Sorensen, M. (2007). Simple simulation of diffusion bridges with application to likelihood inference for diffusions. Working Paper, University of Copenhagen.
 
-2. Guidoum AC, Boukhetala K (2019). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.4, URL https://cran.r-project.org/package=Sim.DiffProc.
+2. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.5, URL https://cran.r-project.org/package=Sim.DiffProc.

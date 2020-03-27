@@ -20,7 +20,7 @@ knitr::opts_chunk$set(comment="", prompt=TRUE, fig.show='hold',warning=FALSE, me
 options(prompt="R> ",scipen=16,digits=5,warning=FALSE, message=FALSE,mc.cores=2)
 ```
 
-
+ 
 # The `MCM.sde()` function
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
@@ -196,7 +196,7 @@ matplot.0D(mem.mod3d$sol.ode,main="",select=c("C12","C13","C23"))
 
 # References
 
-1. Guidoum AC, Boukhetala K (2018). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Preprint submitted to Journal of Statistical Software.
+1. Guidoum AC, Boukhetala K (2020). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Accept Submission to Journal of Statistical Software.
 
-2. Guidoum AC, Boukhetala K (2019). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.4, URL https://cran.r-project.org/package=Sim.DiffProc.
+2. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.5, URL https://cran.r-project.org/package=Sim.DiffProc.
     
