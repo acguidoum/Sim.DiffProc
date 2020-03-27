@@ -6,7 +6,6 @@ cache: packages
 
 warnings_are_errors: true
 
-
 jobs:
   include:
   - r: oldrel
@@ -27,3 +26,4 @@ env:
   
 after_success:
   - Rscript -e 'library(covr); codecov()'
+  
