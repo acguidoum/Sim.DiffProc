@@ -76,7 +76,7 @@ A.C. Guidoum, K. Boukhetala.
 }
 
 \seealso{
-This functions \code{\link[sde]{BM}}, \code{\link[sde]{BBridge}} and \code{\link[sde]{GBM}} are available in other packages such as "sde".
+This functions \code{BM}, \code{BBridge} and \code{GBM} are available in other packages such as "sde".
 }
 \examples{
 

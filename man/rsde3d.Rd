@@ -55,7 +55,7 @@ A.C. Guidoum, K. Boukhetala.
 
 \code{\link[sm]{sm.density}} Nonparametric density estimation in one, two or three dimensions in "sm" package.
 
-\code{\link[misc3d]{kde3d}} Compute a three dimension kernel density estimate in "misc3d" package.
+\code{kde3d} Compute a three dimension kernel density estimate in "misc3d" package.
 
 \code{\link[yuima]{rng}} random number generators in "yuima" package. 
 

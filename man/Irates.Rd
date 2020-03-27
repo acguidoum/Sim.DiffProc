@@ -33,7 +33,7 @@ Monthly Interest Rates
 \source{
 McCulloch, J.H. and Kwon, H.C. (1993). U.S. term structure data, 1947--1991, Ohio State Working Paper 93--6, Ohio State University, Columbus
 
-These datasets \code{\link[Ecdat]{Irates}} are in package "Ecdat".
+These datasets \code{Irates} are in package "Ecdat".
 }
 
 \references{

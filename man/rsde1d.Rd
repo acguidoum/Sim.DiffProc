@@ -66,11 +66,11 @@ A.C. Guidoum, K. Boukhetala.
 
 \code{\link[yuima]{rng}} random number generators in "yuima" package. 
 
-\code{\link[sde]{dcSim}} Pedersen's simulated transition density in "sde" package.
+\code{dcSim} Pedersen's simulated transition density in "sde" package.
 
-\code{\link[sde]{rcBS}}, \code{\link[sde]{rcCIR}}, \code{\link[sde]{rcOU}} and \code{\link[sde]{rsOU}}  in package "sde".
+\code{rcBS}, \code{rcCIR}, \code{rcOU} and \code{rsOU}  in package "sde".
 
-\code{\link[sde]{dcBS}}, \code{\link[sde]{dcCIR}}, \code{\link[sde]{dcOU}} and \code{\link[sde]{dsOU}}  in package "sde".
+\code{dcBS}, \code{dcCIR}, \code{dcOU} and \code{dsOU}  in package "sde".
 
 \code{\link[DiffusionRgqd]{GQD.density}} Generate the transition density of a scalar generalized quadratic diffusion.
  
