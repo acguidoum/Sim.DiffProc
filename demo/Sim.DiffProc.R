@@ -258,3 +258,4 @@ TEX.sde(object = c(drift = f, diffusion = g))
 
 mem.mod3d <- MEM.sde(drift = f, diffusion = g)
 TEX.sde(object = mem.mod3d)
+
