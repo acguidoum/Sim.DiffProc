@@ -235,6 +235,7 @@ plot(mem.mod1$sol.ode, mem.mod2$sol.ode,ylab = c("S(t)"),select="S",
        xlab = "Time",main="",col = 2:3,lty=1)
 legend("topleft",c(expression(S[mod1](t),S[mod2](t))),inset = .05,
          col=2:3,lty=1)
+
 		 
 ############################################################################
 #                               Demo 13                                    # 
