@@ -7,9 +7,7 @@ init:
         Import-Module '..\appveyor-tool.ps1'
 install:
   ps: Bootstrap
-
 # Adapt as necessary starting from here
-
 environment:
   global:
     WARNINGS_ARE_ERRORS: 1
