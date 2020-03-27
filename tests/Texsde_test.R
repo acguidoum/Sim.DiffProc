@@ -56,5 +56,6 @@ TEX.sde(object = mcm.mod3d, booktabs = TRUE, align = "r", caption ="\\LaTeX~
 		 
 ###
 
-TEX.sde(object=1)		 
+TEX.sde(object=1)		
+ 
 		 
