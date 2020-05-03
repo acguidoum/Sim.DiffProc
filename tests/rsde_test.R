@@ -64,7 +64,6 @@ denJ <- dsde2d(mod2d,pdf="J", at= 0.51475)
 print(denJ)
 plot(denJ,display="persp")
 plot(denJ,display="contour")
-plot(denJ,display="rgl")
 plot(denJ,display="image")
 
 ######## 3d
@@ -102,7 +101,6 @@ denJ <- dsde3d(mod3d,pdf="J", at= 0.5)
 print(denJ)
 denJ <- dsde3d(mod3d,pdf="J", at= 0.51475)
 print(denJ)
-plot(denJ,display="rgl")
 
 ###
 
@@ -153,7 +151,6 @@ denJ <- dsde2d(mod2d,pdf="J", at= 0.51475)
 print(denJ)
 plot(denJ,display="persp")
 plot(denJ,display="contour")
-plot(denJ,display="rgl")
 plot(denJ,display="image")
 
 ######## 3d
@@ -183,4 +180,3 @@ denJ <- dsde3d(mod3d,pdf="J", at= 0.5)
 print(denJ)
 denJ <- dsde3d(mod3d,pdf="J", at= 0.51475)
 print(denJ)
-plot(denJ,display="rgl")
