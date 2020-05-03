@@ -1,5 +1,5 @@
-## Mon May 27 03:39:04 2019
-## Original file Copyright © 2019 A.C. Guidoum, K. Boukhetala
+## Thu Apr 30 10:50:58 2020
+## Original file Copyright © 2020 A.C. Guidoum, K. Boukhetala
 ## This file is part of the R package Sim.DiffProc
 ## Department of Probabilities & Statistics
 ## Faculty of Mathematics
@@ -155,10 +155,10 @@ plot3DD <- function(X,Y,Z,display = c("persp","rgl"),col=NULL,lwd=NULL,pch=NULL,
                             zlab=NULL,grid=NULL,angle=NULL,...)
                  {
     display <- match.arg(display)
-    # if ((display == "rgl") && !(require(rgl)) ) 
-                 # stop("The 'rgl' package is not available.")        
-    # else if ((display == "persp") && !(require(scatterplot3d)) ) 
-                 # stop("The 'scatterplot3d' package is not available.")
+     # if ((display == "rgl") && !(require(rgl)) ) 
+                  # stop("The 'rgl' package is not available.")        
+     # else if ((display == "persp") && !(require(scatterplot3d)) ) 
+                  # stop("The 'scatterplot3d' package is not available.")
 
     if (is.null(lwd))  
 	      lwd = 1
@@ -189,8 +189,8 @@ plot3DD <- function(X,Y,Z,display = c("persp","rgl"),col=NULL,lwd=NULL,pch=NULL,
          scatterplot3d::scatterplot3d(X,Y,Z,angle =angle,color=col,lwd=lwd,type=type,pch=pch,
              main = main, sub = sub,xlab = xlab, ylab = ylab, zlab = zlab,
              grid = grid,cex.symbols=cex,...)
-    }else{
-         rgl::plot3d(X,Y,Z,col=col,lwd=lwd,type=type,pch=pch,main = main, sub = sub,
+    }else if (display=="rgl"){
+         rgl::plot3d(X,Y,Z,col=col,lwd=lwd,type=type,main = main, sub = sub,
              xlab = xlab, ylab = ylab, zlab = zlab,size=cex,...)
          }
 }
@@ -889,7 +889,7 @@ plot3D.default <- function(x,display = c("persp", "rgl"),...) plot3DD(x,display,
 # }
 
 .plot.dsde3d <- function(x,display="rgl",hist=FALSE,legend=TRUE,pos=2,main=NULL,xlab=NULL,ylab=NULL,zlab=NULL,col=NULL,border=NULL,
-                          lwd=NULL,cex=NULL,las=NULL,lty=NULL,xlim=NULL,ylim=NULL,...) 
+                          lwd=NULL,cex=NULL,las=NULL,lty=NULL,xlim=NA,ylim=NA,zlim=NA,...) 
 {
     class(x) <- "dsde3d"
     if (is.null(col)){col= c(rgb(255,0,0,75,maxColorValue=255),rgb(0,0,255,75,maxColorValue=255),rgb(0,255,0,75,maxColorValue=255))}
@@ -921,10 +921,10 @@ plot3D.default <- function(x,display = c("persp", "rgl"),...) plot3DD(x,display,
     else if (pos==9)
 	     pos = "bottomleft"
 		 
-    if (x$pdf =='Marginal'){
+    if (x$pdf =="Marginal"){
         if (hist==FALSE){ 
-		if (missing(xlim)) {xlim = c(min(c(x$resx$x, x$resy$x,x$resz$x)) , max(c(x$resx$x, x$resy$x, x$resz$x)))}
-		if (missing(ylim)) {ylim = c(min(c(x$resx$y, x$resy$y,x$resz$y)) , max(c(x$resx$y, x$resy$y, x$resz$y)))}
+		if (is.na(xlim)) {xlim = c(min(c(x$resx$x, x$resy$x,x$resz$x)) , max(c(x$resx$x, x$resy$x, x$resz$x)))}
+		if (is.na(ylim)) {ylim = c(min(c(x$resx$y, x$resy$y,x$resz$y)) , max(c(x$resx$y, x$resy$y, x$resz$y)))}
 		plot(0 , type = "n" , ylab = "Density" , xlab = "State variables" , las = 1 , xlim = xlim , ylim = ylim,main=main, ...)
 		polygon(x$resx$x , x$resx$y, col = col[1] , border = border[1])
 		polygon(x$resy$x , x$resy$y, col = col[2] , border = border[2])
@@ -937,8 +937,8 @@ plot3D.default <- function(x,display = c("persp", "rgl"),...) plot3DD(x,display,
           MASS::truehist(x$ech$y,xlab = "y",main=main,las=las,col=col[2],...);box()
           dev.new()
           MASS::truehist(x$ech$z,xlab = "z",main=main,las=las,col=col[3],...);box()
-    }}else if (x$pdf =='Joint'){
-          sm::sm.density(x$ech,display="rgl",h=x$res$h,...)   
+    }}else if (x$pdf =="Joint"){
+          sm::sm.density(x$ech,display="rgl",h=x$res$h,xlim=xlim,ylim=ylim,zlim=zlim,...)   
     }
 }
 

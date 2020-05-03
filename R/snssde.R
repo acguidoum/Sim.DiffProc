@@ -1,5 +1,5 @@
-## Mon May 27 03:39:04 2019
-## Original file Copyright © 2019 A.C. Guidoum, K. Boukhetala
+## Thu Apr 30 10:50:58 2020
+## Original file Copyright © 2020 A.C. Guidoum, K. Boukhetala
 ## This file is part of the R package Sim.DiffProc
 ## Department of Probabilities & Statistics
 ## Faculty of Mathematics
@@ -28,7 +28,7 @@
 
 snssde1d <- function(N, ...)  UseMethod("snssde1d")
 
-snssde1d.default <- function(N =1000,M=1,x0=0,t0=0,T=1,Dt=NULL,drift,diffusion,alpha=0.5,mu=0.5,
+snssde1d.default <- function(N =1000,M=1,x0=0,t0=0,T=1,Dt,drift,diffusion,alpha=0.5,mu=0.5,
                      type=c("ito","str"), method=c("euler","milstein","predcorr",
                      "smilstein","taylor","heun","rk1","rk2","rk3"),...)
         {
@@ -58,13 +58,13 @@ snssde1d.default <- function(N =1000,M=1,x0=0,t0=0,T=1,Dt=NULL,drift,diffusion,a
                             }
     if (t0 < 0 || T < 0) 
 	      stop(" please use positive times! (0 <= t0 < T) ")
-    if (is.null(Dt)) {
-        Dt <- (T - t0)/N
+    if (missing(Dt)) {
         t <- seq(t0, T, by=Dt)
     } else {
         t <- c(t0, t0 + cumsum(rep(Dt, N)))
 		T <- t[N + 1]
     }
+    Dt <- (T - t0)/N
     if (method=="euler")         
 	      res <- .Euler1D(N,M,x0,t0,T,Dt,drift,diffusion,type)
     else if (method=="predcorr") 
@@ -205,15 +205,15 @@ points.snssde1d <- function(x,...)
 summary.snssde1d  <- function(object, at,digits=NULL, ...)
            {   
     class(object) <- "snssde1d"
+    if (object$M == 1) stop("Summary of Monte-Carlo Statistics is for any M > 1")
     if (missing(at)) {at = as.numeric(object$T)}
 	if (is.null(digits)){digits = base::options()$digits}
     if (any(object$T < at || object$t0 > at) )  
 	      stop( " please use 't0 <= at <= T'")
-    if (object$M == 1){ X = matrix(object$X,nrow=length(object$X),ncol=1)}else{X = object$X}
+	X <- object$X
     xx   <- as.vector(X[which(time(object)==as.character(at)),])
     if (length(xx) == 0){
-	 if (object$M==1){ F  <- lapply(1:object$M,function(i) approxfun(time(object),object$X))}else{
-                       F  <- lapply(1:object$M,function(i) approxfun(time(object),object$X[,i]))}
+                       F  <- lapply(1:object$M,function(i) approxfun(time(object),object$X[,i]))
                        xx <- sapply(1:length(F),function(i) F[[i]](at)) 
     }
     cat("\n\tMonte-Carlo Statistics for X(t) at time t = ",at,"\n",
@@ -419,9 +419,9 @@ time.snssde1d <- function(x,...)
 
 snssde2d <- function(N, ...)  UseMethod("snssde2d")
 
-snssde2d.default <- function(N =1000,M=1,x0=c(0,0),t0=0,T=1,Dt=NULL,drift,diffusion,alpha=0.5,mu=0.5,
-                     type=c("ito","str"), method=c("euler","milstein","predcorr",
-                     "smilstein","taylor","heun","rk1","rk2","rk3"),...)
+snssde2d.default <- function(N =1000,M=1,x0=c(0,0),t0=0,T=1,Dt,drift,diffusion,corr=NULL,type=c("ito","str"),
+                        alpha=0.5,mu=0.5, method=c("euler","milstein","predcorr",
+                        "smilstein","taylor","heun","rk1","rk2","rk3"),...)
         {
     if (any(!is.numeric(x0) || length(x0) !=2)) 
 	           stop("'x0' must be numeric, and length(x0) = 2")
@@ -441,12 +441,13 @@ snssde2d.default <- function(N =1000,M=1,x0=c(0,0),t0=0,T=1,Dt=NULL,drift,diffus
 	          drift <- expression(0,0)
     if (missing(diffusion))    
 	          diffusion  <- expression(1,1)
-    # if (length(all.vars(drift)) == 3 && all.vars(drift) != "t"  && all.vars(drift) != "x" && all.vars(drift) !="y") stop("coefficient of 'driftx' must be expressions in 't', 'x' and 'y'")
-    # if (length(all.vars(drifty)) == 3 && all.vars(drifty) != "t"  && all.vars(drifty) != "x" && all.vars(drifty) !="y") stop("coefficient of 'drifty' must be expressions in 't', 'x' and 'y'")
-    # if (length(all.vars(diffx)) == 3 && all.vars(diffx) != "t"  && all.vars(diffx) != "x" && all.vars(diffx) != "x" ) stop("coefficient of 'diffx' must be expressions in 't', 'x' and 'y'")
-    # if (length(all.vars(diffy)) == 3 && all.vars(diffy) != "t"  && all.vars(diffy) != "x" && all.vars(diffy) != "x" ) stop("coefficient of 'diffy' must be expressions in 't', 'x' and 'y'")
+	if (!is.null(corr)) {
+         if (any(!is.matrix(corr) || det(corr) <= 0 || nrow(corr)!=2 || ncol(corr)!=2 || !isSymmetric(corr)))
+                     stop("the correlation structure of W1(t) and W2(t) must be a real symmetric\n  positive-definite square matrix of dimension 2") 		   
+      }
     if (missing(type)) type <- "ito"
     method <- match.arg(method)
+	if (!is.null(corr) && method != "euler" && method != "milstein") {method="euler"}
     if (method =="predcorr"){
     if (any(alpha > 1 || alpha < 0)) 
 	      stop("please use '0 <= alpha <= 1' ")
@@ -455,19 +456,19 @@ snssde2d.default <- function(N =1000,M=1,x0=c(0,0),t0=0,T=1,Dt=NULL,drift,diffus
                             }
     if (t0 < 0 || T < 0) 
 	      stop(" please use positive times! (0 <= t0 < T) ")
-    if (is.null(Dt)) {
-        Dt <- (T - t0)/N
+    if (missing(Dt)) {
         t <- seq(t0, T, by=Dt)
     } else {
         t <- c(t0, t0 + cumsum(rep(Dt, N)))
 		T <- t[N + 1]
-    }   
+    } 	           
+    Dt <- (T - t0)/N	
     if (method=="euler")         
-	      res <- .Euler2D(N,M,x0=x0[1],y0=x0[2],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],type)
+	      res <- .Euler2D(N,M,x0=x0[1],y0=x0[2],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],type,corr)
+    else if (method=="milstein") 
+	      res <- .Milstein2D(N,M,x0=x0[1],y0=x0[2],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],type,corr)
     else if (method=="predcorr") 
 	      res <- .PredCorr2D(N,M,x0=x0[1],y0=x0[2],t0,T,Dt,alpha,mu,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],type)
-    else if (method=="milstein") 
-	      res <- .Milstein2D(N,M,x0=x0[1],y0=x0[2],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],type)
     else if (method=="smilstein")
 	      res <- .SMilstein2D(N,M,x0=x0[1],y0=x0[2],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],type)
     else if (method=="taylor")   
@@ -481,7 +482,7 @@ snssde2d.default <- function(N =1000,M=1,x0=c(0,0),t0=0,T=1,Dt=NULL,drift,diffus
     else if (method=="rk3")      
 	      res <- .RK2D(N,M,x0=x0[1],y0=x0[2],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],type,order=3)
 		  
-    structure(list(X=res$X,Y=res$Y, driftx=drift[[1]], diffx=diffusion[[1]],drifty=drift[[2]], diffy=diffusion[[2]],type=type,method=method, 
+    structure(list(X=res$X,Y=res$Y, driftx=drift[[1]], diffx=diffusion[[1]],drifty=drift[[2]], diffy=diffusion[[2]],type=type,corrmat=corr,method=method, 
                    x0=as.numeric(format(x0[1])),y0=as.numeric(format(x0[2])), N=as.numeric(format(N)),M=as.numeric(format(M)),Dt=as.numeric(format(Dt)),t0=as.numeric(format(t0)),T=as.numeric(format(T)),dim="2d",call=match.call()),class="snssde2d")
 }
 
@@ -514,32 +515,67 @@ print.snssde2d <- function(x, digits=NULL, ...)
 	Drx <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$driftx))))   
     DDx <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$diffx))))
 	Dry <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$drifty))))   
-    DDy <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$diffy)))) 	
-    if(x$type=="ito"){
-    cat(Ito," Sde 2D:","\n",
-        "\t| dX(t) = ", Drx," * dt + ", DDx," * dW1(t)","\n", 
-        "\t| dY(t) = ", Dry," * dt + ", DDy," * dW2(t)","\n",
-        "Method:","\n",
-        "\t| ",sch,"\n",
-        "Summary:","\n",
-        "\t| Size of process","\t| N  = ",format(x$N+1,digits=digits),".","\n",
-        "\t| Number of simulation","\t| M  = ",format(x$M,digits=digits),".","\n",
-        "\t| Initial values","\t| (x0,y0) = ","(",format(x$x0,digits=digits),",",format(x$y0,digits=digits),")",".","\n",
-        "\t| Time of process","\t| t in [",format(x$t0,digits=digits),",",format(x$T,digits=digits),"].","\n",
-        "\t| Discretization","\t| Dt = ",format(x$Dt,digits=digits),".","\n",
-        sep="")}else{
-    cat("Stratonovich Sde 2D:","\n",
-        "\t| dX(t) = ", Drx," * dt + ", DDx," o dW1(t)","\n", 
-        "\t| dY(t) = ", Dry," * dt + ", DDy," o dW2(t)","\n",
-        "Method:","\n",
-        "\t| ",sch,"\n",
-        "Summary:","\n",
-        "\t| Size of process","\t| N  = ",format(x$N+1,digits=digits),".","\n",
-        "\t| Number of simulation","\t| M  = ",format(x$M,digits=digits),".","\n",
-        "\t| Initial values","\t| (x0,y0) = ","(",format(x$x0,digits=digits),",",format(x$y0,digits=digits),")",".","\n",
-        "\t| Time of process","\t| t in [",format(x$t0,digits=digits),",",format(x$T,digits=digits),"].","\n",
-        "\t| Discretization","\t| Dt = ",format(x$Dt,digits=digits),".","\n",
-        sep="")}
+    DDy <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$diffy))))
+    if (is.null(x$corrmat)){ 	
+       if(x$type=="ito"){
+             cat(Ito," Sde 2D:","\n",
+             "\t| dX(t) = ", Drx," * dt + ", DDx," * dW1(t)","\n", 
+             "\t| dY(t) = ", Dry," * dt + ", DDy," * dW2(t)","\n",
+             "Method:","\n",
+             "\t| ",sch,"\n",
+             "Summary:","\n",
+             "\t| Size of process","\t| N  = ",format(x$N+1,digits=digits),".","\n",
+             "\t| Number of simulation","\t| M  = ",format(x$M,digits=digits),".","\n",
+             "\t| Initial values","\t| (x0,y0) = ","(",format(x$x0,digits=digits),",",format(x$y0,digits=digits),")",".","\n",
+             "\t| Time of process","\t| t in [",format(x$t0,digits=digits),",",format(x$T,digits=digits),"].","\n",
+             "\t| Discretization","\t| Dt = ",format(x$Dt,digits=digits),".","\n",
+             sep="")}else{
+             cat("Stratonovich Sde 2D:","\n",
+             "\t| dX(t) = ", Drx," * dt + ", DDx," o dW1(t)","\n", 
+             "\t| dY(t) = ", Dry," * dt + ", DDy," o dW2(t)","\n",
+             "Method:","\n",
+             "\t| ",sch,"\n",
+             "Summary:","\n",
+             "\t| Size of process","\t| N  = ",format(x$N+1,digits=digits),".","\n",
+             "\t| Number of simulation","\t| M  = ",format(x$M,digits=digits),".","\n",
+             "\t| Initial values","\t| (x0,y0) = ","(",format(x$x0,digits=digits),",",format(x$y0,digits=digits),")",".","\n",
+             "\t| Time of process","\t| t in [",format(x$t0,digits=digits),",",format(x$T,digits=digits),"].","\n",
+             "\t| Discretization","\t| Dt = ",format(x$Dt,digits=digits),".","\n",
+             sep="")}} else {
+       if(x$type=="ito"){
+             cat(Ito," Sde 2D:","\n",
+             "\t| dX(t) = ", Drx," * dt + ", DDx," * dB1(t)","\n", 
+             "\t| dY(t) = ", Dry," * dt + ", DDy," * dB2(t)","\n",
+			 "\t| Correlation structure:",sep="")
+             #"\t| ", format(x$corrmat[1,1],digits=digits),"  ", format(x$corrmat[1,2],digits=digits),"\n", 
+             #"\t| ", format(x$corrmat[2,1],digits=digits),"  ", format(x$corrmat[2,2],digits=digits),"\n", 		 
+			 prmatrix(x$corrmat,rowlab = rep("            ", 2), collab = rep("", 2),digits=digits)
+             cat("Method:","\n",
+             "\t| ",sch,"\n",
+             "Summary:","\n",
+             "\t| Size of process","\t| N  = ",format(x$N+1,digits=digits),".","\n",
+             "\t| Number of simulation","\t| M  = ",format(x$M,digits=digits),".","\n",
+             "\t| Initial values","\t| (x0,y0) = ","(",format(x$x0,digits=digits),",",format(x$y0,digits=digits),")",".","\n",
+             "\t| Time of process","\t| t in [",format(x$t0,digits=digits),",",format(x$T,digits=digits),"].","\n",
+             "\t| Discretization","\t| Dt = ",format(x$Dt,digits=digits),".","\n",
+             sep="")}else{
+             cat("Stratonovich Sde 2D:","\n",
+             "\t| dX(t) = ", Drx," * dt + ", DDx," o dB1(t)","\n", 
+             "\t| dY(t) = ", Dry," * dt + ", DDy," o dB2(t)","\n",
+			 "\t| Correlation structure:",sep="")
+             #"\t| ", format(x$corrmat[1,1],digits=digits),"  ", format(x$corrmat[1,2],digits=digits),"\n", 
+             #"\t| ", format(x$corrmat[2,1],digits=digits),"  ", format(x$corrmat[2,2],digits=digits),"\n", 		 
+			 prmatrix(x$corrmat,rowlab = rep("            ", 2), collab = rep("", 2),digits=digits)
+             cat("Method:","\n",
+             "\t| ",sch,"\n",
+             "Summary:","\n",
+             "\t| Size of process","\t| N  = ",format(x$N+1,digits=digits),".","\n",
+             "\t| Number of simulation","\t| M  = ",format(x$M,digits=digits),".","\n",
+             "\t| Initial values","\t| (x0,y0) = ","(",format(x$x0,digits=digits),",",format(x$y0,digits=digits),")",".","\n",
+             "\t| Time of process","\t| t in [",format(x$t0,digits=digits),",",format(x$T,digits=digits),"].","\n",
+             "\t| Discretization","\t| Dt = ",format(x$Dt,digits=digits),".","\n",
+             sep="")}
+			 }
     invisible(x)
 }
 
@@ -596,25 +632,22 @@ points2d.snssde2d <- function(x,...)
 summary.snssde2d  <- function(object,at,digits=NULL, ...)
            {   
     class(object) <- "snssde2d"
+    if (object$M == 1) stop("Summary of Monte-Carlo Statistics is for any M > 1")
     if (missing(at)) {at = as.numeric(object$T)}
 	if (is.null(digits)){digits = base::options()$digits}
     if (any(as.numeric(object$T) < at || as.numeric(object$t0) > at) )  
 	             stop( " please use 't0 <= at <= T'")
-    if (as.numeric(object$M) == 1){  X = matrix(object$X,nrow=length(object$X),ncol=1)
-	                     Y = matrix(object$Y,nrow=length(object$Y),ncol=1)}else{
-				  X = object$X
-				  Y = object$Y}
+	X = object$X
+	Y = object$Y
     x   <- as.vector(X[which(time(object)==as.character(at)),])
     y   <- as.vector(Y[which(time(object)==as.character(at)),])
     if (length(x) == 0){
-	if (as.numeric(object$M)==1){ Fx   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$X))}else{
-                      Fx   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$X[,i]))}
-                      x   <- sapply(1:length(Fx),function(i) Fx[[i]](at)) 
+        Fx   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$X[,i]))
+        x   <- sapply(1:length(Fx),function(i) Fx[[i]](at)) 
     }
     if (length(y) == 0){
-	if (as.numeric(object$M)==1){ Fy   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$Y))}else{
-                      Fy   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$Y[,i]))}
-                      y   <- sapply(1:length(Fy),function(i) Fy[[i]](at)) 
+        Fy   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$Y[,i]))
+        y   <- sapply(1:length(Fy),function(i) Fy[[i]](at)) 
     }
     cat("\n\tMonte-Carlo Statistics for (X(t),Y(t)) at time t = ",at,"\n",
          sep="")
@@ -935,7 +968,7 @@ time.snssde2d <- function(x,...)
 
 snssde3d <- function(N, ...)  UseMethod("snssde3d")
 
-snssde3d.default <- function(N =1000,M=1,x0=c(0,0,0),t0=0,T=1,Dt=NULL,drift,diffusion,
+snssde3d.default <- function(N =1000,M=1,x0=c(0,0,0),t0=0,T=1,Dt,drift,diffusion,corr=NULL,
                              alpha=0.5,mu=0.5,type=c("ito","str"), method=c("euler","milstein",
                              "predcorr","smilstein","taylor","heun","rk1","rk2","rk3"),...)
         {
@@ -959,7 +992,12 @@ snssde3d.default <- function(N =1000,M=1,x0=c(0,0,0),t0=0,T=1,Dt=NULL,drift,diff
 	         diffusion  <- expression(1,1,1)
     if (missing(type)) 
 	         type <- "ito"
+	if (!is.null(corr)) {
+        if (any(!is.matrix(corr) || det(corr) <= 0 || nrow(corr)!=3 || ncol(corr)!=3 || !isSymmetric(corr)))
+                     stop("the correlation structure of W1(t), W2(t) and W3(t) must be a real symmetric\n  positive-definite square matrix of dimension 3") 	   
+     }
     method <- match.arg(method)
+	if (!is.null(corr) && method != "euler" && method != "milstein") {method="euler"}
     if (method =="predcorr"){
     if (any(alpha > 1 || alpha < 0)) 
 	       stop("please use '0 <= alpha <= 1' ")
@@ -968,19 +1006,19 @@ snssde3d.default <- function(N =1000,M=1,x0=c(0,0,0),t0=0,T=1,Dt=NULL,drift,diff
                             }
     if (t0 < 0 || T < 0) 
 	        stop(" please use positive times! (0 <= t0 < T) ")
-    if (is.null(Dt)) {
-        Dt <- (T - t0)/N
+    if (missing(Dt)) {
         t <- seq(t0, T, by=Dt)
     } else {
         t <- c(t0, t0 + cumsum(rep(Dt, N)))
 		T <- t[N + 1]
-    }   
+    } 
+    Dt <- (T - t0)/N 	
     if (method=="euler")         
-	     res <- .Euler3D(N,M,x0=x0[1],y0=x0[2],z0=x0[3],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],driftz=drift[3],diffz=diffusion[3],type)
+	     res <- .Euler3D(N,M,x0=x0[1],y0=x0[2],z0=x0[3],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],driftz=drift[3],diffz=diffusion[3],type,corr)
+    else if (method=="milstein") 
+	     res <- .Milstein3D(N,M,x0=x0[1],y0=x0[2],z0=x0[3],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],driftz=drift[3],diffz=diffusion[3],type,corr)
     else if (method=="predcorr") 
 	     res <- .PredCorr3D(N,M,x0=x0[1],y0=x0[2],z0=x0[3],t0,T,Dt,alpha,mu,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],driftz=drift[3],diffz=diffusion[3],type)
-    else if (method=="milstein") 
-	     res <- .Milstein3D(N,M,x0=x0[1],y0=x0[2],z0=x0[3],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],driftz=drift[3],diffz=diffusion[3],type)
     else if (method=="smilstein")
 	     res <- .SMilstein3D(N,M,x0=x0[1],y0=x0[2],z0=x0[3],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],driftz=drift[3],diffz=diffusion[3],type)
     else if (method=="taylor")   
@@ -992,10 +1030,10 @@ snssde3d.default <- function(N =1000,M=1,x0=c(0,0,0),t0=0,T=1,Dt=NULL,drift,diff
     else if (method=="rk2")      
 	     res <- .RK3D(N,M,x0=x0[1],y0=x0[2],z0=x0[3],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],driftz=drift[3],diffz=diffusion[3],type,order=2)
     else if (method=="rk3")      
-	     res <- .RK3D(N,M,x0=x0[1],y0=x0[2],z0=x0[3],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],driftz=drift[3],diffz=diffusion[3],type,order=3)
-		 
+	     res <- .RK3D(N,M,x0=x0[1],y0=x0[2],z0=x0[3],t0,T,Dt,driftx=drift[1],diffx=diffusion[1],drifty=drift[2],diffy=diffusion[2],driftz=drift[3],diffz=diffusion[3],type,order=3)		 
+
     structure(list(X=res$X,Y=res$Y,Z=res$Z,driftx=drift[[1]], diffx=diffusion[[1]],drifty=drift[[2]], diffy=diffusion[[2]],driftz=drift[[3]], 
-                   diffz=diffusion[[3]],type=type,method=method,x0=as.numeric(format(x0[1])),y0=as.numeric(format(x0[2])),z0=as.numeric(format(x0[3])),N=as.numeric(format(N)),M=as.numeric(format(M)),Dt=as.numeric(format(Dt)),t0=as.numeric(format(t0)),T=as.numeric(format(T)),dim="3d",call=match.call()),class="snssde3d")
+                   diffz=diffusion[[3]],type=type,corrmat=corr,method=method,x0=as.numeric(format(x0[1])),y0=as.numeric(format(x0[2])),z0=as.numeric(format(x0[3])),N=as.numeric(format(N)),M=as.numeric(format(M)),Dt=as.numeric(format(Dt)),t0=as.numeric(format(t0)),T=as.numeric(format(T)),dim="3d",call=match.call()),class="snssde3d")
 }
 
 
@@ -1030,6 +1068,7 @@ print.snssde3d <- function(x, digits=NULL, ...)
     DDy <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)),z=quote(Z(t)))), list(e = x$diffy))))
     Drz <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)),z=quote(Z(t)))), list(e = x$driftz))))   
     DDz <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)),z=quote(Z(t)))), list(e = x$diffz))))	
+    if (is.null(x$corrmat)){ 
     if(x$type=="ito"){
     cat(Ito," Sde 3D:","\n",
         "\t| dX(t) = ", Drx," * dt + ", DDx," * dW1(t)","\n", 
@@ -1056,7 +1095,39 @@ print.snssde3d <- function(x, digits=NULL, ...)
         "\t| Initial values","\t| (x0,y0,z0) = ","(",format(x$x0,digits=digits),",",format(x$y0,digits=digits),",",format(x$z0,digits=digits),")",".","\n",
         "\t| Time of process","\t| t in [",format(x$t0,digits=digits),",",format(x$T,digits=digits),"].","\n",
         "\t| Discretization","\t| Dt = ",format(x$Dt,digits=digits),".","\n",
+        sep="")}} else {
+    if(x$type=="ito"){
+    cat(Ito," Sde 3D:","\n",
+        "\t| dX(t) = ", Drx," * dt + ", DDx," * dB1(t)","\n", 
+        "\t| dY(t) = ", Dry," * dt + ", DDy," * dB2(t)","\n",
+        "\t| dZ(t) = ", Drz," * dt + ", DDz," * dB3(t)","\n",
+		"\t| Correlation structure:",sep="")		 
+		prmatrix(x$corrmat,rowlab = rep("            ", 3), collab = rep("", 3),digits=digits)
+    cat("Method:","\n",
+        "\t| ",sch,"\n",
+        "Summary:","\n",
+        "\t| Size of process","\t| N  = ",format(x$N+1,digits=digits),".","\n",
+        "\t| Number of simulation","\t| M  = ",format(x$M,digits=digits),".","\n",
+        "\t| Initial values","\t| (x0,y0,z0) = ","(",format(x$x0,digits=digits),",",format(x$y0,digits=digits),",",format(x$z0,digits=digits),")",".","\n",
+        "\t| Time of process","\t| t in [",format(x$t0,digits=digits),",",format(x$T,digits=digits),"].","\n",
+        "\t| Discretization","\t| Dt = ",format(x$Dt,digits=digits),".","\n",
+        sep="")}else{
+    cat("Stratonovich Sde 3D:","\n",
+        "\t| dX(t) = ", Drx," * dt + ", DDx," o dB1(t)","\n", 
+        "\t| dY(t) = ", Dry," * dt + ", DDy," o dB2(t)","\n",
+        "\t| dZ(t) = ", Drz," * dt + ", DDz," o dB3(t)","\n",
+		"\t| Correlation structure:",sep="")		 
+		prmatrix(x$corrmat,rowlab = rep("            ", 3), collab = rep("", 3),digits=digits)
+    cat("Method:","\n",
+        "\t| ",sch,"\n",
+        "Summary:","\n",
+        "\t| Size of process","\t| N  = ",format(x$N+1,digits=digits),".","\n",
+        "\t| Number of simulation","\t| M  = ",format(x$M,digits=digits),".","\n",
+        "\t| Initial values","\t| (x0,y0,z0) = ","(",format(x$x0,digits=digits),",",format(x$y0,digits=digits),",",format(x$z0,digits=digits),")",".","\n",
+        "\t| Time of process","\t| t in [",format(x$t0,digits=digits),",",format(x$T,digits=digits),"].","\n",
+        "\t| Discretization","\t| Dt = ",format(x$Dt,digits=digits),".","\n",
         sep="")}
+		}
     invisible(x)
 }
 
@@ -1115,33 +1186,28 @@ plot3D.snssde3d <- function(x,display = c("persp","rgl"),...)
 summary.snssde3d  <- function(object,at,digits=NULL, ...)
            {   
     class(object) <- "snssde3d"
+    if (object$M == 1) stop("Summary of Monte-Carlo Statistics is for any M > 1")
     if (missing(at)) {at = as.numeric(object$T)}
 	if (is.null(digits)){digits = base::options()$digits}
     if (any(as.numeric(object$T) < at || as.numeric(object$t0) > at) )  
 	        stop( " please use 't0 <= at <= T'")
-    if (as.numeric(object$M) == 1){  X = matrix(object$X,nrow=length(object$X),ncol=1)
-	              Y = matrix(object$Y,nrow=length(object$Y),ncol=1)
-				  Z = matrix(object$Z,nrow=length(object$Z),ncol=1)}else{
-				  X = object$X
-				  Y = object$Y
-				  Z = object$Z}
+	X = object$X
+	Y = object$Y
+	Z = object$Z
     x   <- as.vector(X[which(time(object)==as.character(at)),])
     y   <- as.vector(Y[which(time(object)==as.character(at)),])
     z   <- as.vector(Z[which(time(object)==as.character(at)),])
     if (length(x) == 0){
-	if (as.numeric(object$M)==1){ Fx   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$X))}else{
-               Fx   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$X[,i]))}
-               x   <- sapply(1:length(Fx),function(i) Fx[[i]](at)) 
+        Fx   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$X[,i]))
+        x   <- sapply(1:length(Fx),function(i) Fx[[i]](at)) 
     }
     if (length(y) == 0){
-	if (as.numeric(object$M)==1){ Fy   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$Y))}else{
-               Fy   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$Y[,i]))}
-               y   <- sapply(1:length(Fy),function(i) Fy[[i]](at)) 
+        Fy   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$Y[,i]))
+        y   <- sapply(1:length(Fy),function(i) Fy[[i]](at)) 
     }
     if (length(z) == 0){
-	if (as.numeric(object$M)==1){ Fz   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$Z))}else{
-               Fz   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$Z[,i]))}
-               z   <- sapply(1:length(Fz),function(i) Fz[[i]](at)) 
+        Fz   <- lapply(1:as.numeric(object$M),function(i) approxfun(time(object),object$Z[,i]))
+        z   <- sapply(1:length(Fz),function(i) Fz[[i]](at)) 
     }
     cat("\n  Monte-Carlo Statistics for (X(t),Y(t),Z(t)) at time t = ",at,"\n",
         sep="")

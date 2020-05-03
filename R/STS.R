@@ -1,5 +1,5 @@
-## Mon May 27 03:39:04 2019
-## Original file Copyright © 2019 A.C. Guidoum, K. Boukhetala
+## Fri Apr 03 08:54:53 2020
+## Original file Copyright © 2020 A.C. Guidoum, K. Boukhetala
 ## This file is part of the R package Sim.DiffProc
 ## Department of Probabilities & Statistics
 ## Faculty of Mathematics
@@ -26,7 +26,7 @@
 #####
 ##### STS1D
 
-.STS1D <- function(N =1000,M=1,x0=0,t0=0,T=1,Dt=NULL,drift,diffusion,
+.STS1D <- function(N =1000,M=1,x0=0,t0=0,T=1,Dt,drift,diffusion,
                           type=c("ito","str"),...)
                        {
 	DSx  <- Deriv(diffusion,"x")  
@@ -36,22 +36,22 @@
     Ax   <- function(t,x)  eval(Deriv(drift,"x"))
     Axx  <- function(t,x)  eval(Deriv(Deriv(drift,"x"),"x"))
     }else{
-    A    <- function(t,x)  eval(drift) - 0.5 * eval(diffusion) * eval(Deriv(diffusion,"x"))
-    Ax   <- function(t,x)  eval(Deriv(drift,"x")) - 0.5 * (eval(Deriv(diffusion,"x")) * eval(Deriv(diffusion,"x"))+ eval(diffusion) * eval(Deriv(Deriv(diffusion,"x"),"x")))
-    Axx  <- function(t,x)  eval(Deriv(Deriv(drift,"x"),"x")) - 0.5 * ( eval(Deriv(Deriv(diffusion,"x"),"x")) * eval(Deriv(diffusion,"x"))+ eval(Deriv(diffusion,"x")) * eval(Deriv(Deriv(diffusion,"x"),"x"))+
+    A    <- function(t,x)  eval(drift) + 0.5 * eval(diffusion) * eval(Deriv(diffusion,"x"))
+    Ax   <- function(t,x)  eval(Deriv(drift,"x")) + 0.5 * (eval(Deriv(diffusion,"x")) * eval(Deriv(diffusion,"x"))+ eval(diffusion) * eval(Deriv(Deriv(diffusion,"x"),"x")))
+    Axx  <- function(t,x)  eval(Deriv(Deriv(drift,"x"),"x")) + 0.5 * ( eval(Deriv(Deriv(diffusion,"x"),"x")) * eval(Deriv(diffusion,"x"))+ eval(Deriv(diffusion,"x")) * eval(Deriv(Deriv(diffusion,"x"),"x"))+
                            eval(Deriv(diffusion,"x")) * eval(Deriv(Deriv(diffusion,"x"),"x")) + eval(diffusion) * eval(Deriv(Deriv(Deriv(diffusion,"x"),"x"),"x")) )
                   }
     S    <- function(t,x)  eval(diffusion)
     Sx   <- function(t,x)  eval(DSx)
     Sxx  <- function(t,x)  eval(DSxx)
-    if (is.null(Dt)) {
-        Dt <- (T - t0)/N
+    if (missing(Dt)) {
         t <- seq(t0, T, by=Dt)
     } else {
         t <- c(t0, t0 + cumsum(rep(Dt, N)))
 		T <- t[N + 1]
-    }	
-	Sigma <- matrix(c(Dt, 0.5 * Dt^2, 0.5 * Dt^2, (1/3)*Dt^3), 2, 2)
+    }
+    Dt <- (T - t0)/N
+	Sigma <- matrix(c(Dt, 0.5 * Dt^2, 0.5 * Dt^2, (1/3)*Dt^3), ncol=2, nrow=2)
 	B <- do.call("cbind",lapply(1:M,function(i) MASS::mvrnorm(N, mu= c(0, 0), Sigma)))
 	W <- B[,-seq(2,2*M,by=2)]
 	Z <- B[,-seq(1,2*M-1,by=2)]
@@ -72,9 +72,9 @@
 #####
 ##### STS2D
 
-.STS2D <- function(N =1000,M=1,x0=0,y0=0,t0=0,T=1,Dt=NULL,driftx,diffx,drifty,diffy,
+.STS2D <- function(N =1000,M=1,x0=0,y0=0,t0=0,T=1,Dt,driftx,diffx,drifty,diffy,
                           type=c("ito","str"),...)
-                       {
+   {
     DSx  <- Deriv(diffx,"x")  
     DSxx <- Deriv(DSx,"x")
     DSy  <- Deriv(diffy,"y")  
@@ -87,13 +87,13 @@
     dAy   <- function(t,x,y)  eval(Deriv(drifty,"y"))
     dAyy  <- function(t,x,y)  eval(Deriv(Deriv(drifty,"y"),"y"))
     }else{
-    Ax    <- function(t,x,y)  eval(driftx) - 0.5 * eval(diffx) * eval(Deriv(diffx,"x"))
-    dAx   <- function(t,x,y)  eval(Deriv(driftx,"x")) - 0.5 * (eval(Deriv(diffx,"x")) * eval(Deriv(diffx,"x"))+ eval(diffx) * eval(Deriv(Deriv(diffx,"x"),"x")))
-    dAxx  <- function(t,x,y)  eval(Deriv(Deriv(driftx,"x"),"x")) - 0.5 * ( eval(Deriv(Deriv(diffx,"x"),"x")) * eval(Deriv(diffx,"x"))+ eval(Deriv(diffx,"x")) * eval(Deriv(Deriv(diffx,"x"),"x"))+
+    Ax    <- function(t,x,y)  eval(driftx) + 0.5 * eval(diffx) * eval(Deriv(diffx,"x"))
+    dAx   <- function(t,x,y)  eval(Deriv(driftx,"x")) + 0.5 * (eval(Deriv(diffx,"x")) * eval(Deriv(diffx,"x"))+ eval(diffx) * eval(Deriv(Deriv(diffx,"x"),"x")))
+    dAxx  <- function(t,x,y)  eval(Deriv(Deriv(driftx,"x"),"x")) + 0.5 * ( eval(Deriv(Deriv(diffx,"x"),"x")) * eval(Deriv(diffx,"x"))+ eval(Deriv(diffx,"x")) * eval(Deriv(Deriv(diffx,"x"),"x"))+
                               eval(Deriv(diffx,"x")) * eval(Deriv(Deriv(diffx,"x"),"x")) + eval(diffx) * eval(Deriv(Deriv(Deriv(diffx,"x"),"x"),"x")) )
-    Ay    <- function(t,x,y)  eval(drifty) - 0.5 * eval(diffy) * eval(Deriv(diffy,"y"))
-    dAy   <- function(t,x,y)  eval(Deriv(drifty,"y")) - 0.5 * (eval(Deriv(diffy,"y")) * eval(Deriv(diffy,"y"))+ eval(diffy) * eval(Deriv(Deriv(diffy,"y"),"y")))
-    dAyy  <- function(t,x,y)  eval(Deriv(Deriv(drifty,"y"),"y")) - 0.5 * ( eval(Deriv(Deriv(diffy,"y"),"y")) * eval(Deriv(diffy,"y"))+ eval(Deriv(diffy,"y")) * eval(Deriv(Deriv(diffy,"y"),"y"))+
+    Ay    <- function(t,x,y)  eval(drifty) + 0.5 * eval(diffy) * eval(Deriv(diffy,"y"))
+    dAy   <- function(t,x,y)  eval(Deriv(drifty,"y")) + 0.5 * (eval(Deriv(diffy,"y")) * eval(Deriv(diffy,"y"))+ eval(diffy) * eval(Deriv(Deriv(diffy,"y"),"y")))
+    dAyy  <- function(t,x,y)  eval(Deriv(Deriv(drifty,"y"),"y")) + 0.5 * ( eval(Deriv(Deriv(diffy,"y"),"y")) * eval(Deriv(diffy,"y"))+ eval(Deriv(diffy,"y")) * eval(Deriv(Deriv(diffy,"y"),"y"))+
                               eval(Deriv(diffy,"y")) * eval(Deriv(Deriv(diffy,"y"),"y")) + eval(diffy) * eval(Deriv(Deriv(Deriv(diffy,"y"),"y"),"y")) )
                   }
     Sx    <- function(t,x,y)  eval(diffx)
@@ -102,14 +102,14 @@
     Sy    <- function(t,x,y)  eval(diffy)
     dSy   <- function(t,x,y)  eval(DSy)
     dSyy  <- function(t,x,y)  eval(DSyy)
-    if (is.null(Dt)) {
-        Dt <- (T - t0)/N
+    if (missing(Dt)) {
         t <- seq(t0, T, by=Dt)
     } else {
         t <- c(t0, t0 + cumsum(rep(Dt, N)))
 		T <- t[N + 1]
     }
-	Sigma <- matrix(c(Dt, 0.5 * Dt^2, 0.5 * Dt^2, (1/3)*Dt^3), 2, 2)
+    Dt <- (T - t0)/N
+	Sigma <- matrix(c(Dt, 0.5 * Dt^2, 0.5 * Dt^2, (1/3)*Dt^3), ncol=2, nrow=2)
 	Bx <- do.call("cbind",lapply(1:M,function(i) MASS::mvrnorm(N, mu= c(0, 0), Sigma)))
 	By <- do.call("cbind",lapply(1:M,function(i) MASS::mvrnorm(N, mu= c(0, 0), Sigma)))
 	Wx <- Bx[,-seq(2,2*M,by=2)]
@@ -138,7 +138,7 @@
 #####
 ##### STS3D
 
-.STS3D <- function(N =100,M=1,x0=0,y0=0,z0=0,t0=0,T=1,Dt=NULL,driftx,diffx,drifty,diffy,
+.STS3D <- function(N =100,M=1,x0=0,y0=0,z0=0,t0=0,T=1,Dt,driftx,diffx,drifty,diffy,
                      driftz,diffz,type=c("ito","str"),...)
                        {
     if (type=="ito"){
@@ -151,17 +151,17 @@
     Az    <- function(t,x,y,z)  eval(driftz)
     dAz   <- function(t,x,y,z)  eval(Deriv(driftz,"z"))
     dAzz  <- function(t,x,y,z)  eval(Deriv(Deriv(driftz,"z"),"z"))}else{
-    Ax    <- function(t,x,y,z)  eval(driftx) - 0.5 * eval(diffx) * eval(Deriv(diffx,"x"))
-    dAx   <- function(t,x,y,z)  eval(Deriv(driftx,"x")) - 0.5 * (eval(Deriv(diffx,"x")) * eval(Deriv(diffx,"x"))+ eval(diffx) * eval(Deriv(Deriv(diffx,"x"),"x")))
-    dAxx  <- function(t,x,y,z)  eval(Deriv(Deriv(driftx,"x"),"x")) - 0.5 * ( eval(Deriv(Deriv(diffx,"x"),"x")) * eval(Deriv(diffx,"x"))+ eval(Deriv(diffx,"x")) * eval(Deriv(Deriv(diffx,"x"),"x"))+
+    Ax    <- function(t,x,y,z)  eval(driftx) + 0.5 * eval(diffx) * eval(Deriv(diffx,"x"))
+    dAx   <- function(t,x,y,z)  eval(Deriv(driftx,"x")) + 0.5 * (eval(Deriv(diffx,"x")) * eval(Deriv(diffx,"x"))+ eval(diffx) * eval(Deriv(Deriv(diffx,"x"),"x")))
+    dAxx  <- function(t,x,y,z)  eval(Deriv(Deriv(driftx,"x"),"x")) + 0.5 * ( eval(Deriv(Deriv(diffx,"x"),"x")) * eval(Deriv(diffx,"x"))+ eval(Deriv(diffx,"x")) * eval(Deriv(Deriv(diffx,"x"),"x"))+
                                 eval(Deriv(diffx,"x")) * eval(Deriv(Deriv(diffx,"x"),"x")) + eval(diffx) * eval(Deriv(Deriv(Deriv(diffx,"x"),"x"),"x")) )
-    Ay    <- function(t,x,y,z)  eval(drifty) - 0.5 * eval(diffy) * eval(Deriv(diffy,"y"))
-    dAy   <- function(t,x,y,z)  eval(Deriv(drifty,"y")) - 0.5 * (eval(Deriv(diffy,"y")) * eval(Deriv(diffy,"y"))+ eval(diffy) * eval(Deriv(Deriv(diffy,"y"),"y")))
-    dAyy  <- function(t,x,y,z)  eval(Deriv(Deriv(drifty,"y"),"y")) - 0.5 * ( eval(Deriv(Deriv(diffy,"y"),"y")) * eval(Deriv(diffy,"y"))+ eval(Deriv(diffy,"y")) * eval(Deriv(Deriv(diffy,"y"),"y"))+
+    Ay    <- function(t,x,y,z)  eval(drifty) + 0.5 * eval(diffy) * eval(Deriv(diffy,"y"))
+    dAy   <- function(t,x,y,z)  eval(Deriv(drifty,"y")) + 0.5 * (eval(Deriv(diffy,"y")) * eval(Deriv(diffy,"y"))+ eval(diffy) * eval(Deriv(Deriv(diffy,"y"),"y")))
+    dAyy  <- function(t,x,y,z)  eval(Deriv(Deriv(drifty,"y"),"y")) + 0.5 * ( eval(Deriv(Deriv(diffy,"y"),"y")) * eval(Deriv(diffy,"y"))+ eval(Deriv(diffy,"y")) * eval(Deriv(Deriv(diffy,"y"),"y"))+
                                 eval(Deriv(diffy,"y")) * eval(Deriv(Deriv(diffy,"y"),"y")) + eval(diffy) * eval(Deriv(Deriv(Deriv(diffy,"y"),"y"),"y")) )
-    Az    <- function(t,x,y,z)  eval(driftz) - 0.5 * eval(diffz) * eval(Deriv(diffz,"z"))
-    dAz   <- function(t,x,y,z)  eval(Deriv(driftz,"z")) - 0.5 * (eval(Deriv(diffz,"z")) * eval(Deriv(diffz,"z"))+ eval(diffz) * eval(Deriv(Deriv(diffz,"z"),"z")))
-    dAzz  <- function(t,x,y,z)  eval(Deriv(Deriv(driftz,"z"),"z")) - 0.5 * ( eval(Deriv(Deriv(diffz,"z"),"z")) * eval(Deriv(diffz,"z"))+ eval(Deriv(diffz,"z")) * eval(Deriv(Deriv(diffz,"z"),"z"))+
+    Az    <- function(t,x,y,z)  eval(driftz) + 0.5 * eval(diffz) * eval(Deriv(diffz,"z"))
+    dAz   <- function(t,x,y,z)  eval(Deriv(driftz,"z")) + 0.5 * (eval(Deriv(diffz,"z")) * eval(Deriv(diffz,"z"))+ eval(diffz) * eval(Deriv(Deriv(diffz,"z"),"z")))
+    dAzz  <- function(t,x,y,z)  eval(Deriv(Deriv(driftz,"z"),"z")) + 0.5 * ( eval(Deriv(Deriv(diffz,"z"),"z")) * eval(Deriv(diffz,"z"))+ eval(Deriv(diffz,"z")) * eval(Deriv(Deriv(diffz,"z"),"z"))+
                                 eval(Deriv(diffz,"z")) * eval(Deriv(Deriv(diffz,"z"),"z")) + eval(diffz) * eval(Deriv(Deriv(Deriv(diffz,"z"),"z"),"z")) )
                   }
     DSx  <- Deriv(diffx,"x")  
@@ -179,14 +179,14 @@
     Sz    <- function(t,x,y,z)  eval(diffz)
     dSz   <- function(t,x,y,z)  eval(DSz)
     dSzz  <- function(t,x,y,z)  eval(DSzz)
-    if (is.null(Dt)) {
-        Dt <- (T - t0)/N
+    if (missing(Dt)) {
         t <- seq(t0, T, by=Dt)
     } else {
         t <- c(t0, t0 + cumsum(rep(Dt, N)))
 		T <- t[N + 1]
-    }
-	Sigma <- matrix(c(Dt, 0.5 * Dt^2, 0.5 * Dt^2, (1/3)*Dt^3), 2, 2)
+    } 
+    Dt <- (T - t0)/N
+	Sigma <- matrix(c(Dt, 0.5 * Dt^2, 0.5 * Dt^2, (1/3)*Dt^3), ncol=2, nrow=2)
 	Bx <- do.call("cbind",lapply(1:M,function(i) MASS::mvrnorm(N, mu= c(0, 0), Sigma)))
 	By <- do.call("cbind",lapply(1:M,function(i) MASS::mvrnorm(N, mu= c(0, 0), Sigma)))
 	Bz <- do.call("cbind",lapply(1:M,function(i) MASS::mvrnorm(N, mu= c(0, 0), Sigma)))

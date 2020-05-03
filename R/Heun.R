@@ -1,5 +1,5 @@
-## Mon May 27 03:39:04 2019
-## Original file Copyright © 2019 A.C. Guidoum, K. Boukhetala
+## Fri Apr 03 08:54:53 2020
+## Original file Copyright © 2020 A.C. Guidoum, K. Boukhetala
 ## This file is part of the R package Sim.DiffProc
 ## Department of Probabilities & Statistics
 ## Faculty of Mathematics
@@ -26,22 +26,21 @@
 #####
 ##### Heun1D
 
-.Heun1D <- function(N =1000,M=1,x0=0,t0=0,T=1,Dt=NULL,drift,diffusion,
+.Heun1D <- function(N =1000,M=1,x0=0,t0=0,T=1,Dt,drift,diffusion,
                           type=c("ito","str"),...)
                        { 					   
     if (type=="ito") {A    <- function(t,x)  eval(drift)}else{
-    driftstr <- eval(Simplify(substitute(expression(e1 - 0.5 * e2 * de2), list(e1 = drift[[1]], e2 = diffusion[[1]], de2 = Deriv(diffusion,"x",cache.exp=FALSE)[[1]]))))
+    driftstr <- eval(Simplify(substitute(expression(e1 + 0.5 * e2 * de2), list(e1 = drift[[1]], e2 = diffusion[[1]], de2 = Deriv(diffusion,"x",cache.exp=FALSE)[[1]]))))
 	A  <- function(t,x) eval(driftstr)
-    #A  <- function(t,x) eval(drift) - 0.5 * eval(diffusion) * eval(Deriv(diffusion,"x"))
 	}
     S  <- function(t,x) eval(diffusion)
-    if (is.null(Dt)) {
-        Dt <- (T - t0)/N
+    if (missing(Dt)) {
         t <- seq(t0, T, by=Dt)
     } else {
         t <- c(t0, t0 + cumsum(rep(Dt, N)))
 		T <- t[N + 1]
     }
+    Dt <- (T - t0)/N
     Wu <- matrix(rnorm(N * M, 0, sqrt(Dt)), N, M)
 	Wd <- matrix(rnorm(N * M, 0, sqrt(Dt)), N, M)
     X <- matrix(x0, N+1, M)	
@@ -59,28 +58,26 @@
 #####
 ##### Heun2D
 
-.Heun2D <- function(N =1000,M=1,x0=0,y0=0,t0=0,T=1,Dt=NULL,driftx,diffx,drifty,diffy,
-                          type=c("ito","str"),order=c(1,2,3),...)
-                       {
+.Heun2D <- function(N =1000,M=1,x0=0,y0=0,t0=0,T=1,Dt,driftx,diffx,drifty,diffy,
+                          type=c("ito","str"),...)
+  {
     if (type=="ito"){
     Ax <- function(t,x,y)  eval(driftx)
     Ay <- function(t,x,y)  eval(drifty) }else{
-	driftstrx <- eval(Simplify(substitute(expression(e1 - 0.5 * e2 * de2), list(e1 = driftx[[1]], e2 = diffx[[1]], de2 = Deriv(diffx,"x",cache.exp=FALSE)[[1]]))))
-	driftstry <- eval(Simplify(substitute(expression(e1 - 0.5 * e2 * de2), list(e1 = drifty[[1]], e2 = diffy[[1]], de2 = Deriv(diffy,"y",cache.exp=FALSE)[[1]]))))
+	driftstrx <- eval(Simplify(substitute(expression(e1 + 0.5 * e2 * de2), list(e1 = driftx[[1]], e2 = diffx[[1]], de2 = Deriv(diffx,"x",cache.exp=FALSE)[[1]]))))
+	driftstry <- eval(Simplify(substitute(expression(e1 + 0.5 * e2 * de2), list(e1 = drifty[[1]], e2 = diffy[[1]], de2 = Deriv(diffy,"y",cache.exp=FALSE)[[1]]))))
     Ax <- function(t,x,y) eval(driftstrx) 
     Ay <- function(t,x,y) eval(driftstry)
-    # Ax <- function(t,x,y) eval(driftx) - 0.5 * eval(diffx) * eval(Deriv(diffx,"x"))
-    # Ay <- function(t,x,y) eval(drifty) - 0.5 * eval(diffy) * eval(Deriv(diffy,"y"))
                          }
     Sx <- function(t,x,y) eval(diffx)
-    Sy <- function(t,x,y) eval(diffy) 
-    if (is.null(Dt)) {
-        Dt <- (T - t0)/N
+    Sy <- function(t,x,y) eval(diffy)
+    if (missing(Dt)) {
         t <- seq(t0, T, by=Dt)
     } else {
         t <- c(t0, t0 + cumsum(rep(Dt, N)))
 		T <- t[N + 1]
     }
+    Dt <- (T - t0)/N	
     Wux <- matrix(rnorm(N * M, 0, sqrt(Dt)), N, M)
 	Wdx <- matrix(rnorm(N * M, 0, sqrt(Dt)), N, M)
     Wuy <- matrix(rnorm(N * M, 0, sqrt(Dt)), N, M)
@@ -103,33 +100,30 @@
 #####
 ##### Heun3D
 
-.Heun3D <- function(N =1000,M=1,x0=0,y0=0,z0=0,t0=0,T=1,Dt=NULL,driftx,diffx,drifty,diffy,
+.Heun3D <- function(N =1000,M=1,x0=0,y0=0,z0=0,t0=0,T=1,Dt,driftx,diffx,drifty,diffy,
                      driftz,diffz,type=c("ito","str"),...)
                        {
     if (type=="ito"){
         Ax    <- function(t,x,y,z) eval(driftx)
         Ay    <- function(t,x,y,z) eval(drifty)
         Az    <- function(t,x,y,z) eval(driftz)}else{
-		driftstrx <- eval(Simplify(substitute(expression(e1 - 0.5 * e2 * de2), list(e1 = driftx[[1]], e2 = diffx[[1]], de2 = Deriv(diffx,"x",cache.exp=FALSE)[[1]]))))
-		driftstry <- eval(Simplify(substitute(expression(e1 - 0.5 * e2 * de2), list(e1 = drifty[[1]], e2 = diffy[[1]], de2 = Deriv(diffy,"y",cache.exp=FALSE)[[1]]))))
-	    driftstrz <- eval(Simplify(substitute(expression(e1 - 0.5 * e2 * de2), list(e1 = driftz[[1]], e2 = diffz[[1]], de2 = Deriv(diffz,"z",cache.exp=FALSE)[[1]]))))
+		driftstrx <- eval(Simplify(substitute(expression(e1 + 0.5 * e2 * de2), list(e1 = driftx[[1]], e2 = diffx[[1]], de2 = Deriv(diffx,"x",cache.exp=FALSE)[[1]]))))
+		driftstry <- eval(Simplify(substitute(expression(e1 + 0.5 * e2 * de2), list(e1 = drifty[[1]], e2 = diffy[[1]], de2 = Deriv(diffy,"y",cache.exp=FALSE)[[1]]))))
+	    driftstrz <- eval(Simplify(substitute(expression(e1 + 0.5 * e2 * de2), list(e1 = driftz[[1]], e2 = diffz[[1]], de2 = Deriv(diffz,"z",cache.exp=FALSE)[[1]]))))
         Ax <- function(t,x,y,z) eval(driftstrx) 
         Ay <- function(t,x,y,z) eval(driftstry)
         Az <- function(t,x,y,z) eval(driftstrz)
-    # Ax <- function(t,x,y,z) eval(driftx) - 0.5 * eval(diffx) * eval(Deriv(diffx,"x"))
-    # Ay <- function(t,x,y,z) eval(drifty) - 0.5 * eval(diffy) * eval(Deriv(diffy,"y"))
-    # Az <- function(t,x,y,z) eval(driftz) - 0.5 * eval(diffz) * eval(Deriv(diffz,"z"))
 	}
     Sx <- function(t,x,y,z) eval(diffx)
     Sy <- function(t,x,y,z) eval(diffy) 
     Sz <- function(t,x,y,z) eval(diffz)
-    if (is.null(Dt)) {
-        Dt <- (T - t0)/N
+    if (missing(Dt)) {
         t <- seq(t0, T, by=Dt)
     } else {
         t <- c(t0, t0 + cumsum(rep(Dt, N)))
 		T <- t[N + 1]
-    }
+    } 
+    Dt <- (T - t0)/N
     Wux <- matrix(rnorm(N * M, 0, sqrt(Dt)), N, M)
 	Wdx <- matrix(rnorm(N * M, 0, sqrt(Dt)), N, M)
     Wuy <- matrix(rnorm(N * M, 0, sqrt(Dt)), N, M)

@@ -1,5 +1,5 @@
-## Mon May 27 03:39:04 2019
-## Original file Copyright © 2019 A.C. Guidoum, K. Boukhetala
+## Thu Apr 30 10:50:58 2020
+## Original file Copyright © 2020 A.C. Guidoum, K. Boukhetala
 ## This file is part of the R package Sim.DiffProc
 ## Department of Probabilities & Statistics
 ## Faculty of Mathematics
@@ -28,7 +28,7 @@
 
 MCM.sde <- function(model, ...)  UseMethod("MCM.sde")
 
-MCM.sde.default <- function(model,statistic,R=1000,time,exact=NULL,names=NULL,
+MCM.sde.default <- function(model,statistic,R=100,time,exact=NULL,names=NULL,
                             level = 0.95, parallel = c("no", "multicore", "snow"),
                             ncpus = getOption("ncpus",1L), cl = NULL,...)
                  {
@@ -41,10 +41,11 @@ MCM.sde.default <- function(model,statistic,R=1000,time,exact=NULL,names=NULL,
         if (!is.character(names)) 
 		    stop("'names' must be an character")}
      if (any(!is.numeric(R)  || (R - floor(R) > 0) || R <= 0)) 
-	        stop(" 'R' must be an integer ") 
+	        stop(" 'R' must be an integer ")
+     if (R == 1) stop("Parallel Monte-Carlo Methods is for any R > 1")			
      if (missing(time)) {time = as.numeric(model$T)}
 	 if (length(time) > 1 ) 
-	        stop (" 'time' must be an integer in 't0 < time <= T' ")
+	        stop (" 'time' must be an integer 't0 < time <= T' ")
      if (any(model$T < time | model$t0 > time) )  
 	        stop( " please use 't0 < time <= T'")
      if (any(level <= 0 | level >= 1) )  
@@ -197,7 +198,7 @@ MCM.sde.default <- function(model,statistic,R=1000,time,exact=NULL,names=NULL,
        if (!is.null(exact)){
 	      rmse_f <- function(error) sqrt(mean(error^2))
           Exact = round(as.numeric(exact),digits=options()$digits)
-          Bias = round(Exact - Est,digits=options()$digits)
+          Bias = round(Est - Exact,digits=options()$digits)
           Rmse = round(apply(Stat-Exact,1, rmse_f ),digits=options()$digits)
           TAB  <- data.frame(Exact,Est,Bias,SErr,Rmse,Conf)
           names(TAB) <- c("Exact","Estimate","Bias","Std.Error","RMSE",paste("CI(",100*(1 - level)/2,"%",",",100-100*(1 - level)/2,"%",")",sep=" "))
@@ -210,7 +211,7 @@ MCM.sde.default <- function(model,statistic,R=1000,time,exact=NULL,names=NULL,
           names(TAB) <- c("Estimate","Std.Error",paste("CI(",100*(1 - level)/2,"%",",",100-100*(1 - level)/2,"%",")",sep=" "))
           if (!is.null(names)) {rownames(TAB) <- names}else{rownames(TAB) <- paste("mu",1:length(Est),sep="")}
        }
-structure(list(MC=TAB,name=dimnames(TAB)[[1]],ech=Stat,mod=model,Fn=statistic,time=time,call=match.call(),infC=INF,supC=SUP,dim=model$dim,Class=class(model)),class="MCM.sde")
+structure(list(MC=TAB,name=dimnames(TAB)[[1]],ech=Stat,mod=model,Fn=statistic,corrmat=model$corrmat,time=time,call=match.call(),infC=INF,supC=SUP,dim=model$dim,Class=class(model)),class="MCM.sde")
 }
 
 
@@ -219,17 +220,18 @@ print.MCM.sde <- function(x, digits=NULL, ...)
     class(x) <- "MCM.sde"
 	Ito = "It\xf4"
     Encoding(Ito) <- "latin1"
+    if (is.null(x$corrmat)){ 
     if (x$Class=="snssde1d"){
     Dr <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)))), list(e = x$mod$drift))))
     DD <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)))), list(e = x$mod$diffusion))))
     if(x$mod$type=="ito"){
     cat(Ito," Sde 1D:","\n",
         " | dX(t) = ", Dr," * dt + ", DD," * dW(t)","\n",
-		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"].","\n",
+		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
         sep="")}else{
     cat("Stratonovich Sde 1D:","\n",
         " | dX(t) = ", Dr," * dt + ", DD," o dW(t)","\n",
-		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"].","\n",
+		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
         sep="")}
     }else if (x$Class=="snssde2d"){
 	Drx <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$mod$driftx))))
@@ -240,12 +242,12 @@ print.MCM.sde <- function(x, digits=NULL, ...)
     cat(Ito," Sde 2D:","\n",
         " | dX(t) = ", Drx," * dt + ", DDx," * dW1(t)","\n",
         " | dY(t) = ", Dry," * dt + ", DDy," * dW2(t)","\n",
-	    " | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"].","\n",
+		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
         sep="")}else{
     cat("Stratonovich Sde 2D:","\n",
         " | dX(t) = ", Drx," * dt + ", DDx," o dW1(t)","\n",
         " | dY(t) = ", Dry," * dt + ", DDy," o dW2(t)","\n",
-	    " | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"].","\n",
+		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
         sep="")}
     }else if (x$Class=="snssde3d"){
     Drx <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)),z=quote(Z(t)))), list(e = x$mod$driftx))))
@@ -259,16 +261,74 @@ print.MCM.sde <- function(x, digits=NULL, ...)
         " | dX(t) = ", Drx," * dt + ", DDx," * dW1(t)","\n",
         " | dY(t) = ", Dry," * dt + ", DDy," * dW2(t)","\n",
         " | dZ(t) = ", Drz," * dt + ", DDz," * dW3(t)","\n",
-	    " | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"].","\n",
+		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
         sep="")}else{
     cat("Stratonovich Sde 3D:","\n",
         " | dX(t) = ", Drx," * dt + ", DDx," o dW1(t)","\n",
         " | dY(t) = ", Dry," * dt + ", DDy," o dW2(t)","\n",
         " | dZ(t) = ", Drz," * dt + ", DDz," o dW3(t)","\n",
-	    " | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"].","\n",
+		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
         sep="")}
-    }
-    cat("\nMCM Based on ", dim(x$ech)[2]," Batches of ",x$mod$M, "-Realisations at time ",x$time,"\n\n",sep="")
+    }} else {
+    if (x$Class=="snssde1d"){
+    Dr <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)))), list(e = x$mod$drift))))
+    DD <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)))), list(e = x$mod$diffusion))))
+    if(x$mod$type=="ito"){
+    cat(Ito," Sde 1D:","\n",
+        " | dX(t) = ", Dr," * dt + ", DD," * dW(t)","\n",
+		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
+        sep="")}else{
+    cat("Stratonovich Sde 1D:","\n",
+        " | dX(t) = ", Dr," * dt + ", DD," o dW(t)","\n",
+		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
+        sep="")}
+    }else if (x$Class=="snssde2d"){
+	Drx <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$mod$driftx))))
+    DDx <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$mod$diffx))))
+	Dry <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$mod$drifty))))
+    DDy <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$mod$diffy))))
+        if(x$mod$type=="ito"){
+    cat(Ito," Sde 2D:","\n",
+        " | dX(t) = ", Drx," * dt + ", DDx," * dB1(t)","\n",
+        " | dY(t) = ", Dry," * dt + ", DDy," * dB2(t)","\n",
+		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
+		" | Correlation structure:",sep="")		 
+		   prmatrix(x$mod$corrmat,rowlab = rep("            ", 2), collab = rep("", 2),digits=digits)
+     }else{
+    cat("Stratonovich Sde 2D:","\n",
+        " | dX(t) = ", Drx," * dt + ", DDx," o dB1(t)","\n",
+        " | dY(t) = ", Dry," * dt + ", DDy," o dB2(t)","\n",
+		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
+		" | Correlation structure:",sep="")		 
+		   prmatrix(x$mod$corrmat,rowlab = rep("            ", 2), collab = rep("", 2),digits=digits)
+		   }
+    }else if (x$Class=="snssde3d"){
+    Drx <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)),z=quote(Z(t)))), list(e = x$mod$driftx))))
+    DDx <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)),z=quote(Z(t)))), list(e = x$mod$diffx))))
+	Dry <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)),z=quote(Z(t)))), list(e = x$mod$drifty))))
+    DDy <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)),z=quote(Z(t)))), list(e = x$mod$diffy))))
+    Drz <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)),z=quote(Z(t)))), list(e = x$mod$driftz))))
+    DDz <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)),z=quote(Z(t)))), list(e = x$mod$diffz))))
+    if(x$mod$type=="ito"){
+    cat(Ito," Sde 3D:","\n",
+        " | dX(t) = ", Drx," * dt + ", DDx," * dB1(t)","\n",
+        " | dY(t) = ", Dry," * dt + ", DDy," * dB2(t)","\n",
+        " | dZ(t) = ", Drz," * dt + ", DDz," * dB3(t)","\n",
+		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
+		" | Correlation structure:",sep="")		 
+		   prmatrix(x$mod$corrmat,rowlab = rep("      ", 3), collab = rep("", 3),digits=digits)
+		}else{
+    cat("Stratonovich Sde 3D:","\n",
+        " | dX(t) = ", Drx," * dt + ", DDx," o dB1(t)","\n",
+        " | dY(t) = ", Dry," * dt + ", DDy," o dB2(t)","\n",
+        " | dZ(t) = ", Drz," * dt + ", DDz," o dB3(t)","\n",
+		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
+		" | Correlation structure:",sep="")		 
+		   prmatrix(x$mod$corrmat,rowlab = rep("      ", 3), collab = rep("", 3),digits=digits)
+		   }
+    }	
+	}
+    cat("\nPMCM Based on ", dim(x$ech)[2]," Batches with ",x$mod$M, "-Realisations at time ",x$time,":","\n\n",sep="")
     print(x$MC)
 }
 
