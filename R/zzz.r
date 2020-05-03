@@ -1,5 +1,5 @@
-## Mon May 27 03:39:04 2019
-## Original file Copyright © 2019 A.C. Guidoum, K. Boukhetala
+## Thu Apr 30 10:50:58 2020
+## Original file Copyright © 2020 A.C. Guidoum, K. Boukhetala
 ## This file is part of the R package Sim.DiffProc
 ## Department of Probabilities & Statistics
 ## Faculty of Mathematics
@@ -21,25 +21,6 @@
 ## http://www.r-project.org/Licenses/
 ## Unlimited use and distribution (see LICENCE).
 ###################################################################################################
-
-
-#############
-#############
-.noGenerics <- TRUE
-
-.onLoad <- function(libname, pkgname)
-          {	
-   ## if (!interactive()) options(rgl.useNULL = TRUE)		  
-   library.dynam("Sim.DiffProc", pkgname, libname, local = FALSE) 
-}
-
-.onUnload <- function(libpath) {
-    library.dynam.unload("Sim.DiffProc", libpath)
-}
-
-# .onAttach <- function(libname, pkgname) {
-    # packageStartupMessage(paste0("This is package 'Sim.DiffProc', v",packageVersion(pkgname)));
-# }
 
 .onAttach <- function(library, pkg) {
     packageStartupMessage("Package 'Sim.DiffProc', version 4.5\nbrowseVignettes('Sim.DiffProc') for more informations.")
