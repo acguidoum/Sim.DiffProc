@@ -215,11 +215,9 @@ fx <- expression(4*(-1-x), 4*(1-y), 4*(1-z))
 gx <- rep(expression(0.2),3)
 
 mod3 <- snssde3d(drift=fx,diffusion=gx,N=50,M=5,Dt=0.001)
-plot(mod3,union = FALSE)
 plot(mod3,type="n")
 lines(mod3,col=2)
 points(mod3,cex=0.1,pch=19)
-plot3D(mod3,display="rgl")
 
 mean(mod3,at = s)
 moment(mod3,at = s, center = TRUE , order = 2) ## variance
