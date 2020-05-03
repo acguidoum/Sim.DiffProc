@@ -28,6 +28,7 @@ options(prompt="R> ",scipen=16,digits=5,warning=FALSE, message=FALSE,width = 80)
 - `object`: an objects from class `MCM.sde()` and `MEM.sde()`. Or an `R` vector of expressions of SDEs, i.e., drift and diffusion coefficients.
 - `...`: arguments to be passed to `kable()` function available in [knitr](https://cran.r-project.org/package=knitr) package (Xie, 2015), if `object` from class `MCM.sde()`.
 
+
 ## LaTeX table for object of class `MCM.sde`
 
 The Monte Carlo results of `MCM.sde` class can be presented in terms of LaTeX tables.
@@ -145,4 +146,4 @@ dY_{t} &= \left( \frac{\gamma \, X_{t}^2 \, Y_{t}}{\left( \kappa + X_{t}^2 \righ
 
 3. Guidoum AC, Boukhetala K (2020). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Accept Submission to Journal of Statistical Software.
 
-4. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.5, URL https://cran.r-project.org/package=Sim.DiffProc.
+4. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.6, URL https://cran.r-project.org/package=Sim.DiffProc.

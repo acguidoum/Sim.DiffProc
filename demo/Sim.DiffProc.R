@@ -1,4 +1,4 @@
-## Fri Sep 15 23:08:50 2017
+## Thu Apr 30 12:03:41 2020
 options(prompt="R> ",scipen=20,digits=5,scientific = 5,width = 70,warning=FALSE, message=FALSE)
 ############################################################################
 #                               Demo 1                                     # 
@@ -217,8 +217,9 @@ mcm.mod2
 #                               Demo 12                                    # 
 #                            Moment equations                              #
 ############################################################################  
-
-start = c(m=x0,S=0)
+fx <- expression( (0.5*theta^2*x) )
+gx <- expression( theta*x )
+start = c(m=1,S=0)
 t = seq(0,1,by=0.001)	
 mem.mod1 = MEM.sde(drift=fx,diffusion=gx,type="ito",solve = TRUE, 
                      parms = c(theta=0.75), init = start, time = t) 
@@ -235,7 +236,6 @@ plot(mem.mod1$sol.ode, mem.mod2$sol.ode,ylab = c("S(t)"),select="S",
        xlab = "Time",main="",col = 2:3,lty=1)
 legend("topleft",c(expression(S[mod1](t),S[mod2](t))),inset = .05,
          col=2:3,lty=1)
-
 		 
 ############################################################################
 #                               Demo 13                                    # 
@@ -256,7 +256,7 @@ TEX.sde(object = c(drift = f, diffusion = g))
 ## Copy and paste the following output in your LaTeX file
 
 # Example 3
-
+f <- expression(mu1*cos(mu2+z),mu1*sin(mu2+z),0) 
+g <- expression(sigma,sigma,alpha) 
 mem.mod3d <- MEM.sde(drift = f, diffusion = g)
 TEX.sde(object = mem.mod3d)
-

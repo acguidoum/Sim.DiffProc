@@ -2,9 +2,18 @@
 \title{\pkg{Sim.DiffProc} News}
 \encoding{UTF-8}
 
+\section{CHANGES IN \pkg{Sim.DiffProc} VERSION 4.6}{
+    \itemize{ 
+	  \item{Release date: 2020-05-05.}
+      \item{Add a new argument \code{"corr"} for \code{MEM.sde()}, \code{snssdekd()} and \code{bridgesdekd()} functions, where \code{k=2,3}. 
+	        That is to say; the correlation structure of Wiener processes is represented by the correlation matrix.}
+      \item{Manual update.}
+    }
+}
+
 \section{CHANGES IN \pkg{Sim.DiffProc} VERSION 4.5}{
     \itemize{ 
-	  \item{Release date: 2020-03-27.}
+	  \item{Release date: 2020-03-29.}
       \item{Minor bug fixes: R (>= 3.5.0).}
     }
 }
