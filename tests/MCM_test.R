@@ -119,5 +119,5 @@ sde.fun3d <- function(data, i){
 mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5,parallel="snow",ncpus=2)
 print(mcm.mod3d)
 plot(mcm.mod3d)
-plot(mcm.mod3d,index=c(1,7))
+plot(mcm.mod3d,index=2)
 
