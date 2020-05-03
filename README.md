@@ -14,10 +14,9 @@
 ![](https://www.r-pkg.org/badges/last-release/Sim.DiffProc)
 ![](https://www.r-pkg.org/badges/ago/Sim.DiffProc)
 
-------------------------------------------------------------------------
-
 ![Github](https://img.shields.io/badge/Github-4.5(at:2020.03.27)-blue.svg)
-![](http://www.r-pkg.org/badges/version-last-release/Sim.DiffProc?color=blue) 
+
+------------------------------------------------------------------------
 
 ![](https://cranlogs.r-pkg.org/badges/grand-total/Sim.DiffProc?color=yellow)
 ![](https://cranlogs.r-pkg.org/badges/Sim.DiffProc?color=yellow)
