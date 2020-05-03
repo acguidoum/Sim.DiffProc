@@ -1,7 +1,6 @@
 options(prompt="R> ",scipen=16,digits=4,warning=FALSE, message=FALSE)
 library(Sim.DiffProc)
 
-
 ###################
 
 f <- expression(mu*x)
