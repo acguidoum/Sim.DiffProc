@@ -10,9 +10,9 @@
 
 ------------------------------------------------------------------------
 
-![](https://www.r-pkg.org/badges/version/{Sim.DiffProc}) 
-![](https://www.r-pkg.org/badges/last-release/{Sim.DiffProc})
-![](https://www.r-pkg.org/badges/ago/{Sim.DiffProc})
+![](https://www.r-pkg.org/badges/version/Sim.DiffProc) 
+![](https://www.r-pkg.org/badges/last-release/Sim.DiffProc)
+![](https://www.r-pkg.org/badges/ago/Sim.DiffProc)
 
 ------------------------------------------------------------------------
 
