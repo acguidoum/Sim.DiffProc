@@ -182,7 +182,7 @@ max(mod1)
 fx <- expression(4*(-1-x) , x)
 gx <- expression(0.2 , 0)
 
-mod2 <- bridgesde2d(drift=fx,diffusion=gx,M=1,Dt=0.05,N=50,method="predcorr")
+mod2 <- bridgesde2d(drift=fx,diffusion=gx,M=1,Dt=0.05,N=50)
 plot(mod2,union = FALSE)
 plot(mod2,type="n")
 lines(mod2,col=2)
