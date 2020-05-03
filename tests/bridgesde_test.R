@@ -204,7 +204,7 @@ max(mod2)
 fx <- expression(4*(-1-x), 4*(1-y), 4*(1-z))
 gx <- rep(expression(0.2),3)
 
-mod3 <- bridgesde3d(drift=fx,diffusion=gx,M=1,Dt=0.05,N=50,method="predcorr")
+mod3 <- bridgesde3d(drift=fx,diffusion=gx,M=10,Dt=0.05,N=50,method="predcorr")
 plot(mod3,union = FALSE)
 plot(mod3,type="n")
 lines(mod3,col=2)
