@@ -25,7 +25,7 @@
 \description{The (S3) generic function \code{bridgesde1d} for simulation of 1-dim bridge stochastic differential equations,Itô or Stratonovich type, with different methods.}
 \usage{
 bridgesde1d(N, \dots)
-\method{bridgesde1d}{default}(N = 1000, M=1, x0 = 0, y = 0, t0 = 0, T = 1, Dt=NULL, 
+\method{bridgesde1d}{default}(N = 1000, M=1, x0 = 0, y = 0, t0 = 0, T = 1, Dt, 
    drift, diffusion, alpha = 0.5, mu = 0.5, type = c("ito", "str"), 
    method = c("euler", "milstein", "predcorr", "smilstein", "taylor", 
    "heun", "rk1", "rk2", "rk3"), \dots)
@@ -56,7 +56,7 @@ bridgesde1d(N, \dots)
   \item{y}{terminal value of the process at time \code{T}.}
   \item{t0}{initial time.}
   \item{T}{final time.} 
-  \item{Dt}{time step of the simulation (discretization). If it is \code{\link[base]{NULL}} a default \eqn{\Delta t = \frac{T-t_{0}}{N}}{Dt = (T-t0)/N}.}
+  \item{Dt}{time step of the simulation (discretization). If it is \code{\link[base]{missing}} a default \eqn{\Delta t = \frac{T-t_{0}}{N}}{Dt = (T-t0)/N}.}
   \item{drift}{drift coefficient: an \code{\link[base]{expression}} of two variables \code{t} and \code{x}.}
   \item{diffusion}{diffusion coefficient: an \code{\link[base]{expression}} of two variables \code{t} and \code{x}.}
   \item{alpha, mu}{weight of the predictor-corrector scheme; the default \code{alpha = 0.5} and \code{mu = 0.5}.}

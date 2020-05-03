@@ -38,7 +38,7 @@ set.seed(1234)
 fx <- rep(expression(0),2)
 gx <- rep(expression(1),2)
 
-res <- snssde2d(drift=fx,diffusion=gx,N=10000)
+res <- snssde2d(drift=fx,diffusion=gx,N=5000)
 plot2d(res,type="l")
 
 ## Example 2: 
@@ -47,7 +47,7 @@ set.seed(1234)
 fx <- rep(expression(0),3)
 gx <- rep(expression(1),3)
 
-res <- snssde3d(drift=fx,diffusion=gx,N=10000)
+res <- snssde3d(drift=fx,diffusion=gx,N=5000)
 plot3D(res,display="persp")
 plot3D(res,display="rgl")
 }

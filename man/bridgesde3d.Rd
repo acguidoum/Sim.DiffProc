@@ -27,7 +27,7 @@
 \usage{
 bridgesde3d(N, \dots)
 \method{bridgesde3d}{default}(N=1000,M=1, x0=c(0,0,0), 
-   y=c(0,0,0), t0 = 0, T = 1, Dt=NULL, drift, diffusion, 
+   y=c(0,0,0), t0 = 0, T = 1, Dt, drift, diffusion, corr = NULL, 
    alpha = 0.5, mu = 0.5,type = c("ito", "str"), method = 
    c("euler", "milstein","predcorr","smilstein", "taylor", 
 	"heun","rk1", "rk2", "rk3"), \dots)
@@ -60,9 +60,10 @@ bridgesde3d(N, \dots)
   \item{y}{terminal value (numeric vector of length 3) of the process \eqn{X_t}{X(t)}, \eqn{Y_t}{Y(t)} and \eqn{Z_t}{Z(t)} at time \eqn{T}{T}.}
   \item{t0}{initial time.}
   \item{T}{final time.} 
-  \item{Dt}{time step of the simulation (discretization). If it is \code{\link[base]{NULL}} a default \eqn{\Delta t = \frac{T-t_{0}}{N}}{Dt = (T-t0)/N}.}
+  \item{Dt}{time step of the simulation (discretization). If it is \code{\link[base]{missing}} a default \eqn{\Delta t = \frac{T-t_{0}}{N}}{Dt = (T-t0)/N}.}
   \item{drift}{drift coefficient: an \code{\link[base]{expression}} of four variables \code{t}, \code{x}, \code{y} and \code{z} for process \eqn{X_t}{X(t)}, \eqn{Y_t}{Y(t)} and \eqn{Z_t}{Z(t)}.}
   \item{diffusion}{diffusion coefficient: an \code{\link[base]{expression}} of four variables \code{t}, \code{x}, \code{y} and \code{z} for process \eqn{X_t}{X(t)}, \eqn{Y_t}{Y(t)} and \eqn{Z_t}{Z(t)}.}
+  \item{corr}{the correlation structure of three Brownian motions W1(t), W2(t) and W3(t); must be a real symmetric positive-definite square matrix of dimension 3.}
   \item{alpha}{weight \code{alpha} of the predictor-corrector scheme; the default \code{alpha = 0.5}.}
   \item{mu}{weight \code{mu} of the predictor-corrector scheme; the default \code{mu = 0.5}.}
   \item{type}{if \code{type="ito"} simulation diffusion bridge of Itô type, else \code{type="str"} simulation diffusion bridge of Stratonovich type; the default \code{type="ito"}.}
@@ -74,7 +75,7 @@ bridgesde3d(N, \dots)
   \item{\dots}{potentially further arguments for (non-default) methods.}
 }
 \details{
-The function \code{bridgesde3d} returns a \code{mts} of the diffusion bridge starting at \code{x} at time \code{t0} and ending at \code{y} at time \code{T}.
+The function \code{bridgesde3d} returns a \code{mts} of the diffusion bridge starting at \code{x} at time \code{t0} and ending at \code{y} at time \code{T}. W1(t), W2(t) and W3(t) three standard Brownian motion independent if \code{corr=NULL}.
 
 The methods of approximation are classified according to their different properties. Mainly two criteria of optimality are used in the literature: the strong 
 and the weak (orders of) convergence. The \code{method} of simulation can be one among: \code{Euler-Maruyama Order 0.5}, \code{Milstein Order 1}, \code{Milstein Second-Order}, 
@@ -112,13 +113,15 @@ A.C. Guidoum, K. Boukhetala.
 ## dX(t) = 4*(-1-X(t))*Y(t) dt + 0.2 * dW1(t) ; x01 = 0 and y01 = 0
 ## dY(t) = 4*(1-Y(t)) *X(t) dt + 0.2 * dW2(t) ; x02 = -1 and y02 = -2
 ## dZ(t) = 4*(1-Z(t)) *Y(t) dt + 0.2 * dW3(t) ; x03 = 0.5 and y03 = 0.5       
-## W1(t), W2(t) and W3(t) three independent Brownian motion
+## W1(t), W2(t) and W3(t) are three correlated Brownian motions with Sigma
 set.seed(1234)
 
 fx <- expression(4*(-1-x)*y, 4*(1-y)*x, 4*(1-z)*y)
 gx <- rep(expression(0.2),3)
+# correlation matrix
+Sigma <-matrix(c(1,0.3,0.5,0.3,1,0.2,0.5,0.2,1),nrow=3,ncol=3) 
 
-res <- bridgesde3d(x0=c(0,-1,0.5),y=c(0,-2,0.5),drift=fx,diffusion=gx,M=200)
+res <- bridgesde3d(x0=c(0,-1,0.5),y=c(0,-2,0.5),drift=fx,diffusion=gx,corr=Sigma,M=200)
 res
 summary(res) ## Monte-Carlo statistics at time T/2=0.5
 summary(res,at=0.25) ## Monte-Carlo statistics at time 0.25

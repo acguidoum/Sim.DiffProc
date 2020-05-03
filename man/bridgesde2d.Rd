@@ -29,7 +29,7 @@
 \usage{
 bridgesde2d(N, \dots)
 \method{bridgesde2d}{default}(N = 1000, M = 1, x0 = c(0, 0), 
-   y = c(0, 0),t0 = 0, T = 1, Dt=NULL,drift, diffusion, 
+   y = c(0, 0),t0 = 0, T = 1, Dt,drift, diffusion, corr = NULL,
    alpha = 0.5, mu = 0.5,type = c("ito", "str"),method = 
    c("euler", "milstein","predcorr", "smilstein", "taylor",
    "heun", "rk1", "rk2", "rk3"), \dots)
@@ -64,9 +64,10 @@ bridgesde2d(N, \dots)
   \item{y}{terminal value (numeric vector of length 2) of the process \eqn{X_t}{X(t)} and \eqn{Y_t}{Y(t)} at time \eqn{T}{T}.}
   \item{t0}{initial time.}
   \item{T}{final time.} 
-  \item{Dt}{time step of the simulation (discretization). If it is \code{\link[base]{NULL}} a default \eqn{\Delta t = \frac{T-t_{0}}{N}}{Dt = (T-t0)/N}.}
+  \item{Dt}{time step of the simulation (discretization). If it is \code{\link[base]{missing}} a default \eqn{\Delta t = \frac{T-t_{0}}{N}}{Dt = (T-t0)/N}.}
   \item{drift}{drift coefficient: an \code{\link[base]{expression}} of three variables \code{t}, \code{x} and \code{y} for process \eqn{X_t}{X(t)} and \eqn{Y_t}{Y(t)}.}
   \item{diffusion}{diffusion coefficient: an \code{\link[base]{expression}} of three variables \code{t}, \code{x} and \code{y} for process \eqn{X_t}{X(t)} and \eqn{Y_t}{Y(t)}.}
+  \item{corr}{the correlation structure of two Brownian motions W1(t) and W2(t); must be a real symmetric positive-definite square matrix of dimension 2.}
   \item{alpha, mu}{weight of the predictor-corrector scheme; the default \code{alpha = 0.5} and \code{mu = 0.5}.}
   \item{type}{if \code{type="ito"} simulation diffusion bridge of Itô type, else \code{type="str"} simulation diffusion bridge of Stratonovich type; the default \code{type="ito"}.}
   \item{method}{numerical methods of simulation, the default \code{method = "euler"}; see \code{\link{snssde2d}}.}
@@ -76,7 +77,7 @@ bridgesde2d(N, \dots)
   \item{\dots}{potentially further arguments for (non-default) methods.}
 }
 \details{
-The function \code{bridgesde2d} returns a \code{mts} of the diffusion bridge starting at \code{x} at time \code{t0} and ending at \code{y} at time \code{T}.
+The function \code{bridgesde2d} returns a \code{mts} of the diffusion bridge starting at \code{x} at time \code{t0} and ending at \code{y} at time \code{T}. W1(t) and W2(t) are two standard Brownian motion independent if \code{corr=NULL}.
 
 The methods of approximation are classified according to their different properties. Mainly two criteria of optimality are used in the literature: the strong 
 and the weak (orders of) convergence. The \code{method} of simulation can be one among: \code{Euler-Maruyama Order 0.5}, \code{Milstein Order 1}, \code{Milstein Second-Order}, 
@@ -116,12 +117,13 @@ A.C. Guidoum, K. Boukhetala.
 ## dY(t) = X(t) dt + 0 dW2(t)
 ## x01 = 0 , y01 = 0
 ## x02 = 0, y02 = 0 
-## W1(t) and W2(t) two independent Brownian motion
+## W1(t) and W2(t) two correlated Brownian motion with matrix Sigma=matrix(c(1,0.7,0.7,1),nrow=2)
 set.seed(1234)
 
 fx <- expression(4*(-1-x) , x)
 gx <- expression(0.2 , 0)
-res <- bridgesde2d(drift=fx,diffusion=gx,Dt=0.005,M=500)
+Sigma= matrix(c(1,0.7,0.7,1),nrow=2)
+res <- bridgesde2d(drift=fx,diffusion=gx,Dt=0.005,M=500,corr=Sigma)
 res
 summary(res) ## Monte-Carlo statistics at time T/2=2.5
 summary(res,at=1) ## Monte-Carlo statistics at time 1

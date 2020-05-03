@@ -13,7 +13,7 @@ Generate \code{R} Monte-Carlo (version parallel) replicates of a statistic appli
 \usage{
 MCM.sde(model, \dots)
 
-\method{MCM.sde}{default}(model, statistic, R = 1000, time, exact = NULL, 
+\method{MCM.sde}{default}(model, statistic, R = 100, time, exact = NULL, 
          names = NULL, level = 0.95, parallel = c("no", "multicore", "snow"),
          ncpus = getOption("ncpus", 1L), cl = NULL, ...)
 
@@ -28,7 +28,7 @@ an object from class \code{\link{snssde1d}}, \code{\link{snssde2d}} and \code{\l
 a function which when applied to model returns a vector containing the statistic(s) of interest. 
 }
   \item{R}{
-the number of Monte-Carlo replicates. Usually this will be a single positive integer.
+the number of Monte-Carlo replicates. Usually this will be a single positive integer "R > 1".
 }
   \item{time}{
 the time when estimating the statistic(s) of interesttime between \code{t0} and \code{T}. The default \code{time = T}.
@@ -199,12 +199,15 @@ plot(mc.sde2d_b,index=2)
 ## dX(t) = sigma*(Y(t)-X(t)) dt + 0.1 * dW1(t)
 ## dY(t) = (rho*X(t)-Y(t)-X(t)*Z(t)) dt + 0.1 * dW2(t)
 ## dZ(t) = (X(t)*Y(t)-bet*Z(t)) dt + 0.1 * dW3(t)
+## W1(t), W2(t) and W3(t) are three correlated Brownian motions with Sigma
 \dontrun{
 ## Set the model 3d
 sigma=10;rho=28; bet=8/3
 f <- expression(sigma*(y-x),rho*x-y-x*z,x*y-bet*z)
 g <- expression(0.1,0.1,0.1)
-mod3d <- snssde3d(x0=rep(0,3),drift=f,diffusion=g,M=1000,Dt=0.01)
+# correlation matrix
+Sigma <-matrix(c(1,0.3,0.5,0.3,1,0.2,0.5,0.2,1),nrow=3,ncol=3) 
+mod3d <- snssde3d(x0=rep(0,3),drift=f,diffusion=g,M=1000,Dt=0.01,corr=Sigma)
 
 ## function of the statistic(s) of interest.
 sde.fun3d <- function(data, i){

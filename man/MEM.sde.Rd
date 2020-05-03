@@ -13,7 +13,7 @@ Calculate and numerical approximation of moment equations (Symbolic ODE's of mea
 \usage{
 MEM.sde(drift, diffusion, \dots)
 
-\method{MEM.sde}{default}(drift, diffusion, type = c("ito", "str"), solve = FALSE, 
+\method{MEM.sde}{default}(drift, diffusion, corr = NULL, type = c("ito", "str"), solve = FALSE, 
       parms = NULL, init = NULL, time = NULL, ...)
 					
 \method{summary}{MEM.sde}(object, at , \dots)					
@@ -26,7 +26,10 @@ drift coefficient: an \code{\link[base]{expression}} 1-dim(t,x), 2-dim(t,x,y) or
   \item{diffusion}{
 diffusion coefficient: an \code{\link[base]{expression}} 1-dim(t,x), 2-dim(t,x,y) or 3-dim(t,x,y,z).
 }
-  \item{type}{
+\item{corr}{
+the correlation coefficient '|corr|<=1' of W1(t) and W2(t) (2d) must be an expression length equal 1. And for 3d (W1(t),W2(t),W3(t)) an expressions length equal 3. See examples.
+}
+\item{type}{
 type of process \code{"ito"} or \code{"Stratonovich"}; the default \code{type="ito"}.
 }
   \item{solve}{
@@ -80,7 +83,7 @@ library(deSolve)
 ## Symbolic ODE's of mean and variance
 f <- expression(mu*x)
 g <- expression(sigma*x)
-res1 <- MEM.sde(drift=f,diffusion=g)
+res1 <- MEM.sde(drift=f,diffusion=g,type="ito")
 res2 <- MEM.sde(drift=f,diffusion=g,type="str")
 res1
 res2
@@ -146,18 +149,45 @@ plot(res2d$sol.ode[,"m1"], res2d$sol.ode[,"m2"], xlab = "m1(t)",
   ylab = "m2(t)", type = "l",lwd = 2)
 hist(res2d$sol.ode,select=c("m1","m2"), col = c("darkblue", "red", "orange", "black"))
 
+## Example3: 2-dim with correlation
+## Heston model
+## dX(t) = mu*X(t) dt + sqrt(Y(t))*X(t) * dW1(t),
+## dY(t) = lambda*(theta-Y(t)) dt + sigma*sqrt(Y(t)) * dW2(t)	
+## with E(dw1dw2)=rho
+
+
+f <- expression( mu*x, lambda*(theta-y) )
+g <- expression( sqrt(y)*x, sigma*sqrt(y) )
+RHO  <- expression(rho)
+res2d <- MEM.sde(drift=f,diffusion=g,corr=RHO)
+res2d
+
+## Numerical approximation
+RHO <- expression(0.5)
+para=c(mu=1,lambda=3,theta=0.5,sigma=0.1)
+ini=c(m1=10,m2=2,S1=0,S2=0,C12=0)
+res2d = MEM.sde(drift=f,diffusion=g,solve=TRUE,parms=para,init=ini,time=seq(0,1,by=0.01))
+res2d
+
+matplot.0D(res2d$sol.ode,select=c("m1","m2")) 
+matplot.0D(res2d$sol.ode,select=c("S1","S2","C12")) 
 	 
-## Example3: 3-dim
+## Example4: 3-dim
 ## dX(t) = sigma*(Y(t)-X(t)) dt + 0.1 * dW1(t)
 ## dY(t) = (rho*X(t)-Y(t)-X(t)*Z(t)) dt + 0.1 * dW2(t)
 ## dZ(t) = (X(t)*Y(t)-bet*Z(t)) dt + 0.1 * dW3(t)
+## with E(dw1dw2)=rho1, E(dw1dw3)=rho2 and E(dw2dw3)=rho3
+
+
 f <- expression(sigma*(y-x),rho*x-y-x*z,x*y-bet*z)
 g <- expression(0.1,0.1,0.1)
+RHO <- expression(rho1,rho2,rho3)
 ## Symbolic moments equations
-res3d = MEM.sde(drift=f,diffusion=g)
+res3d = MEM.sde(drift=f,diffusion=g,corr=RHO)
 res3d
 
 ## Numerical approximation
+RHO <- expression(0.5,0.2,-0.7)
 para=c(sigma=10,rho=28,bet=8/3)
 ini=c(m1=1,m2=1,m3=1,S1=0,S2=0,S3=0,C12=0,C13=0,C23=0)
 res3d = MEM.sde(drift=f,diffusion=g,solve=T,parms=para,init=ini,time=seq(0,1,by=0.01))
@@ -172,9 +202,7 @@ matplot.0D(res3d$sol.ode,select=c("m1","m2","m3"))
 matplot.0D(res3d$sol.ode,select=c("S1","S2","S3")) 
 matplot.0D(res3d$sol.ode,select=c("C12","C13","C23")) 
 
-## 
-library(rgl)
-plot3d(res3d$sol.ode[,"m1"], res3d$sol.ode[,"m2"],res3d$sol.ode[,"m3"], xlab = "m1(t)",
+plot3D(res3d$sol.ode[,"m1"], res3d$sol.ode[,"m2"],res3d$sol.ode[,"m3"], xlab = "m1(t)",
   ylab = "m2(t)",zlab="m3(t)", type = "l",lwd = 2,box=F)
 }
 }

@@ -27,8 +27,8 @@
 }
 \usage{
 snssde3d(N, \dots)
-\method{snssde3d}{default}(N = 1000, M =1, x0=c(0,0,0), t0 = 0, T = 1, Dt=NULL, 
-   drift, diffusion, alpha = 0.5, mu = 0.5, type = c("ito", "str"), 
+\method{snssde3d}{default}(N = 1000, M =1, x0=c(0,0,0), t0 = 0, T = 1, Dt, 
+   drift, diffusion, corr = NULL, alpha = 0.5, mu = 0.5, type = c("ito", "str"), 
    method = c("euler", "milstein","predcorr", "smilstein", "taylor", 
    "heun", "rk1", "rk2", "rk3"), \dots)	
    
@@ -58,9 +58,10 @@ snssde3d(N, \dots)
   \item{x0}{initial value of the process \eqn{X_{t}}{X(t)}, \eqn{Y_{t}}{Y(t)} and \eqn{Z_{t}}{Z(t)} at time \code{t0}.}
   \item{t0}{initial time.}
   \item{T}{ending time.} 
-  \item{Dt}{time step of the simulation (discretization). If it is \code{\link[base]{NULL}} a default \eqn{\Delta t = \frac{T-t_{0}}{N}}{Dt = (T-t0)/N}.}
+  \item{Dt}{time step of the simulation (discretization). If it is \code{\link[base]{missing}} a default \eqn{\Delta t = \frac{T-t_{0}}{N}}{Dt = (T-t0)/N}.}
   \item{drift}{drift coefficient: an \code{\link[base]{expression}} of four variables \code{t}, \code{x}, \code{y} and \code{z} for process \eqn{X_t}{X(t)}, \eqn{Y_t}{Y(t)} and \eqn{Z_t}{Z(t)}.}
   \item{diffusion}{diffusion coefficient: an \code{\link[base]{expression}} of four variables \code{t}, \code{x}, \code{y} and \code{z} for process \eqn{X_t}{X(t)}, \eqn{Y_t}{Y(t)} and \eqn{Z_t}{Z(t)}.}
+  \item{corr}{the correlation structure of three Brownian motions W1(t), W2(t) and W3(t); must be a real symmetric positive-definite square matrix of dimension 3.}
   \item{alpha, mu }{weight of the predictor-corrector scheme; the default \code{alpha = 0.5} and \code{mu = 0.5}.}
   \item{type}{if \code{type="ito"} simulation sde of Itô type, else \code{type="str"} simulation sde of Stratonovich type; the default \code{type="ito"}.}
   \item{method}{numerical methods of simulation, the default \code{method = "euler"}.}
@@ -82,7 +83,9 @@ The 3-dim Ito stochastic differential equation is:
 \deqn{dX(t) = a(t,X(t),Y(t),Z(t)) dt + b(t,X(t),Y(t),Z(t)) \circ dW_{1}(t)}{dX(t) = a(t,X(t),Y(t),Z(t))*dt + b(t,X(t),Y(t),Z(t)) o dW1(t)}
 \deqn{dY(t) = a(t,X(t),Y(t),Z(t)) dt + b(t,X(t),Y(t),Z(t)) \circ dW_{2}(t)}{dY(t) = a(t,X(t),Y(t),Z(t))*dt + b(t,X(t),Y(t),Z(t)) o dW2(t)}
 \deqn{dZ(t) = a(t,X(t),Y(t),Z(t)) dt + b(t,X(t),Y(t),Z(t)) \circ dW_{3}(t)}{dZ(t) = a(t,X(t),Y(t),Z(t))*dt + b(t,X(t),Y(t),Z(t)) o dW3(t)}
-\eqn{W_{1}(t), W_{2}(t), W_{3}(t)}{W1(t), W2(t) and W3(t)} three standard Brownian motion independent.
+\eqn{W_{1}(t), W_{2}(t), W_{3}(t)}{W1(t), W2(t) and W3(t)} three standard Brownian motion independent if \code{corr=NULL}.
+
+In the correlation case, currently we can use only the Euler-Maruyama and Milstein scheme.
 
 The methods of approximation are classified according to their different properties. Mainly two criteria of optimality are used in the literature: the strong 
 and the weak (orders of) convergence. The \code{method} of simulation can be one among: \code{Euler-Maruyama Order 0.5}, \code{Milstein Order 1}, \code{Milstein Second-Order}, 
@@ -189,16 +192,18 @@ legend("topright",c(expression(E(X[t])),expression(E(Y[t])),
 dev.new()
 plot3D(mod3d1,display="persp") ## in space (O,X,Y,Z)
 
-## Example 2: Stratonovich sde
-## dX(t) = Y(t)* dt           
+## Example 2: Stratonovich sde 
+## dX(t) = Y(t)* dt  + 0.2 o dW3(t)         
 ## dY(t) = (4*( 1-X(t)^2 )* Y(t) - X(t))* dt + 0.2 o dW2(t)
 ## dZ(t) = (4*( 1-X(t)^2 )* Z(t) - X(t))* dt + 0.2 o dW3(t)
-set.seed(1234)
+## W1(t), W2(t) and W3(t) are three correlated Brownian motions with Sigma
 
 fx <- expression( y , (4*( 1-x^2 )* y - x), (4*( 1-x^2 )* z - x))
-gx <- expression( 0 , 0.2, 0.2)
+gx <- expression( 0.2 , 0.2, 0.2)
+# correlation matrix
+Sigma <-matrix(c(1,0.3,0.5,0.3,1,0.2,0.5,0.2,1),nrow=3,ncol=3) 
 
-mod3d2 <- snssde3d(drift=fx,diffusion=gx,N=10000,T=100,type="str")
+mod3d2 <- snssde3d(drift=fx,diffusion=gx,N=10000,T=100,type="str",corr=Sigma)
 mod3d2
 ##
 dev.new()
