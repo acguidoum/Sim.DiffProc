@@ -17,7 +17,7 @@ environment:
       secure: SAjXHKPAFPipSOE/6giubmF50pmgGtSFxyhe88E7RDv+q4PucnkyRK7Rs+/a7Vo0
 
   matrix:
-  - R_VERSION: devel
+  - R_VERSION: release
     R_ARCH: x64
     GCC_PATH: mingw_64
 
