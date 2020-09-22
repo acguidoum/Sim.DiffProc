@@ -63,6 +63,26 @@ mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,exact=tvalue,parallel="s
 print(mcm.mod2d)
 plot(mcm.mod2d)
 
+
+mu=1;sigma=0.5;theta=2
+x0=0;y0=0;init=c(x0,y0)
+f <- expression(1/mu*(theta-x), x)  
+g <- expression(sqrt(sigma),0)
+Sigma <- matrix(c(1, 0.75, 0.75, 1), nrow = 2, ncol = 2)
+OUI <- snssde2d(drift=f,diffusion=g,corr=Sigma,M=10,Dt=0.015,x0=c(x=0,y=0))
+
+## function of the statistic(s) of interest.
+sde.fun2d <- function(data, i){
+  d <- data[i,]
+  return(c(mean(d$x),mean(d$y),var(d$x),var(d$y),cov(d$x,d$y)))
+}
+## Parallel Monte-Carlo of 'OUI' at time 10
+mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5)
+mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,parallel="snow",cl= parallel::makeCluster(getOption("cl.cores", 2)),ncpus=2)
+mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,parallel="snow",ncpus=2)
+print(mcm.mod2d)
+plot(mcm.mod2d)
+
 ###
 
 mu=1;sigma=0.5;theta=2
@@ -87,11 +107,48 @@ mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,exact=tvalue,parallel="s
 print(mcm.mod2d)
 plot(mcm.mod2d)
 
+
+mu=1;sigma=0.5;theta=2
+x0=0;y0=0;init=c(x0,y0)
+f <- expression(1/mu*(theta-x), x)  
+g <- expression(sqrt(sigma),0)
+Sigma <- matrix(c(1, 0.75, 0.75, 1), nrow = 2, ncol = 2)
+OUI <- snssde2d(drift=f,diffusion=g,corr=Sigma,M=10,Dt=0.015,x0=c(x=0,y=0),type="str")
+
+## function of the statistic(s) of interest.
+sde.fun2d <- function(data, i){
+  d <- data[i,]
+  return(c(mean(d$x),mean(d$y),var(d$x),var(d$y),cov(d$x,d$y)))
+}
+## Parallel Monte-Carlo of 'OUI' at time 10
+mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5)
+mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,parallel="snow",cl= parallel::makeCluster(getOption("cl.cores", 2)),ncpus=2)
+mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,parallel="snow",ncpus=2)
+print(mcm.mod2d)
+plot(mcm.mod2d)
+
 ## ------------------------------------------------------------------------
 mu=0.5;sigma=0.25
 fx <- expression(mu*y,0,0) 
 gx <- expression(sigma*z,1,1)
 modtra <- snssde3d(drift=fx,diffusion=gx,M=10)
+## function of the statistic(s) of interest.
+sde.fun3d <- function(data, i){
+  d <- data[i,]
+  return(c(mean(d$x),median(d$x),Mode(d$x),var(d$x),cov(d$x,d$y),cov(d$x,d$z)))
+}
+## Monte-Carlo at time = 10
+mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5)
+mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5,parallel="snow",cl= parallel::makeCluster(getOption("cl.cores", 2)),ncpus=2)
+mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5,parallel="snow",ncpus=2)
+print(mcm.mod3d)
+plot(mcm.mod3d)
+
+mu=0.5;sigma=0.25
+fx <- expression(mu*y,0,0) 
+gx <- expression(sigma*z,1,1)
+Sigma <- matrix(c(1,-0.5,-0.25,-0.5,1,0.95,-0.25,0.95,1),nrow=3,ncol=3) 
+modtra <- snssde3d(drift=fx,diffusion=gx,M=10,corr=Sigma)
 ## function of the statistic(s) of interest.
 sde.fun3d <- function(data, i){
   d <- data[i,]
@@ -121,3 +178,19 @@ print(mcm.mod3d)
 plot(mcm.mod3d)
 plot(mcm.mod3d,index=2)
 
+mu=0.5;sigma=0.25
+fx <- expression(mu*y,0,0) 
+gx <- expression(sigma*z,1,1)
+Sigma <- matrix(c(1,-0.5,-0.25,-0.5,1,0.95,-0.25,0.95,1),nrow=3,ncol=3) 
+modtra <- snssde3d(drift=fx,diffusion=gx,M=10,corr=Sigma,type="str")
+## function of the statistic(s) of interest.
+sde.fun3d <- function(data, i){
+  d <- data[i,]
+  return(c(mean(d$x),median(d$x),Mode(d$x),var(d$x),cov(d$x,d$y),cov(d$x,d$z)))
+}
+## Monte-Carlo at time = 10
+mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5)
+mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5,parallel="snow",cl= parallel::makeCluster(getOption("cl.cores", 2)),ncpus=2)
+mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5,parallel="snow",ncpus=2)
+print(mcm.mod3d)
+plot(mcm.mod3d)
