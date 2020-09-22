@@ -1,5 +1,6 @@
 ## Thu Apr 30 12:03:41 2020
 options(prompt="R> ",scipen=20,digits=5,scientific = 5,width = 70,warning=FALSE, message=FALSE)
+
 ############################################################################
 #                               Demo 1                                     # 
 #                              1-dim SDE                                   #
