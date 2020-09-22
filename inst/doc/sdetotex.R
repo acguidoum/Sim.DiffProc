@@ -1,4 +1,4 @@
-## ----setup, echo = F, message = F, results = 'hide',screenshot.force=FALSE----
+# ----setup, echo = F, message = F, results = 'hide',screenshot.force=FALSE----
 library(Sim.DiffProc)
 library(knitr)
 knitr::opts_chunk$set(comment="",prompt=TRUE, fig.show='hold',warning=FALSE, message=FALSE)
