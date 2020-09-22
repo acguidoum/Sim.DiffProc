@@ -148,7 +148,7 @@ A.C. Guidoum, K. Boukhetala.
 \seealso{
 \code{\link{snssde2d}} and \code{\link{snssde3d}} for 2 and 3-dim sde.
 
-\code{\link[sde]{sde.sim}} in package "sde". 
+\code{sde.sim} in package "sde". 
 
 \code{simulate} in package "yuima".
 }

@@ -100,7 +100,7 @@ A.C. Guidoum, K. Boukhetala.
 \seealso{
 \code{\link{bridgesde2d}} and \code{\link{bridgesde3d}} for 2 and 3-dim. 
 
-\code{\link[sde]{DBridge}} in package "sde". 
+\code{DBridge} in package "sde". 
 }
 \examples{
 ## Example 1: Ito bridge sde

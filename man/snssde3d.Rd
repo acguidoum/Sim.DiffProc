@@ -160,7 +160,7 @@ A.C. Guidoum, K. Boukhetala.
 \seealso{
 \code{\link{snssde1d}} and \code{\link{snssde2d}} for 1- and 2-dim sde.
 
-\code{\link[sde]{sde.sim}} in package "sde". \code{simulate} in package "yuima". 
+\code{sde.sim} in package "sde". \code{simulate} in package "yuima". 
 }
 \examples{
 

@@ -110,7 +110,7 @@ A.C. Guidoum, K. Boukhetala.
 \seealso{
 \code{\link{bridgesde1d}} for simulation of 1-dim SDE. 
 
-\code{\link[sde]{DBridge}} in package "sde".
+\code{DBridge} in package "sde".
 }
 \examples{
 ## dX(t) = 4*(-1-X(t)) dt + 0.2 dW1(t)

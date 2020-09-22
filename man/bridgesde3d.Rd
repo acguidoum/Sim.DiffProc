@@ -105,7 +105,7 @@ An overview of this package, see \code{\link[utils]{browseVignettes}('Sim.DiffPr
 A.C. Guidoum, K. Boukhetala.
 }
 \seealso{
-\code{\link{bridgesde1d}} for simulation of 1-dim SDE. \code{\link[sde]{DBridge}} in package "sde".
+\code{\link{bridgesde1d}} for simulation of 1-dim SDE. \code{DBridge} in package "sde".
 
 \code{\link{bridgesde2d}} for simulation of 2-dim SDE.
 }

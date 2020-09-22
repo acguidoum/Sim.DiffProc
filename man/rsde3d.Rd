@@ -51,15 +51,15 @@ A.C. Guidoum, K. Boukhetala.
 }
 
 \seealso{
-\code{\link[ks]{kde}} Kernel density estimate for 1- to 6-dimensional data in "ks" package.
+\code{kde} Kernel density estimate for 1- to 6-dimensional data in "ks" package.
 
-\code{\link[sm]{sm.density}} Nonparametric density estimation in one, two or three dimensions in "sm" package.
+\code{sm.density} Nonparametric density estimation in one, two or three dimensions in "sm" package.
 
 \code{kde3d} Compute a three dimension kernel density estimate in "misc3d" package.
 
-\code{\link[yuima]{rng}} random number generators in "yuima" package. 
+\code{rng} random number generators in "yuima" package. 
 
-\code{\link[sde]{rcBS}}, \code{\link[sde]{rcCIR}}, \code{\link[sde]{rcOU}} and \code{\link[sde]{rsOU}}  in package "sde". 
+\code{rcBS}, \code{rcCIR}, \code{rcOU} and \code{rsOU} in package "sde". 
 }
 \examples{
 

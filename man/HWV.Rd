@@ -59,7 +59,7 @@ A.C. Guidoum, K. Boukhetala.
 }
 
 \seealso{
-\code{\link[sde]{rcOU}} and \code{\link[sde]{rsOU}} for conditional and stationary law of Vasicek process are available in "sde".
+\code{rcOU} and \code{rsOU} for conditional and stationary law of Vasicek process are available in "sde".
 }
 \examples{
 ## Hull-White/Vasicek Models

@@ -129,8 +129,8 @@ A.C. Guidoum, K. Boukhetala.
 }
 
 \seealso{
-\code{\link[sde]{dcEuler}}, \code{\link[sde]{dcElerian}}, \code{\link[sde]{dcOzaki}}, \code{\link[sde]{dcShoji}}, 
-\code{\link[sde]{dcKessler}} and \code{\link[sde]{dcSim}} for approximated conditional law of a diffusion process. \code{\link[sde]{gmm}} estimator of the generalized method of moments by Hansen, and \code{\link[sde]{HPloglik}} these functions are useful 
+\code{dcEuler}, \code{dcElerian}, \code{dcOzaki}, \code{dcShoji}, 
+\code{dcKessler} and \code{dcSim} for approximated conditional law of a diffusion process. \code{gmm} estimator of the generalized method of moments by Hansen, and \code{HPloglik} these functions are useful 
 to calculate approximated maximum likelihood estimators when the transition density of the process is not known, in package "sde". 
 
 \code{qmle} in package "yuima" calculate quasi-likelihood and ML estimator of least squares estimator.

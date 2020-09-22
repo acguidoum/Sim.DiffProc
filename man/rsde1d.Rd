@@ -60,11 +60,11 @@ A.C. Guidoum, K. Boukhetala.
 \seealso{
 \code{\link[stats]{density}} Kernel density estimation in "stats" package. 
 
-\code{\link[ks]{kde}} Kernel density estimate for 1- to 6-dimensional data in "ks" package.
+\code{kde} Kernel density estimate for 1- to 6-dimensional data in "ks" package.
 
-\code{\link[sm]{sm.density}} Nonparametric density estimation in one, two or three dimensions in "sm" package.
+\code{sm.density} Nonparametric density estimation in one, two or three dimensions in "sm" package.
 
-\code{\link[yuima]{rng}} random number generators in "yuima" package. 
+\code{rng} random number generators in "yuima" package. 
 
 \code{dcSim} Pedersen's simulated transition density in "sde" package.
 
@@ -72,7 +72,7 @@ A.C. Guidoum, K. Boukhetala.
 
 \code{dcBS}, \code{dcCIR}, \code{dcOU} and \code{dsOU}  in package "sde".
 
-\code{\link[DiffusionRgqd]{GQD.density}} Generate the transition density of a scalar generalized quadratic diffusion.
+\code{GQD.density} Generate the transition density of a scalar generalized quadratic diffusion in "DiffusionRgqd" package.
  
 }
 \examples{

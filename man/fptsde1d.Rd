@@ -113,10 +113,10 @@ A.C. Guidoum, K. Boukhetala.
 \seealso{
 \code{\link[Sim.DiffProc]{fptsde2d}} and \code{\link[Sim.DiffProc]{fptsde3d}} simulation fpt for 2 and 3-dim SDE.
 
-\code{\link[fptdApprox]{FPTL}} for computes values of the first passage time location (FPTL) function, and \code{\link[fptdApprox]{Approx.fpt.density}} 
+\code{FPTL} for computes values of the first passage time location (FPTL) function, and \code{Approx.fpt.density} 
 for approximate first-passage-time (f.p.t.) density in package "fptdApprox". 
 
-\code{\link[DiffusionRgqd]{GQD.TIpassage}} for compute the First Passage Time Density of a GQD With Time Inhomogeneous Coefficients in package "DiffusionRgqd".
+\code{GQD.TIpassage} for compute the First Passage Time Density of a GQD With Time Inhomogeneous Coefficients in package "DiffusionRgqd".
 
 }
 \examples{

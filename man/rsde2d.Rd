@@ -53,13 +53,13 @@ A.C. Guidoum, K. Boukhetala.
 \seealso{
 \code{\link[MASS]{kde2d}} Two-dimensional kernel density estimation in "MASS" package.
 
-\code{\link[ks]{kde}} Kernel density estimate for 1- to 6-dimensional data in "ks" package.
+\code{kde} Kernel density estimate for 1- to 6-dimensional data in "ks" package.
 
-\code{\link[sm]{sm.density}} Nonparametric density estimation in one, two or three dimensions in "sm" package.
+\code{sm.density} Nonparametric density estimation in one, two or three dimensions in "sm" package.
 
-\code{\link[yuima]{rng}} random number generators in "yuima" package. 
+\code{rng} random number generators in "yuima" package. 
 
-\code{\link[DiffusionRgqd]{BiGQD.density}} Generate the transition density of a bivariate generalized quadratic diffusion model (2D GQD).
+\code{BiGQD.density} Generate the transition density of a bivariate generalized quadratic diffusion model (2D GQD) in "DiffusionRgqd" package.
 }
 \examples{
 ## Example:1
