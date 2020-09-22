@@ -114,7 +114,7 @@ Parms  <- data.frame(Theta1,Theta2,Theta3,Theta4,row.names = c("True mod",
                       "Comp mod1","Comp mod2","Comp mod3"))
 Parms
 
-## ----01,fig.env='figure*', fig.cap='  '-----------------------------
+## ----01,fig.env='figure*', fig.cap=' The U.S. Interest Rates monthly form $06/1964$ to $12/1989$ ',fig.width=6,fig.height=4----
 data(Irates)
 rates <- Irates[, "r1"]
 X <- window(rates, start = 1964.471, end = 1989.333)
@@ -136,7 +136,7 @@ names(Info) <- c("logLik","AIC","BIC")
 Coef
 Info
 
-## ----02,fig.env='figure*', fig.cap='  '-----------------------------
+## ----02,fig.env='figure*', fig.cap='The path mean of the solution of the CKLS model with the estimated parameters and real data ',fig.width=6,fig.height=4----
 f <- expression( (2.076-0.263*x) )
 g <- expression( 0.130*x^1.451 )
 mod <- snssde1d(drift=f,diffusion=g,x0=X[1],M=500, N=length(X),t0=1964.471, T=1989.333)
