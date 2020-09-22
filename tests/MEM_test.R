@@ -39,6 +39,19 @@ res2d2 <- MEM.sde(drift=f,diffusion=g,type = "str",solve=TRUE,init=init,parms=pa
 print(res2d2)
 summary(res2d2)
 
+
+# Ito
+Sigma <- expression(0.75)
+res2d1 <- MEM.sde(drift=f,diffusion=g,corr=Sigma,solve=TRUE,init=init,parms=para,time=t)
+print(res2d1)
+summary(res2d1)
+
+# Str
+
+res2d2 <- MEM.sde(drift=f,diffusion=g,corr=Sigma,type = "str",solve=TRUE,init=init,parms=para,time=t)
+print(res2d2)
+summary(res2d2)
+
 ###################
 
 f <- expression(sigma*(y-x),rho*x-y-x*z,x*y-bet*z)
@@ -55,5 +68,17 @@ summary(res3d1)
 # Str
 
 res3d2 = MEM.sde(drift=f,diffusion=g,type = "str",solve=TRUE,parms=para,init=ini,time=seq(0,1,by=0.01))
+print(res3d2)
+summary(res3d2)
+
+# Ito
+Sigma <- expression(-0.5,-0.25,0.95)
+res3d1 = MEM.sde(drift=f,diffusion=g,corr=Sigma,solve=TRUE,parms=para,init=ini,time=seq(0,1,by=0.01))
+print(res3d1)
+summary(res3d1)
+
+# Str
+
+res3d2 = MEM.sde(drift=f,diffusion=g,corr=Sigma,type = "str",solve=TRUE,parms=para,init=ini,time=seq(0,1,by=0.01))
 print(res3d2)
 summary(res3d2)
