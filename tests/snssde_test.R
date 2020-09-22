@@ -88,6 +88,10 @@ plot2d(mod2[[1]],type="n")
 lines2d(mod2[[1]],col=4)
 points2d(mod2[[1]],pch=19,cex=0.1)
 
+Sigma <- matrix(c(1, 0.75, 0.75, 1), nrow = 2, ncol = 2)
+mod2 <- lapply(1:2, function(i) 
+                snssde2d(N=50,drift=fx,diffusion=gx,corr=Sigma,Dt=0.005,M=2,method=meth[i]))
+
 ##
 
 mod2 <- lapply(2:length(meth), function(i) 
@@ -113,6 +117,10 @@ max(mod2[[1]] , at = s)
 moment(mod2[[1]], at = s , center= TRUE , order = 4)
 moment(mod2[[1]], at = s , center= FALSE , order = 4)
 bconfint(mod2[[1]], at =s)
+
+Sigma <- matrix(c(1, 0.75, 0.75, 1), nrow = 2, ncol = 2)
+mod2 <- lapply(1:2, function(i) 
+                snssde2d(N=50,drift=fx,diffusion=gx,corr=Sigma,Dt=0.005,M=2,method=meth[i],type="str"))
 
 ######## 3d
 
@@ -140,6 +148,9 @@ plot(mod3[[1]])
 bconfint(mod3[[1]])
 plot3D(mod3[[1]],display="persp",main="3-dim bridge sde")
 
+Sigma <- matrix(c(1,-0.5,-0.25,-0.5,1,0.95,-0.25,0.95,1),nrow=3,ncol=3) 
+mod3 <- lapply(1:2, function(i) 
+                snssde3d(N=50,drift=fx,diffusion=gx,corr=Sigma,M=2,method=meth[i]))
 ##
 
 
@@ -165,6 +176,10 @@ max(mod3[[1]] , at = s)
 moment(mod3[[1]], at = s , center= TRUE , order = 4)
 moment(mod3[[1]], at = s , center= FALSE , order = 4)
 bconfint(mod3[[1]], at =s)
+
+Sigma <- matrix(c(1,-0.5,-0.25,-0.5,1,0.95,-0.25,0.95,1),nrow=3,ncol=3) 
+mod3 <- lapply(1:2, function(i) 
+                snssde3d(N=50,drift=fx,diffusion=gx,corr=Sigma,M=2,method=meth[i],type="str"))
 
 #############################
 s= 0.00458
