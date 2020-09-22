@@ -3,10 +3,10 @@
 ################################################
 
 ################################################
-## C code.
+## C code. 
 ################################################
 
-##useDynLib("Sim.DiffProc", .registration=TRUE, .fixes="C_")
+# useDynLib("Sim.DiffProc", .registration=TRUE, .fixes="C_")
 
 ################################################
 ## import name space
