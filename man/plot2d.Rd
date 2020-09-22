@@ -22,8 +22,8 @@
 \arguments{
   \item{x}{an object inheriting from class \code{\link{snssde2d}}, \code{\link{snssde3d}}, \code{\link{bridgesde2d}} and \code{\link{bridgesde3d}}.}
   \item{display}{\code{"persp"} perspective or \code{"rgl"} plots.}   
-  \item{\dots}{other graphics parameters, see \code{\link[graphics]{par}} in package "graphics", \code{\link[scatterplot3d]{scatterplot3d}} in package "scatterplot3d" and 
-  \code{\link[rgl]{plot3d}} in package "rgl".}
+  \item{\dots}{other graphics parameters, see \code{\link[graphics]{par}} in package "graphics", \code{scatterplot3d} in package "scatterplot3d" and 
+  \code{plot3d} in package "rgl".}
 }
 \details{
 The 2 and 3-dim plot of class sde.
