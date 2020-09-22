@@ -16,5 +16,4 @@ citHeader("To cite package 'Sim.DiffProc' in publications use: ")
 				"). Sim.DiffProc: Simulation of Diffusion Processes.", vers, ".", "https://cran.r-project.org/package=Sim.DiffProc"
 				, sep=""))
 				
-				
-				
+							
