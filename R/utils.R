@@ -544,12 +544,13 @@ plot3D.default <- function(x,display = c("persp", "rgl"),...) plot3DD(x,display,
 
 .plot.dfptsde2d <- function(x,display=c("persp","rgl","image","contour"),hist=FALSE,drawpoints=FALSE,legend=TRUE,pos=2,main=NULL,xlab=NULL,ylab=NULL,zlab=NULL,col.pt=NULL,color.palette=NULL,col=NULL,border=NULL,
                           lwd=NULL,cex=NULL,pch=NULL,las=NULL,lty=NULL,xlim=NULL,ylim=NULL,expand = NULL,phi=NULL,theta=NULL,
-                          ltheta=NULL,ticktype=NULL,shade=NULL,add=NULL,...) 
+                          ltheta=NULL,ticktype=NULL,shade=NULL,add=NULL,addline=FALSE,col2d=NULL,...) 
 {
     class(x) <- "dfptsde2d"
     if (is.null(col)){col= c(rgb(255,0,0,75,maxColorValue=255),rgb(0,0,255,75,maxColorValue=255))}
     if (is.null(border)){border = c(rgb(255,0,0,130,maxColorValue=255),rgb(0,0,255,130,maxColorValue=255))}
 	if (is.null(color.palette)){color.palette=colorRampPalette(c('white','green','blue','orange','red'))}
+    if (is.null(col2d)){col2d = "lightblue"}
     if (is.null(lty)){lty=1}
     if (is.null(lwd)){lwd=1}
     if (is.null(cex)){cex=1}
@@ -600,14 +601,15 @@ plot3D.default <- function(x,display = c("persp", "rgl"),...) plot3DD(x,display,
           dev.new()
           MASS::truehist(x$fpt$y,xlab = "Time",main=main,las=las,col=col[2],...);box()
     }}else if (x$pdf =='Joint'){
-    col2 <- heat.colors(length(x$res$z))[rank(x$res$z)]
+    #col2 <- heat.colors(length(x$res$z))[rank(x$res$z)]
     if (display=="persp"){
-      persp(x$res$x,x$res$y,x$res$z,col=col2,xlab=xlab,ylab=ylab,zlab=zlab,main=main,expand = expand,theta=theta,phi=phi,ltheta=ltheta,
+      persp(x$res$x,x$res$y,x$res$z,col=col2d,xlab=xlab,ylab=ylab,zlab=zlab,main=main,expand = expand,theta=theta,phi=phi,ltheta=ltheta,
       shade=shade,ticktype=ticktype,...)
     }else if (display=="rgl"){
-      rgl::persp3d(x$res$x,x$res$y,x$res$z,col = col2,xlab=xlab,ylab=ylab,zlab=zlab,main=main,...)
+      rgl::persp3d(x$res$x,x$res$y,x$res$z,col = col2d,xlab=xlab,ylab=ylab,zlab=zlab,main=main,...)
+	  if(addline==TRUE) rgl::persp3d(x$res$x,x$res$y,x$res$z, front = "lines", back = "lines", lit = FALSE, add = TRUE)
     }else if (display=="image"){  
-      image(x$res$x,x$res$y,x$res$z, col = rev(heat.colors(100)),xlab=xlab,ylab=ylab,main=main,las=las,add=add,...)
+      image(x$res$x,x$res$y,x$res$z, col = col,xlab=xlab,ylab=ylab,main=main,las=las,add=add,...)
       contour(x$res$x,x$res$y,x$res$z, add = TRUE,...);box()
     if (drawpoints) {points(x$fpt$x, x$fpt$y, col=col.pt, cex=cex, pch=pch)}
     }else if (display=="contour"){
@@ -750,12 +752,13 @@ plot3D.default <- function(x,display = c("persp", "rgl"),...) plot3DD(x,display,
 
 .plot.dsde2d <- function(x,display=c("persp","rgl","image","contour"),hist=FALSE,drawpoints=FALSE,legend=TRUE,pos=2,main=NULL,xlab=NULL,ylab=NULL,zlab=NULL,col.pt=NULL,color.palette=NULL,col=NULL,border=NULL,
                           lwd=NULL,cex=NULL,pch=NULL,las=NULL,lty=NULL,xlim=NULL,ylim=NULL,expand = NULL,phi=NULL,theta=NULL,
-                          ltheta=NULL,ticktype=NULL,shade=NULL,add=NULL,cex.main=NULL,...) 
+                          ltheta=NULL,ticktype=NULL,shade=NULL,add=NULL,cex.main=NULL,addline=FALSE,col2d=NULL,...) 
 {
     class(x) <- "dsde2d"
     if (is.null(col)){col= c(rgb(255,0,0,75,maxColorValue=255),rgb(0,0,255,75,maxColorValue=255))}
     if (is.null(border)){border = c(rgb(255,0,0,130,maxColorValue=255),rgb(0,0,255,130,maxColorValue=255))}
 	if (is.null(color.palette)){color.palette=colorRampPalette(c('white','green','blue','orange','red'))}
+    if (is.null(col2d)){col2d = "lightblue"}	
     if (is.null(lty)){lty=1}
     if (is.null(lwd)){lwd=1}
     if (is.null(cex)){cex=1}
@@ -808,14 +811,15 @@ plot3D.default <- function(x,display = c("persp", "rgl"),...) plot3DD(x,display,
           dev.new()
           MASS::truehist(x$ech$y,xlab = "y",main=main,las=las,col=col[2],...);box()
     }}else if (x$pdf =='Joint'){
-    col2 <- heat.colors(length(x$res$z))[rank(x$res$z)]
+    #col2 <- heat.colors(length(x$res$z))[rank(x$res$z)]
     if (display=="persp"){
-      persp(x$res$x,x$res$y,x$res$z,col=col2,xlab=xlab,ylab=ylab,zlab=zlab,main=main,expand = expand,theta=theta,phi=phi,ltheta=ltheta,
+      persp(x$res$x,x$res$y,x$res$z,col=col2d,xlab=xlab,ylab=ylab,zlab=zlab,main=main,expand = expand,theta=theta,phi=phi,ltheta=ltheta,
       shade=shade,ticktype=ticktype,...)
     }else if (display=="rgl"){
-      rgl::persp3d(x$res$x,x$res$y,x$res$z,col = col2,xlab=xlab,ylab=ylab,zlab=zlab,main=main,...)
+      rgl::persp3d(x$res$x,x$res$y,x$res$z,col = col2d,xlab=xlab,ylab=ylab,zlab=zlab,main=main,...)
+	  if(addline==TRUE) rgl::persp3d(x$res$x,x$res$y,x$res$z, front = "lines", back = "lines", lit = FALSE, add = TRUE)
     }else if (display=="image"){  
-      image(x$res$x,x$res$y,x$res$z, col = rev(heat.colors(100)),xlab=xlab,ylab=ylab,main=main,las=las,add=add,...)
+      image(x$res$x,x$res$y,x$res$z, col = col2d,xlab=xlab,ylab=ylab,main=main,las=las,add=add,...)
       contour(x$res$x,x$res$y,x$res$z, add = TRUE,...);box()
     if (drawpoints) {points(x$ech$x, x$ech$y, col=col.pt, cex=cex, pch=pch)}
     }else if (display=="contour"){
