@@ -140,7 +140,7 @@ dY_{t} &= \left( \frac{\gamma \, X_{t}^2 \, Y_{t}}{\left( \kappa + X_{t}^2 \righ
 
 # References
 
-1. Xie Y (2015). Dynamic Documents with R and knitr. 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida. ISBN 978-1498716963, URL https://yihui.name/knitr/.
+1. Xie Y (2015). Dynamic Documents with R and knitr. 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida. ISBN 978-1498716963, URL https://yihui.org/knitr/
 
 2. Wickham H (2015). Advanced R. Chapman & Hall/CRC The R Series. CRC Press. ISBN 9781498759809.
 
