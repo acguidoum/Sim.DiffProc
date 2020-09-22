@@ -32,7 +32,7 @@ An overview of this package, see \code{\link[utils]{browseVignettes}('Sim.DiffPr
   Xie Y (2015). 
   Dynamic Documents with R and knitr. 
   2nd edition. Chapman and Hall/CRC, Boca Raton, Florida. 
-  ISBN 978-1498716963, URL \url{https://yihui.name/knitr/}.
+  ISBN 978-1498716963, URL \url{https://yihui.org/knitr/}.
 
   Wickham H (2015). 
   Advanced R. 
