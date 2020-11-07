@@ -23,6 +23,6 @@
 ###################################################################################################
 
 .onAttach <- function(library, pkg) {
-    packageStartupMessage("Package 'Sim.DiffProc', version 4.7\nbrowseVignettes('Sim.DiffProc') for more informations.")
+    packageStartupMessage("Package 'Sim.DiffProc', version 4.8\nbrowseVignettes('Sim.DiffProc') for more informations.")
 	invisible()
 }
