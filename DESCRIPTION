@@ -1,7 +1,7 @@
 Package: Sim.DiffProc
 Type: Package
-Version: 4.7
-Date: 2020-09-22
+Version: 4.8
+Date: 2020-11-08
 Title: Simulation of Diffusion Processes
 Authors@R: c(
     person("Arsalane Chouaib", "Guidoum",
@@ -19,6 +19,6 @@ BugReports: https://github.com/acguidoum/Sim.DiffProc/issues
 URL: https://github.com/acguidoum/Sim.DiffProc
 VignetteBuilder: knitr
 Encoding: UTF-8
-Description: It provides users with a wide range of tools to simulate, estimate, analyze, and visualize the dynamics of stochastic differential systems in both forms Ito and Stratonovich. Statistical analysis with parallel Monte Carlo and moment equations methods of SDE's. Enabled many searchers in different domains to use these equations to modeling practical problems in financial and actuarial modeling and other areas of application, e.g., modeling and simulate of first passage time problem in shallow water using the attractive center (Boukhetala K, 1996) ISBN:1-56252-342-2. 
+Description: It provides users with a wide range of tools to simulate, estimate, analyze, and visualize the dynamics of stochastic differential systems in both forms Ito and Stratonovich. Statistical analysis with parallel Monte Carlo and moment equations methods of SDE's <doi:10.18637/jss.v096.i02>. Enabled many searchers in different domains to use these equations to modeling practical problems in financial and actuarial modeling and other areas of application, e.g., modeling and simulate of first passage time problem in shallow water using the attractive center (Boukhetala K, 1996) ISBN:1-56252-342-2. 
 License: GPL (>= 2)
 Classification/MSC: 37H10, 37M10, 60H05, 60H10, 60H35, 60J60, 65C05, 68N15, 68Q10
