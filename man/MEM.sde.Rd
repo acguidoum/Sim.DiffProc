@@ -61,6 +61,11 @@ An overview of this package, see \code{\link[utils]{browseVignettes}('Sim.DiffPr
 Symbolic ODE's of means and variances-covariance. If \code{solve=TRUE} approximate the moment of SDE's at any time. 
 }
 \references{
+
+   Guidoum AC, Boukhetala K (2020). 
+   "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". 
+   \emph{Journal of Statistical Software}, \bold{96}(2), 1--82. doi:10.18637/jss.v096.i02
+   
   Rodriguez R, Tuckwell H (2000). 
   \emph{A dynamical system for the approximate moments of nonlinear stochastic models of spiking neurons and networks.} 
   Mathematical and Computer Modelling, 31(4), 175--180.

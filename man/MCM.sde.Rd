@@ -84,6 +84,11 @@ The returned value is an object of class \code{"MCM.sde"}, containing the follow
 \item{MC}{Table contains simulation results of statistic(s) of interest: Estimate, Bias (if exact available), Std.Error and Confidence interval.}
 }
 \references{
+
+   Guidoum AC, Boukhetala K (2020). 
+   "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". 
+   \emph{Journal of Statistical Software}, \bold{96}(2), 1--82. doi:10.18637/jss.v096.i02
+   
    Paul Glasserman (2003).
    \emph{Monte Carlo Methods in Financial Engineering}. 
    Springer-Verlag New York.

@@ -102,6 +102,11 @@ An overview of this package, see \code{\link[utils]{browseVignettes}('Sim.DiffPr
 \item{method }{the numerical method used.}
 }
 \references{
+
+   Guidoum AC, Boukhetala K (2020). 
+   "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". 
+   \emph{Journal of Statistical Software}, \bold{96}(2), 1--82. doi:10.18637/jss.v096.i02
+   
   Friedman, A. (1975). 
   \emph{Stochastic differential equations and applications}.
   Volume 1, ACADEMIC PRESS.

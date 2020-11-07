@@ -29,6 +29,11 @@ An overview of this package, see \code{\link[utils]{browseVignettes}('Sim.DiffPr
 }
 
 \references{
+
+   Guidoum AC, Boukhetala K (2020). 
+   "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". 
+   \emph{Journal of Statistical Software}, \bold{96}(2), 1--82. doi:10.18637/jss.v096.i02
+   
   Xie Y (2015). 
   Dynamic Documents with R and knitr. 
   2nd edition. Chapman and Hall/CRC, Boca Raton, Florida. 

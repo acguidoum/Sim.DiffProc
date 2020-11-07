@@ -10,14 +10,14 @@
 Simulation of Diffusion Processes
 }
 \description{
-A package for symbolic and numerical computations on scalar and multivariate systems of stochastic differential equations. It provides users with a wide range of tools to simulate, estimate, analyze, and visualize the dynamics of these systems in both forms Itô and Stratonovich. Statistical analysis with parallel Monte-Carlo and moment equations methods of SDE's. Enabled many searchers in different domains to use these equations to modeling practical problems in financial and actuarial modeling and other areas of application, e.g., modeling and simulate of first passage time problem in shallow water using the attractive center (Boukhetala K, 1996) ISBN:1-56252-342-2. 
+It provides users with a wide range of tools to simulate, estimate, analyze, and visualize the dynamics of stochastic differential systems in both forms Ito and Stratonovich. Statistical analysis with parallel Monte Carlo and moment equations methods of SDE's <doi:10.18637/jss.v096.i02>. Enabled many searchers in different domains to use these equations to modeling practical problems in financial and actuarial modeling and other areas of application, e.g., modeling and simulate of first passage time problem in shallow water using the attractive center (Boukhetala K, 1996) ISBN:1-56252-342-2. 
 }
 \details{
 \tabular{ll}{
 Package: \tab Sim.DiffProc \cr
 Type: \tab Package \cr
-Version: \tab 4.7 \cr
-Date: \tab 2020-09-22 \cr
+Version: \tab 4.8 \cr
+Date: \tab 2020-11-08 \cr
 License: \tab GPL (>= 2) \cr
 Depends: \tab R (>= 3.0.0) \cr
 Imports: \tab Deriv (>= 3.8.0), MASS (>= 7.3-30), parallel \cr
@@ -55,6 +55,12 @@ Please send comments, error reports, etc. to the author via the addresses email.
 This package and its documentation are usable under the terms of the "GNU General Public License", a copy of which is distributed with the package.
 }
 \references{
+
+   Guidoum AC, Boukhetala K (2020). 
+   "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". 
+   \emph{Journal of Statistical Software}, \bold{96}(2), 1--82. doi:10.18637/jss.v096.i02
+	
+	
    Argyrakisa, P. and G.H. Weiss (2006).
    A first-passage time problem for many random walkers.
    \emph{Physica A}. \bold{363}, 343--347.
