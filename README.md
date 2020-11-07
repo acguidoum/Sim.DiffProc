@@ -15,7 +15,7 @@
 ![](https://www.r-pkg.org/badges/last-release/Sim.DiffProc)
 ![](https://www.r-pkg.org/badges/ago/Sim.DiffProc)
 
-![Github](https://img.shields.io/badge/Github-4.7(at:2020.09.22)-blue.svg)
+![Github](https://img.shields.io/badge/Github-4.8(at:2020.11.07)-blue.svg)
 
 ------------------------------------------------------------------------
 
@@ -79,20 +79,21 @@ use `citation()` for information on how to cite the software;
 ```r
 citation("Sim.DiffProc")
  
-To cite package 'Sim.DiffProc' in publications use:
+# To cite package 'Sim.DiffProc' in publications use:
 
-  Arsalane Chouaib Guidoum and Kamal Boukhetala (2020).
-  Sim.DiffProc: Simulation of Diffusion Processes.R package
-  version 4.7.https://cran.r-project.org/package=Sim.DiffProc
+Guidoum AC, Boukhetala K (2020). “Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc.” Journal of Statistical Software, 96(2), 1-82. doi:10.18637/jss.v096.i02.
 
 A BibTeX entry for LaTeX users is
 
-  @Manual{,
-    title = {Sim.DiffProc: Simulation of Diffusion Processes.},
+  @Article{,
+    title = {Performing Parallel Monte Carlo and Moment Equations Methods for It\^{o} and Stratonovich Stochastic Differential Systems: {R} Package {Sim.DiffProc}},
     author = {Arsalane Chouaib Guidoum and Kamal Boukhetala},
+    journal = {Journal of Statistical Software},
     year = {2020},
-    note = {R package version 4.7},
-    url = {https://cran.r-project.org/package=Sim.DiffProc},
+    volume = {96},
+    number = {2},
+    pages = {1--82},
+    doi = {10.18637/jss.v096.i02},
   }
 ```
 
@@ -104,6 +105,4 @@ Please send comments, error reports, etc. to the author via the addresses email.
 References
 ----------
 
-1. Guidoum AC, Boukhetala K (2020). Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Accept Submission to Journal of Statistical Software.
-
-2. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.7, URL https://cran.r-project.org/package=Sim.DiffProc.
+1. Guidoum AC, Boukhetala K (2020). "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". Journal of Statistical Software, 96(2), 1--82. doi:10.18637/jss.v096.i02
