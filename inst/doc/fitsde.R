@@ -6,6 +6,7 @@ options(prompt="R> ",scipen=16,digits=5,warning=FALSE, message=FALSE,
         width = 70)
 
 ## -------------------------------------------------------------------
+set.seed(12345, kind = "L'Ecuyer-CMRG")
 f <- expression( (1+2*x) ) ; g <- expression( 0.5*x^0.3 )
 sim    <- snssde1d(drift=f,diffusion=g,x0=2,N=10^4,Dt=10^-4)
 mydata <- sim$X
@@ -33,6 +34,7 @@ BIC(fitmod)
 confint(fitmod, level=0.95)
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression( 3*(2-x) ) ; g <- expression( 0.5 )
 sim <- snssde1d(drift=f,diffusion=g,x0=5,Dt=0.01)
 HWV <- sim$X
@@ -49,6 +51,7 @@ summary(fitmod)
 confint(fitmod,parm=c("theta1","theta2"),level=0.95)
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression(-2*x*t) ; g <- expression(0.2*x)
 sim <- snssde1d(drift=f,diffusion=g,N=1000,Dt=0.001,x0=10)
 mydata <- sim$X
@@ -61,6 +64,7 @@ fitmod <- fitsde(data=mydata,drift=fx,diffusion=gx,start = list(theta1=1,
 summary(fitmod)
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression(3*t*(sqrt(t)-x)) ; g <- expression(0.3*t)
 sim <- snssde1d(drift=f,diffusion=g,M=1,N=1000,x0=2,Dt=0.001)
 mydata <- sim$X
@@ -73,6 +77,7 @@ fitmod <- fitsde(data=mydata,drift=fx,diffusion=gx,start = list(theta1=1,
 summary(fitmod)
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression( 2*x )
 g <- expression( 0.3*x^0.5 )
 sim <- snssde1d(drift=f,diffusion=g,M=1,N=10000,x0=2,Dt=0.0001)
@@ -137,6 +142,7 @@ Coef
 Info
 
 ## ----02,fig.env='figure*', fig.cap='The path mean of the solution of the CKLS model with the estimated parameters and real data ',fig.width=6,fig.height=4----
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression( (2.076-0.263*x) )
 g <- expression( 0.130*x^1.451 )
 mod <- snssde1d(drift=f,diffusion=g,x0=X[1],M=500, N=length(X),t0=1964.471, T=1989.333)

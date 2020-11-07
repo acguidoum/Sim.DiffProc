@@ -53,16 +53,17 @@ This takes a `MCM.sde()` object and produces plots for the `R` replicates of the
 ## One-dimensional SDE
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 theta = 0.75; x0 = 1
 fx <- expression( 0.5*theta^2*x )
 gx <- expression( theta*x )
 mod1 <- snssde1d(drift=fx,diffusion=gx,x0=x0,M=500,type="ito")
 mod2 <- snssde1d(drift=fx,diffusion=gx,x0=x0,M=500,type="str")
 ## True values of means and variance for mod1 and mod2
-E.mod1 <- function(t) x0*exp(0.5*theta^2*t)
-E.mod2 <- function(t) x0
-V.mod1 <- function(t) x0^2*exp(theta^2*t)*(exp(theta^2*t)-1)
-V.mod2 <- function(t) x0^2 *(exp(theta^2*t)-1)
+E.mod1 <- function(t) x0 * exp(0.5 * theta^2 * t)
+V.mod1 <- function(t) x0^2 * exp(theta^2 * t) * (exp(theta^2 * t) - 1)
+E.mod2 <- function(t) x0 * exp(theta^2 * t)
+V.mod2 <- function(t) x0^2 * exp(2 * theta^2 * t) * (exp(theta^2 * t) - 1)
 ## function of the statistic(s) of interest.
 sde.fun1d <- function(data, i){
      d <- data[i, ]
@@ -80,6 +81,7 @@ mcm.mod2
 ## Two-dimensional SDEs
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mu=1;sigma=0.5;theta=2
 x0=0;y0=0;init=c(x0,y0)
 f <- expression(1/mu*(theta-x), x)  
@@ -105,6 +107,7 @@ mcm.mod2d
 ## Three-dimensional SDEs
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mu=0.5;sigma=0.25
 fx <- expression(mu*y,0,0) 
 gx <- expression(sigma*z,1,1)
@@ -201,7 +204,7 @@ matplot.0D(mem.mod3d$sol.ode,main="",select=c("C12","C13","C23"))
 
 # References
 
-1. Guidoum AC, Boukhetala K (2020). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Accept Submission to Journal of Statistical Software.
-
-2. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.7, URL https://cran.r-project.org/package=Sim.DiffProc.
+1.  Guidoum AC, Boukhetala K (2020). "Performing Parallel Monte Carlo and
+    Moment Equations Methods for Itô and Stratonovich Stochastic
+    Differential Systems: R Package Sim.DiffProc". Journal of Statistical Software, 96(2), 1--82. https://doi.org/10.18637/jss.v096.i02
     

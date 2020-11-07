@@ -6,6 +6,7 @@ options(prompt="R> ",scipen=16,digits=5,warning=FALSE, message=FALSE,
         width = 70)
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 theta = 0.5
 f <- expression( (0.5*theta^2*x) )
 g <- expression( theta*x )
@@ -52,6 +53,7 @@ knitr::include_graphics(c("Figures/fig007.png","Figures/fig008.png"))
 knitr::include_graphics(c("Figures/fig07.png","Figures/fig08.png"))
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 x0=5;y0=0
 mu=3;sigma=0.5
 fx <- expression(-(x/mu),x)  
@@ -99,6 +101,7 @@ knitr::include_graphics(c("Figures/fig1003.png"))
 #  }
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mu = 4; sigma=0.1
 fx <- expression( y ,  (mu*( 1-x^2 )* y - x)) 
 gx <- expression( 0 ,2*sigma)
@@ -112,6 +115,7 @@ mod2d <- snssde2d(drift=fx,diffusion=gx,N=10000,Dt=0.01,type="str",method="rk1")
 knitr::include_graphics(c("Figures/fig1004.png","Figures/fig1005.png"))
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mu = 1.2; sigma=0.1;nu=2;theta=0.5
 fx <- expression( mu*x ,nu*(theta-y)) 
 gx <- expression( x*sqrt(y) ,sigma*sqrt(y))
@@ -129,6 +133,7 @@ head(out,n=3)
 #  plot(denJ,display="persp",main="Bivariate Transition Density at time t=10")
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 fx <- expression(4*(-1-x)*y , 4*(1-y)*x , 4*(1-z)*y) 
 gx <- rep(expression(0.2),3)
 mod3d <- snssde3d(x0=c(x=2,y=-2,z=-2),drift=fx,diffusion=gx,M=1000)
@@ -172,6 +177,7 @@ plot(den, main="Marginal Density")
 #  plot(denJ,display="rgl")
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 K = 4; s = 1; sigma = 0.2
 fx <- expression( (-K*x/sqrt(x^2+y^2+z^2)) , (-K*y/sqrt(x^2+y^2+z^2)) , (-K*z/sqrt(x^2+y^2+z^2)) ) 
 gx <- rep(expression(sigma),3)
@@ -181,6 +187,7 @@ mod3d <- snssde3d(drift=fx,diffusion=gx,N=10000,x0=c(x=1,y=1,z=1))
 plot3D(mod3d,display="persp",col="blue")
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 fx <- expression(y,0,0) 
 gx <- expression(z,1,1)
 Sigma <-matrix(c(1,0.2,0.5,0.2,1,-0.7,0.5,-0.7,1),nrow=3,ncol=3)

@@ -47,6 +47,7 @@ In the above $f(t,x)=\frac{1}{2}\theta^{2} x$ and $g(t,x)= \theta x$ ($\theta > 
 - The numerical method to be used by `method` (by default `method="euler"`).
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 theta = 0.5
 f <- expression( (0.5*theta^2*x) )
 g <- expression( theta*x )
@@ -170,6 +171,7 @@ dY_t = X_{t} dt
 We simulate a flow of $1000$ trajectories of $(X_{t},Y_{t})$, with integration step size $\Delta t = 0.01$, and using  second Milstein method.
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 x0=5;y0=0
 mu=3;sigma=0.5
 fx <- expression(-(x/mu),x)  
@@ -267,6 +269,7 @@ dY_{t} = \left(\mu (1-X^{2}_{t}) Y_{t} - X_{t}\right) dt + 2 \sigma \circ dW_{2,
 Implemente in R as follows, with integration step size $\Delta t = 0.01$ and using stochastic Runge-Kutta methods 1-stage.
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mu = 4; sigma=0.1
 fx <- expression( y ,  (mu*( 1-x^2 )* y - x)) 
 gx <- expression( 0 ,2*sigma)
@@ -306,6 +309,7 @@ $$
 $$
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mu = 1.2; sigma=0.1;nu=2;theta=0.5
 fx <- expression( mu*x ,nu*(theta-y)) 
 gx <- expression( x*sqrt(y) ,sigma*sqrt(y))
@@ -376,6 +380,7 @@ with $(W_{1,t},W_{2,t},W_{3,t})$ are three indpendant standard Wiener process.
 We simulate a flow of $1000$ trajectories, with integration step size $\Delta t = 0.001$.
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 fx <- expression(4*(-1-x)*y , 4*(1-y)*x , 4*(1-z)*y) 
 gx <- rep(expression(0.2),3)
 mod3d <- snssde3d(x0=c(x=2,y=-2,z=-2),drift=fx,diffusion=gx,M=1000)
@@ -450,6 +455,7 @@ If we assume that $U_w( x , y , z , t )$, $V_w( x , y , z , t )$ and $S_w( x , y
 with initial conditions $(X_{0},Y_{0},Z_{0})=(1,1,1)$, by specifying the drift and diffusion coefficients of three processes $X_{t}$, $Y_{t}$ and $Z_{t}$ as R expressions which depends on the three state variables `(x,y,z)` and time variable `t`, with integration step size `Dt=0.0001`.
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 K = 4; s = 1; sigma = 0.2
 fx <- expression( (-K*x/sqrt(x^2+y^2+z^2)) , (-K*y/sqrt(x^2+y^2+z^2)) , (-K*z/sqrt(x^2+y^2+z^2)) ) 
 gx <- rep(expression(sigma),3)
@@ -490,6 +496,7 @@ To simulate the solution of the process $X_t$, we make a transformation to a sys
 run by calling the function `snssde3d()` to produce a simulation of the solution, with $\mu = 1$ and $\sigma = 1$.
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 fx <- expression(y,0,0) 
 gx <- expression(z,1,1)
 Sigma <-matrix(c(1,0.2,0.5,0.2,1,-0.7,0.5,-0.7,1),nrow=3,ncol=3)
@@ -532,6 +539,6 @@ knitr::include_graphics(c("Figures/fig1007.png","Figures/fig1006.png"))
 
 1. Boukhetala K (1996). Modelling and Simulation of a Dispersion Pollutant with Attractive Centre, volume 3, pp. 245-252. Computer Methods and Water Resources, Computational Mechanics Publications, Boston, USA.
 
-2. Guidoum AC, Boukhetala K (2020). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Accept Submission to Journal of Statistical Software.
-
-3. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.7, URL https://cran.r-project.org/package=Sim.DiffProc.
+2.  Guidoum AC, Boukhetala K (2020). "Performing Parallel Monte Carlo and
+    Moment Equations Methods for Itô and Stratonovich Stochastic
+    Differential Systems: R Package Sim.DiffProc". Journal of Statistical Software, 96(2), 1--82. https://doi.org/10.18637/jss.v096.i02

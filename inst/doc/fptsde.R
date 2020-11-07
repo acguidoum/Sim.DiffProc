@@ -6,6 +6,7 @@ options(prompt="R> ",scipen=16,digits=5,warning=FALSE, message=FALSE,
         width = 70)
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression( (1-0.5*x) )
 g <- expression( 1 )
 mod1d <- snssde1d(drift=f,diffusion=g,x0=1.7,M=1000,method="taylor")
@@ -97,6 +98,7 @@ summary(fpt2)
 knitr::include_graphics("Figures/fig02.png")
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 fx <- expression(5*(-1-y)*x , 5*(-1-x)*y)
 gx <- expression(0.5*y,0.5*x)
 mod2d <- snssde2d(drift=fx,diffusion=gx,x0=c(x=1,y=-1),M=1000,type="str")
@@ -136,6 +138,7 @@ summary(fpt2d)
 #  plot(denJ,display="persp",main="Bivariate Density of F.P.T",xlab=expression(tau[x]),ylab=expression(tau[y]))
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 fx <- expression(4*(-1-x)*y , 4*(1-y)*x , 4*(1-z)*y) 
 gx <- rep(expression(0.2),3)
 Sigma <-matrix(c(1,0.3,-0.5,0.3,1,0.2,-0.5,0.2,1),nrow=3,ncol=3)

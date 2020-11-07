@@ -13,16 +13,17 @@ options(prompt="R> ",scipen=16,digits=5,warning=FALSE, message=FALSE,mc.cores=2)
 #  plot(x,index = 1,type=c("all","hist","qqplot","boxplot","CI"), ...)
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 theta = 0.75; x0 = 1
 fx <- expression( 0.5*theta^2*x )
 gx <- expression( theta*x )
 mod1 <- snssde1d(drift=fx,diffusion=gx,x0=x0,M=500,type="ito")
 mod2 <- snssde1d(drift=fx,diffusion=gx,x0=x0,M=500,type="str")
 ## True values of means and variance for mod1 and mod2
-E.mod1 <- function(t) x0*exp(0.5*theta^2*t)
-E.mod2 <- function(t) x0
-V.mod1 <- function(t) x0^2*exp(theta^2*t)*(exp(theta^2*t)-1)
-V.mod2 <- function(t) x0^2 *(exp(theta^2*t)-1)
+E.mod1 <- function(t) x0 * exp(0.5 * theta^2 * t)
+V.mod1 <- function(t) x0^2 * exp(theta^2 * t) * (exp(theta^2 * t) - 1)
+E.mod2 <- function(t) x0 * exp(theta^2 * t)
+V.mod2 <- function(t) x0^2 * exp(2 * theta^2 * t) * (exp(theta^2 * t) - 1)
 ## function of the statistic(s) of interest.
 sde.fun1d <- function(data, i){
      d <- data[i, ]
@@ -36,6 +37,7 @@ mcm.mod2 = MCM.sde(model=mod2,statistic=sde.fun1d,R=20, exact=list(m=E.mod2(1),S
 mcm.mod2
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mu=1;sigma=0.5;theta=2
 x0=0;y0=0;init=c(x0,y0)
 f <- expression(1/mu*(theta-x), x)  
@@ -58,6 +60,7 @@ mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=20,exact=tvalue,parallel="
 mcm.mod2d
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mu=0.5;sigma=0.25
 fx <- expression(mu*y,0,0) 
 gx <- expression(sigma*z,1,1)

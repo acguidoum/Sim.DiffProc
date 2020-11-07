@@ -12,10 +12,23 @@
 
 <meta name="author" content="A.C. Guidoum and K. Boukhetala" />
 
-<meta name="date" content="2020-09-22" />
+<meta name="date" content="2020-11-07" />
 
 <title>Converting Sim.DiffProc Objects to LaTeX</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 <script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
 // v0.0.1
 // Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
@@ -32,23 +45,70 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -68,7 +128,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -357,12 +417,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Converting Sim.DiffProc Objects to LaTeX</h1>
 <h4 class="author">A.C. Guidoum<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and K. Boukhetala<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></h4>
-<h4 class="date">2020-09-22</h4>
+<h4 class="date">2020-11-07</h4>
 
 
 <div id="TOC">
 <ul>
-<li><a href="#the-tex.sde-function">The <code>TEX.sde()</code> function</a><ul>
+<li><a href="#the-tex.sde-function">The <code>TEX.sde()</code> function</a>
+<ul>
 <li><a href="#latex-table-for-object-of-class-mcm.sde">LaTeX table for object of class <code>MCM.sde</code></a></li>
 <li><a href="#latex-mathematic-for-object-of-class-mem.sde">LaTeX mathematic for object of class <code>MEM.sde</code></a></li>
 <li><a href="#latex-mathematic-for-an-r-expression-of-sdes">LaTeX mathematic for an R expression of SDEs</a></li>
@@ -409,15 +470,15 @@ dY_t = X_{t} dt
 <span id="cb1-19"><a href="#cb1-19"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod2d =<span class="st"> </span><span class="kw">MCM.sde</span>(mod2d,<span class="dt">statistic=</span>sde.fun2d,<span class="dt">time=</span><span class="dv">15</span>,<span class="dt">R=</span><span class="dv">10</span>,<span class="dt">exact=</span>tvalue,<span class="dt">parallel=</span><span class="st">&quot;snow&quot;</span>,<span class="dt">ncpus=</span><span class="dv">2</span>)</span>
 <span id="cb1-20"><a href="#cb1-20"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod2d<span class="op">$</span>MC</span></code></pre></div>
 <pre><code>    Exact Estimate     Bias Std.Error    RMSE   CI( 2.5 % , 97.5 % )
-m1   2.00  1.98789 -0.01211   0.00847 0.02814  ( 1.97129 , 2.00449 )
-m2  28.00 27.99497 -0.00503   0.04211 0.12643 ( 27.91244 , 28.0775 )
-S1   0.25  0.24352 -0.00648   0.00444 0.01482  ( 0.23482 , 0.25222 )
-S2   6.75  6.74298 -0.00702   0.13215 0.39652  ( 6.48397 , 7.00199 )
-C12  0.25  0.22417 -0.02583   0.01438 0.05028  ( 0.19599 , 0.25235 )</code></pre>
+m1   2.00  1.99996 -0.00004   0.00578 0.01735  ( 1.98863 , 2.01129 )
+m2  28.00 27.98526 -0.01474   0.04641 0.14000 ( 27.8943 , 28.07622 )
+S1   0.25  0.24766 -0.00234   0.00383 0.01173  ( 0.24015 , 0.25517 )
+S2   6.75  6.69702 -0.05298   0.14770 0.44625  ( 6.40753 , 6.98651 )
+C12  0.25  0.27466  0.02466   0.02525 0.07966  ( 0.22517 , 0.32415 )</code></pre>
 <p>In R we create simple LaTeX table for this object using the following code:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="kw">TEX.sde</span>(<span class="dt">object =</span> mcm.mod2d, <span class="dt">booktabs =</span> <span class="ot">TRUE</span>, <span class="dt">align =</span> <span class="st">&quot;r&quot;</span>, <span class="dt">caption =</span><span class="st">&quot;LaTeX </span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="st">+           table for Monte Carlo results generated by `TEX.sde()` method.&quot;</span>)</span></code></pre></div>
-<pre><code>%%% LaTeX table generated in R 4.0.2 by TEX.sde() method 
+<pre><code>%%% LaTeX table generated in R 4.0.3 by TEX.sde() method 
 %%% Copy and paste the following output in your LaTeX file 
 
 \begin{table}
@@ -429,11 +490,11 @@ C12  0.25  0.22417 -0.02583   0.01438 0.05028  ( 0.19599 , 0.25235 )</code></pre
 \toprule
   &amp; Exact &amp; Estimate &amp; Bias &amp; Std.Error &amp; RMSE &amp; CI( 2.5 \% , 97.5 \% )\\
 \midrule
-$m_{1}(t)$ &amp; 2.00 &amp; 1.98789 &amp; -0.01211 &amp; 0.00847 &amp; 0.02814 &amp; ( 1.97129 , 2.00449 )\\
-$m_{2}(t)$ &amp; 28.00 &amp; 27.99497 &amp; -0.00503 &amp; 0.04211 &amp; 0.12643 &amp; ( 27.91244 , 28.0775 )\\
-$S_{1}(t)$ &amp; 0.25 &amp; 0.24352 &amp; -0.00648 &amp; 0.00444 &amp; 0.01482 &amp; ( 0.23482 , 0.25222 )\\
-$S_{2}(t)$ &amp; 6.75 &amp; 6.74298 &amp; -0.00702 &amp; 0.13215 &amp; 0.39652 &amp; ( 6.48397 , 7.00199 )\\
-$C_{12}(t)$ &amp; 0.25 &amp; 0.22417 &amp; -0.02583 &amp; 0.01438 &amp; 0.05028 &amp; ( 0.19599 , 0.25235 )\\
+$m_{1}(t)$ &amp; 2.00 &amp; 1.99996 &amp; -0.00004 &amp; 0.00578 &amp; 0.01735 &amp; ( 1.98863 , 2.01129 )\\
+$m_{2}(t)$ &amp; 28.00 &amp; 27.98526 &amp; -0.01474 &amp; 0.04641 &amp; 0.14000 &amp; ( 27.8943 , 28.07622 )\\
+$S_{1}(t)$ &amp; 0.25 &amp; 0.24766 &amp; -0.00234 &amp; 0.00383 &amp; 0.01173 &amp; ( 0.24015 , 0.25517 )\\
+$S_{2}(t)$ &amp; 6.75 &amp; 6.69702 &amp; -0.05298 &amp; 0.14770 &amp; 0.44625 &amp; ( 6.40753 , 6.98651 )\\
+$C_{12}(t)$ &amp; 0.25 &amp; 0.27466 &amp; 0.02466 &amp; 0.02525 &amp; 0.07966 &amp; ( 0.22517 , 0.32415 )\\
 \bottomrule
 \end{tabular}
 \end{table} </code></pre>
@@ -475,19 +536,19 @@ m1
 2.00
 </td>
 <td style="text-align:right;">
-1.98789
+1.99996
 </td>
 <td style="text-align:right;">
--0.01211
+-0.00004
 </td>
 <td style="text-align:right;">
-0.00847
+0.00578
 </td>
 <td style="text-align:right;">
-0.02814
+0.01735
 </td>
 <td style="text-align:right;">
-( 1.97129 , 2.00449 )
+( 1.98863 , 2.01129 )
 </td>
 </tr>
 <tr>
@@ -498,19 +559,19 @@ m2
 28.00
 </td>
 <td style="text-align:right;">
-27.99497
+27.98526
 </td>
 <td style="text-align:right;">
--0.00503
+-0.01474
 </td>
 <td style="text-align:right;">
-0.04211
+0.04641
 </td>
 <td style="text-align:right;">
-0.12643
+0.14000
 </td>
 <td style="text-align:right;">
-( 27.91244 , 28.0775 )
+( 27.8943 , 28.07622 )
 </td>
 </tr>
 <tr>
@@ -521,19 +582,19 @@ S1
 0.25
 </td>
 <td style="text-align:right;">
-0.24352
+0.24766
 </td>
 <td style="text-align:right;">
--0.00648
+-0.00234
 </td>
 <td style="text-align:right;">
-0.00444
+0.00383
 </td>
 <td style="text-align:right;">
-0.01482
+0.01173
 </td>
 <td style="text-align:right;">
-( 0.23482 , 0.25222 )
+( 0.24015 , 0.25517 )
 </td>
 </tr>
 <tr>
@@ -544,19 +605,19 @@ S2
 6.75
 </td>
 <td style="text-align:right;">
-6.74298
+6.69702
 </td>
 <td style="text-align:right;">
--0.00702
+-0.05298
 </td>
 <td style="text-align:right;">
-0.13215
+0.14770
 </td>
 <td style="text-align:right;">
-0.39652
+0.44625
 </td>
 <td style="text-align:right;">
-( 6.48397 , 7.00199 )
+( 6.40753 , 6.98651 )
 </td>
 </tr>
 <tr>
@@ -567,19 +628,19 @@ C12
 0.25
 </td>
 <td style="text-align:right;">
-0.22417
+0.27466
 </td>
 <td style="text-align:right;">
--0.02583
+0.02466
 </td>
 <td style="text-align:right;">
-0.01438
+0.02525
 </td>
 <td style="text-align:right;">
-0.05028
+0.07966
 </td>
 <td style="text-align:right;">
-( 0.19599 , 0.25235 )
+( 0.22517 , 0.32415 )
 </td>
 </tr>
 </tbody>
@@ -603,7 +664,7 @@ Moment equations:
  | dC12(t) = S1(t) - C12(t)/mu</code></pre>
 <p>In R we create LaTeX mathematical expressions for this object using the following code:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="kw">TEX.sde</span>(<span class="dt">object =</span> mem.oui)</span></code></pre></div>
-<pre><code>%%% LaTeX equation generated in R 4.0.2 by TEX.sde() method
+<pre><code>%%% LaTeX equation generated in R 4.0.3 by TEX.sde() method
 %%% Copy and paste the following output in your LaTeX file
 
 \begin{equation}\label{eq:}
@@ -638,7 +699,7 @@ Moment equations:
 <span id="cb9-2"><a href="#cb9-2"></a><span class="op">+</span><span class="st">                 </span>(gamma <span class="op">*</span><span class="st"> </span>x<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>y <span class="op">/</span><span class="st"> </span>(kappa <span class="op">+</span><span class="st"> </span>x<span class="op">^</span><span class="dv">2</span>) <span class="op">-</span><span class="st"> </span>mu <span class="op">*</span><span class="st"> </span>y<span class="op">^</span><span class="dv">2</span>)) </span>
 <span id="cb9-3"><a href="#cb9-3"></a>R<span class="op">&gt;</span><span class="st"> </span>g &lt;-<span class="st"> </span><span class="kw">expression</span>(<span class="kw">sqrt</span>(sigma1)<span class="op">*</span>x<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>y), <span class="kw">abs</span>(sigma2)<span class="op">*</span>y<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>x))  </span>
 <span id="cb9-4"><a href="#cb9-4"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="kw">TEX.sde</span>(<span class="dt">object=</span><span class="kw">c</span>(<span class="dt">drift =</span> f, <span class="dt">diffusion =</span> g))</span></code></pre></div>
-<pre><code>%%% LaTeX equation generated in R 4.0.2 by TEX.sde() method
+<pre><code>%%% LaTeX equation generated in R 4.0.3 by TEX.sde() method
 %%% Copy and paste the following output in your LaTeX file
 
 \begin{equation}\label{eq:}
@@ -674,10 +735,9 @@ dY_{t} &amp;= \left( \frac{\gamma \, X_{t}^2 \, Y_{t}}{\left( \kappa + X_{t}^2 \
 <div id="references" class="section level1">
 <h1>References</h1>
 <ol style="list-style-type: decimal">
-<li><p>Xie Y (2015). Dynamic Documents with R and knitr. 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida. ISBN 978-1498716963, URL <a href="https://yihui.name/knitr/" class="uri">https://yihui.name/knitr/</a>.</p></li>
+<li><p>Xie Y (2015). Dynamic Documents with R and knitr. 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida. ISBN 978-1498716963, URL <a href="https://yihui.org/knitr/" class="uri">https://yihui.org/knitr/</a></p></li>
 <li><p>Wickham H (2015). Advanced R. Chapman &amp; Hall/CRC The R Series. CRC Press. ISBN 9781498759809.</p></li>
-<li><p>Guidoum AC, Boukhetala K (2020). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Accept Submission to Journal of Statistical Software.</p></li>
-<li><p>Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.7, URL <a href="https://cran.r-project.org/package=Sim.DiffProc" class="uri">https://cran.r-project.org/package=Sim.DiffProc</a>.</p></li>
+<li><p>Guidoum AC, Boukhetala K (2020). “Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc”. Journal of Statistical Software, 96(2), 1–82. <a href="https://doi.org/10.18637/jss.v096.i02" class="uri">https://doi.org/10.18637/jss.v096.i02</a></p></li>
 </ol>
 </div>
 <div class="footnotes">

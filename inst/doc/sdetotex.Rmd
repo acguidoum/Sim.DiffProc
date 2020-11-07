@@ -144,6 +144,6 @@ dY_{t} &= \left( \frac{\gamma \, X_{t}^2 \, Y_{t}}{\left( \kappa + X_{t}^2 \righ
 
 2. Wickham H (2015). Advanced R. Chapman & Hall/CRC The R Series. CRC Press. ISBN 9781498759809.
 
-3. Guidoum AC, Boukhetala K (2020). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Accept Submission to Journal of Statistical Software.
-
-4. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.7, URL https://cran.r-project.org/package=Sim.DiffProc.
+3.  Guidoum AC, Boukhetala K (2020). "Performing Parallel Monte Carlo and
+    Moment Equations Methods for Itô and Stratonovich Stochastic
+    Differential Systems: R Package Sim.DiffProc". Journal of Statistical Software, 96(2), 1--82. https://doi.org/10.18637/jss.v096.i02

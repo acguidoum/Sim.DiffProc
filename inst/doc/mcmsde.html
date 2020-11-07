@@ -12,10 +12,23 @@
 
 <meta name="author" content="A.C. Guidoum and K. Boukhetala" />
 
-<meta name="date" content="2020-09-22" />
+<meta name="date" content="2020-11-07" />
 
 <title>Parallel Monte-Carlo and Moment Equations for SDEs</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 <script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
 // v0.0.1
 // Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
@@ -32,23 +45,70 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -68,7 +128,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -357,17 +417,19 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Parallel Monte-Carlo and Moment Equations for SDEs</h1>
 <h4 class="author">A.C. Guidoum<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and K. Boukhetala<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></h4>
-<h4 class="date">2020-09-22</h4>
+<h4 class="date">2020-11-07</h4>
 
 
 <div id="TOC">
 <ul>
-<li><a href="#the-mcm.sde-function">The <code>MCM.sde()</code> function</a><ul>
+<li><a href="#the-mcm.sde-function">The <code>MCM.sde()</code> function</a>
+<ul>
 <li><a href="#one-dimensional-sde">One-dimensional SDE</a></li>
 <li><a href="#two-dimensional-sdes">Two-dimensional SDEs</a></li>
 <li><a href="#three-dimensional-sdes">Three-dimensional SDEs</a></li>
 </ul></li>
-<li><a href="#the-mem.sde-function">The <code>MEM.sde()</code> function</a><ul>
+<li><a href="#the-mem.sde-function">The <code>MEM.sde()</code> function</a>
+<ul>
 <li><a href="#one-dimensional-sde-1">One-dimensional SDE</a></li>
 <li><a href="#two-dimensional-sdes-1">Two-dimensional SDEs</a></li>
 <li><a href="#three-dimensional-sdes-1">Three-dimensional SDEs</a></li>
@@ -403,24 +465,25 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </ul>
 <div id="one-dimensional-sde" class="section level2">
 <h2>One-dimensional SDE</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>R<span class="op">&gt;</span><span class="st"> </span>theta =<span class="st"> </span><span class="fl">0.75</span>; x0 =<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>R<span class="op">&gt;</span><span class="st"> </span>fx &lt;-<span class="st"> </span><span class="kw">expression</span>( <span class="fl">0.5</span><span class="op">*</span>theta<span class="op">^</span><span class="dv">2</span><span class="op">*</span>x )</span>
-<span id="cb3-3"><a href="#cb3-3"></a>R<span class="op">&gt;</span><span class="st"> </span>gx &lt;-<span class="st"> </span><span class="kw">expression</span>( theta<span class="op">*</span>x )</span>
-<span id="cb3-4"><a href="#cb3-4"></a>R<span class="op">&gt;</span><span class="st"> </span>mod1 &lt;-<span class="st"> </span><span class="kw">snssde1d</span>(<span class="dt">drift=</span>fx,<span class="dt">diffusion=</span>gx,<span class="dt">x0=</span>x0,<span class="dt">M=</span><span class="dv">500</span>,<span class="dt">type=</span><span class="st">&quot;ito&quot;</span>)</span>
-<span id="cb3-5"><a href="#cb3-5"></a>R<span class="op">&gt;</span><span class="st"> </span>mod2 &lt;-<span class="st"> </span><span class="kw">snssde1d</span>(<span class="dt">drift=</span>fx,<span class="dt">diffusion=</span>gx,<span class="dt">x0=</span>x0,<span class="dt">M=</span><span class="dv">500</span>,<span class="dt">type=</span><span class="st">&quot;str&quot;</span>)</span>
-<span id="cb3-6"><a href="#cb3-6"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## True values of means and variance for mod1 and mod2</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a>R<span class="op">&gt;</span><span class="st"> </span>E.mod1 &lt;-<span class="st"> </span><span class="cf">function</span>(t) x0<span class="op">*</span><span class="kw">exp</span>(<span class="fl">0.5</span><span class="op">*</span>theta<span class="op">^</span><span class="dv">2</span><span class="op">*</span>t)</span>
-<span id="cb3-8"><a href="#cb3-8"></a>R<span class="op">&gt;</span><span class="st"> </span>E.mod2 &lt;-<span class="st"> </span><span class="cf">function</span>(t) x0</span>
-<span id="cb3-9"><a href="#cb3-9"></a>R<span class="op">&gt;</span><span class="st"> </span>V.mod1 &lt;-<span class="st"> </span><span class="cf">function</span>(t) x0<span class="op">^</span><span class="dv">2</span><span class="op">*</span><span class="kw">exp</span>(theta<span class="op">^</span><span class="dv">2</span><span class="op">*</span>t)<span class="op">*</span>(<span class="kw">exp</span>(theta<span class="op">^</span><span class="dv">2</span><span class="op">*</span>t)<span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb3-10"><a href="#cb3-10"></a>R<span class="op">&gt;</span><span class="st"> </span>V.mod2 &lt;-<span class="st"> </span><span class="cf">function</span>(t) x0<span class="op">^</span><span class="dv">2</span> <span class="op">*</span>(<span class="kw">exp</span>(theta<span class="op">^</span><span class="dv">2</span><span class="op">*</span>t)<span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb3-11"><a href="#cb3-11"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## function of the statistic(s) of interest.</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a>R<span class="op">&gt;</span><span class="st"> </span>sde.fun1d &lt;-<span class="st"> </span><span class="cf">function</span>(data, i){</span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="op">+</span><span class="st">      </span>d &lt;-<span class="st"> </span>data[i, ]</span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="op">+</span><span class="st">      </span><span class="kw">return</span>(<span class="kw">c</span>(<span class="kw">mean</span>(d),<span class="kw">var</span>(d)))</span>
-<span id="cb3-15"><a href="#cb3-15"></a><span class="op">+</span><span class="st"> </span>}</span>
-<span id="cb3-16"><a href="#cb3-16"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co"># Parallel MOnte Carlo for mod1</span></span>
-<span id="cb3-17"><a href="#cb3-17"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod1 =<span class="st"> </span><span class="kw">MCM.sde</span>(<span class="dt">model=</span>mod1,<span class="dt">statistic=</span>sde.fun1d,<span class="dt">R=</span><span class="dv">20</span>, <span class="dt">exact=</span><span class="kw">list</span>(<span class="dt">m=</span><span class="kw">E.mod1</span>(<span class="dv">1</span>),<span class="dt">S=</span><span class="kw">V.mod1</span>(<span class="dv">1</span>)),<span class="dt">parallel=</span><span class="st">&quot;snow&quot;</span>,<span class="dt">ncpus=</span><span class="dv">2</span>)</span>
-<span id="cb3-18"><a href="#cb3-18"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod1</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1234</span>, <span class="dt">kind =</span> <span class="st">&quot;L&#39;Ecuyer-CMRG&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>R<span class="op">&gt;</span><span class="st"> </span>theta =<span class="st"> </span><span class="fl">0.75</span>; x0 =<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>R<span class="op">&gt;</span><span class="st"> </span>fx &lt;-<span class="st"> </span><span class="kw">expression</span>( <span class="fl">0.5</span><span class="op">*</span>theta<span class="op">^</span><span class="dv">2</span><span class="op">*</span>x )</span>
+<span id="cb3-4"><a href="#cb3-4"></a>R<span class="op">&gt;</span><span class="st"> </span>gx &lt;-<span class="st"> </span><span class="kw">expression</span>( theta<span class="op">*</span>x )</span>
+<span id="cb3-5"><a href="#cb3-5"></a>R<span class="op">&gt;</span><span class="st"> </span>mod1 &lt;-<span class="st"> </span><span class="kw">snssde1d</span>(<span class="dt">drift=</span>fx,<span class="dt">diffusion=</span>gx,<span class="dt">x0=</span>x0,<span class="dt">M=</span><span class="dv">500</span>,<span class="dt">type=</span><span class="st">&quot;ito&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>R<span class="op">&gt;</span><span class="st"> </span>mod2 &lt;-<span class="st"> </span><span class="kw">snssde1d</span>(<span class="dt">drift=</span>fx,<span class="dt">diffusion=</span>gx,<span class="dt">x0=</span>x0,<span class="dt">M=</span><span class="dv">500</span>,<span class="dt">type=</span><span class="st">&quot;str&quot;</span>)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## True values of means and variance for mod1 and mod2</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>R<span class="op">&gt;</span><span class="st"> </span>E.mod1 &lt;-<span class="st"> </span><span class="cf">function</span>(t) x0 <span class="op">*</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">0.5</span> <span class="op">*</span><span class="st"> </span>theta<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>t)</span>
+<span id="cb3-9"><a href="#cb3-9"></a>R<span class="op">&gt;</span><span class="st"> </span>V.mod1 &lt;-<span class="st"> </span><span class="cf">function</span>(t) x0<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">exp</span>(theta<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>t) <span class="op">*</span><span class="st"> </span>(<span class="kw">exp</span>(theta<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>t) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb3-10"><a href="#cb3-10"></a>R<span class="op">&gt;</span><span class="st"> </span>E.mod2 &lt;-<span class="st"> </span><span class="cf">function</span>(t) x0 <span class="op">*</span><span class="st"> </span><span class="kw">exp</span>(theta<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>t)</span>
+<span id="cb3-11"><a href="#cb3-11"></a>R<span class="op">&gt;</span><span class="st"> </span>V.mod2 &lt;-<span class="st"> </span><span class="cf">function</span>(t) x0<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">exp</span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>theta<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>t) <span class="op">*</span><span class="st"> </span>(<span class="kw">exp</span>(theta<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>t) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb3-12"><a href="#cb3-12"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## function of the statistic(s) of interest.</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>R<span class="op">&gt;</span><span class="st"> </span>sde.fun1d &lt;-<span class="st"> </span><span class="cf">function</span>(data, i){</span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="op">+</span><span class="st">      </span>d &lt;-<span class="st"> </span>data[i, ]</span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="op">+</span><span class="st">      </span><span class="kw">return</span>(<span class="kw">c</span>(<span class="kw">mean</span>(d),<span class="kw">var</span>(d)))</span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="op">+</span><span class="st"> </span>}</span>
+<span id="cb3-17"><a href="#cb3-17"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co"># Parallel MOnte Carlo for mod1</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod1 =<span class="st"> </span><span class="kw">MCM.sde</span>(<span class="dt">model=</span>mod1,<span class="dt">statistic=</span>sde.fun1d,<span class="dt">R=</span><span class="dv">20</span>, <span class="dt">exact=</span><span class="kw">list</span>(<span class="dt">m=</span><span class="kw">E.mod1</span>(<span class="dv">1</span>),<span class="dt">S=</span><span class="kw">V.mod1</span>(<span class="dv">1</span>)),<span class="dt">parallel=</span><span class="st">&quot;snow&quot;</span>,<span class="dt">ncpus=</span><span class="dv">2</span>)</span>
+<span id="cb3-19"><a href="#cb3-19"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod1</span></code></pre></div>
 <pre><code>Itô Sde 1D:
  | dX(t) = 0.5 * theta^2 * X(t) * dt + theta * X(t) * dW(t)
  | t in [0,1] with mesh equal to 0.001
@@ -428,8 +491,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 PMCM Based on 20 Batches with 500-Realisations at time 1:
 
    Exact Estimate    Bias Std.Error    RMSE  CI( 2.5 % , 97.5 % )
-m 1.3248   1.3248 0.00002   0.00965 0.04206 ( 1.30589 , 1.34371 )
-S 1.3252   1.3500 0.02483   0.06084 0.26638 ( 1.23075 , 1.46923 )</code></pre>
+m 1.3248   1.3505 0.02571   0.01070 0.05327 ( 1.32952 , 1.37146 )
+S 1.3252   1.3326 0.00742   0.03637 0.15872  ( 1.2613 , 1.40386 )</code></pre>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co"># Parallel MOnte Carlo for mod2</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod2 =<span class="st"> </span><span class="kw">MCM.sde</span>(<span class="dt">model=</span>mod2,<span class="dt">statistic=</span>sde.fun1d,<span class="dt">R=</span><span class="dv">20</span>, <span class="dt">exact=</span><span class="kw">list</span>(<span class="dt">m=</span><span class="kw">E.mod2</span>(<span class="dv">1</span>),<span class="dt">S=</span><span class="kw">V.mod2</span>(<span class="dv">1</span>)),<span class="dt">parallel=</span><span class="st">&quot;snow&quot;</span>,<span class="dt">ncpus=</span><span class="dv">2</span>)</span>
 <span id="cb5-3"><a href="#cb5-3"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod2</span></code></pre></div>
@@ -439,32 +502,33 @@ S 1.3252   1.3500 0.02483   0.06084 0.26638 ( 1.23075 , 1.46923 )</code></pre>
 
 PMCM Based on 20 Batches with 500-Realisations at time 1:
 
-    Exact Estimate   Bias Std.Error    RMSE  CI( 2.5 % , 97.5 % )
-m 1.00000   1.7548 0.7548   0.01473 0.75753 ( 1.72593 , 1.78367 )
-S 0.75505   2.4936 1.7386   0.19159 1.92874  ( 2.1181 , 2.86912 )</code></pre>
+   Exact Estimate    Bias Std.Error    RMSE  CI( 2.5 % , 97.5 % )
+m 1.7550   1.7889 0.03383   0.01418 0.07045 ( 1.76109 , 1.81667 )
+S 2.3257   2.3365 0.01081   0.06376 0.27812 ( 2.21157 , 2.46151 )</code></pre>
 </div>
 <div id="two-dimensional-sdes" class="section level2">
 <h2>Two-dimensional SDEs</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>R<span class="op">&gt;</span><span class="st"> </span>mu=<span class="dv">1</span>;sigma=<span class="fl">0.5</span>;theta=<span class="dv">2</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>R<span class="op">&gt;</span><span class="st"> </span>x0=<span class="dv">0</span>;y0=<span class="dv">0</span>;init=<span class="kw">c</span>(x0,y0)</span>
-<span id="cb7-3"><a href="#cb7-3"></a>R<span class="op">&gt;</span><span class="st"> </span>f &lt;-<span class="st"> </span><span class="kw">expression</span>(<span class="dv">1</span><span class="op">/</span>mu<span class="op">*</span>(theta<span class="op">-</span>x), x)  </span>
-<span id="cb7-4"><a href="#cb7-4"></a>R<span class="op">&gt;</span><span class="st"> </span>g &lt;-<span class="st"> </span><span class="kw">expression</span>(<span class="kw">sqrt</span>(sigma),<span class="dv">0</span>)</span>
-<span id="cb7-5"><a href="#cb7-5"></a>R<span class="op">&gt;</span><span class="st"> </span>OUI &lt;-<span class="st"> </span><span class="kw">snssde2d</span>(<span class="dt">drift=</span>f,<span class="dt">diffusion=</span>g,<span class="dt">M=</span><span class="dv">500</span>,<span class="dt">Dt=</span><span class="fl">0.015</span>,<span class="dt">x0=</span><span class="kw">c</span>(<span class="dt">x=</span><span class="dv">0</span>,<span class="dt">y=</span><span class="dv">0</span>))</span>
-<span id="cb7-6"><a href="#cb7-6"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## true values of first and second moment at time 10</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a>R<span class="op">&gt;</span><span class="st"> </span>Ex &lt;-<span class="st"> </span><span class="cf">function</span>(t) theta<span class="op">+</span>(x0<span class="op">-</span>theta)<span class="op">*</span><span class="kw">exp</span>(<span class="op">-</span>t<span class="op">/</span>mu)</span>
-<span id="cb7-8"><a href="#cb7-8"></a>R<span class="op">&gt;</span><span class="st"> </span>Vx &lt;-<span class="st"> </span><span class="cf">function</span>(t) <span class="fl">0.5</span><span class="op">*</span>sigma<span class="op">*</span>mu <span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">exp</span>(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>(t<span class="op">/</span>mu)))</span>
-<span id="cb7-9"><a href="#cb7-9"></a>R<span class="op">&gt;</span><span class="st"> </span>Ey &lt;-<span class="st"> </span><span class="cf">function</span>(t) y0<span class="op">+</span>theta<span class="op">*</span>t<span class="op">+</span>(x0<span class="op">-</span>theta)<span class="op">*</span>mu<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">exp</span>(<span class="op">-</span>t<span class="op">/</span>mu))</span>
-<span id="cb7-10"><a href="#cb7-10"></a>R<span class="op">&gt;</span><span class="st"> </span>Vy &lt;-<span class="st"> </span><span class="cf">function</span>(t) sigma<span class="op">*</span>mu<span class="op">^</span><span class="dv">3</span><span class="op">*</span>((t<span class="op">/</span>mu)<span class="op">-</span><span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">exp</span>(<span class="op">-</span>t<span class="op">/</span>mu))<span class="op">+</span><span class="fl">0.5</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">exp</span>(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>(t<span class="op">/</span>mu))))</span>
-<span id="cb7-11"><a href="#cb7-11"></a>R<span class="op">&gt;</span><span class="st"> </span>covxy &lt;-<span class="st"> </span><span class="cf">function</span>(t) <span class="fl">0.5</span><span class="op">*</span>sigma<span class="op">*</span>mu<span class="op">^</span><span class="dv">2</span> <span class="op">*</span>(<span class="dv">1-2</span><span class="op">*</span><span class="kw">exp</span>(<span class="op">-</span>t<span class="op">/</span>mu)<span class="op">+</span><span class="kw">exp</span>(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>(t<span class="op">/</span>mu)))</span>
-<span id="cb7-12"><a href="#cb7-12"></a>R<span class="op">&gt;</span><span class="st"> </span>tvalue =<span class="st"> </span><span class="kw">list</span>(<span class="dt">m1=</span><span class="kw">Ex</span>(<span class="dv">10</span>),<span class="dt">m2=</span><span class="kw">Ey</span>(<span class="dv">10</span>),<span class="dt">S1=</span><span class="kw">Vx</span>(<span class="dv">10</span>),<span class="dt">S2=</span><span class="kw">Vy</span>(<span class="dv">10</span>),<span class="dt">C12=</span><span class="kw">covxy</span>(<span class="dv">10</span>))</span>
-<span id="cb7-13"><a href="#cb7-13"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## function of the statistic(s) of interest.</span></span>
-<span id="cb7-14"><a href="#cb7-14"></a>R<span class="op">&gt;</span><span class="st"> </span>sde.fun2d &lt;-<span class="st"> </span><span class="cf">function</span>(data, i){</span>
-<span id="cb7-15"><a href="#cb7-15"></a><span class="op">+</span><span class="st">   </span>d &lt;-<span class="st"> </span>data[i,]</span>
-<span id="cb7-16"><a href="#cb7-16"></a><span class="op">+</span><span class="st">   </span><span class="kw">return</span>(<span class="kw">c</span>(<span class="kw">mean</span>(d<span class="op">$</span>x),<span class="kw">mean</span>(d<span class="op">$</span>y),<span class="kw">var</span>(d<span class="op">$</span>x),<span class="kw">var</span>(d<span class="op">$</span>y),<span class="kw">cov</span>(d<span class="op">$</span>x,d<span class="op">$</span>y)))</span>
-<span id="cb7-17"><a href="#cb7-17"></a><span class="op">+</span><span class="st"> </span>}</span>
-<span id="cb7-18"><a href="#cb7-18"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## Parallel Monte-Carlo of &#39;OUI&#39; at time 10</span></span>
-<span id="cb7-19"><a href="#cb7-19"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod2d =<span class="st"> </span><span class="kw">MCM.sde</span>(OUI,<span class="dt">statistic=</span>sde.fun2d,<span class="dt">time=</span><span class="dv">10</span>,<span class="dt">R=</span><span class="dv">20</span>,<span class="dt">exact=</span>tvalue,<span class="dt">parallel=</span><span class="st">&quot;snow&quot;</span>,<span class="dt">ncpus=</span><span class="dv">2</span>)</span>
-<span id="cb7-20"><a href="#cb7-20"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod2d</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1234</span>, <span class="dt">kind =</span> <span class="st">&quot;L&#39;Ecuyer-CMRG&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>R<span class="op">&gt;</span><span class="st"> </span>mu=<span class="dv">1</span>;sigma=<span class="fl">0.5</span>;theta=<span class="dv">2</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>R<span class="op">&gt;</span><span class="st"> </span>x0=<span class="dv">0</span>;y0=<span class="dv">0</span>;init=<span class="kw">c</span>(x0,y0)</span>
+<span id="cb7-4"><a href="#cb7-4"></a>R<span class="op">&gt;</span><span class="st"> </span>f &lt;-<span class="st"> </span><span class="kw">expression</span>(<span class="dv">1</span><span class="op">/</span>mu<span class="op">*</span>(theta<span class="op">-</span>x), x)  </span>
+<span id="cb7-5"><a href="#cb7-5"></a>R<span class="op">&gt;</span><span class="st"> </span>g &lt;-<span class="st"> </span><span class="kw">expression</span>(<span class="kw">sqrt</span>(sigma),<span class="dv">0</span>)</span>
+<span id="cb7-6"><a href="#cb7-6"></a>R<span class="op">&gt;</span><span class="st"> </span>OUI &lt;-<span class="st"> </span><span class="kw">snssde2d</span>(<span class="dt">drift=</span>f,<span class="dt">diffusion=</span>g,<span class="dt">M=</span><span class="dv">500</span>,<span class="dt">Dt=</span><span class="fl">0.015</span>,<span class="dt">x0=</span><span class="kw">c</span>(<span class="dt">x=</span><span class="dv">0</span>,<span class="dt">y=</span><span class="dv">0</span>))</span>
+<span id="cb7-7"><a href="#cb7-7"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## true values of first and second moment at time 10</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>R<span class="op">&gt;</span><span class="st"> </span>Ex &lt;-<span class="st"> </span><span class="cf">function</span>(t) theta<span class="op">+</span>(x0<span class="op">-</span>theta)<span class="op">*</span><span class="kw">exp</span>(<span class="op">-</span>t<span class="op">/</span>mu)</span>
+<span id="cb7-9"><a href="#cb7-9"></a>R<span class="op">&gt;</span><span class="st"> </span>Vx &lt;-<span class="st"> </span><span class="cf">function</span>(t) <span class="fl">0.5</span><span class="op">*</span>sigma<span class="op">*</span>mu <span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">exp</span>(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>(t<span class="op">/</span>mu)))</span>
+<span id="cb7-10"><a href="#cb7-10"></a>R<span class="op">&gt;</span><span class="st"> </span>Ey &lt;-<span class="st"> </span><span class="cf">function</span>(t) y0<span class="op">+</span>theta<span class="op">*</span>t<span class="op">+</span>(x0<span class="op">-</span>theta)<span class="op">*</span>mu<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">exp</span>(<span class="op">-</span>t<span class="op">/</span>mu))</span>
+<span id="cb7-11"><a href="#cb7-11"></a>R<span class="op">&gt;</span><span class="st"> </span>Vy &lt;-<span class="st"> </span><span class="cf">function</span>(t) sigma<span class="op">*</span>mu<span class="op">^</span><span class="dv">3</span><span class="op">*</span>((t<span class="op">/</span>mu)<span class="op">-</span><span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">exp</span>(<span class="op">-</span>t<span class="op">/</span>mu))<span class="op">+</span><span class="fl">0.5</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">exp</span>(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>(t<span class="op">/</span>mu))))</span>
+<span id="cb7-12"><a href="#cb7-12"></a>R<span class="op">&gt;</span><span class="st"> </span>covxy &lt;-<span class="st"> </span><span class="cf">function</span>(t) <span class="fl">0.5</span><span class="op">*</span>sigma<span class="op">*</span>mu<span class="op">^</span><span class="dv">2</span> <span class="op">*</span>(<span class="dv">1-2</span><span class="op">*</span><span class="kw">exp</span>(<span class="op">-</span>t<span class="op">/</span>mu)<span class="op">+</span><span class="kw">exp</span>(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>(t<span class="op">/</span>mu)))</span>
+<span id="cb7-13"><a href="#cb7-13"></a>R<span class="op">&gt;</span><span class="st"> </span>tvalue =<span class="st"> </span><span class="kw">list</span>(<span class="dt">m1=</span><span class="kw">Ex</span>(<span class="dv">10</span>),<span class="dt">m2=</span><span class="kw">Ey</span>(<span class="dv">10</span>),<span class="dt">S1=</span><span class="kw">Vx</span>(<span class="dv">10</span>),<span class="dt">S2=</span><span class="kw">Vy</span>(<span class="dv">10</span>),<span class="dt">C12=</span><span class="kw">covxy</span>(<span class="dv">10</span>))</span>
+<span id="cb7-14"><a href="#cb7-14"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## function of the statistic(s) of interest.</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a>R<span class="op">&gt;</span><span class="st"> </span>sde.fun2d &lt;-<span class="st"> </span><span class="cf">function</span>(data, i){</span>
+<span id="cb7-16"><a href="#cb7-16"></a><span class="op">+</span><span class="st">   </span>d &lt;-<span class="st"> </span>data[i,]</span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="op">+</span><span class="st">   </span><span class="kw">return</span>(<span class="kw">c</span>(<span class="kw">mean</span>(d<span class="op">$</span>x),<span class="kw">mean</span>(d<span class="op">$</span>y),<span class="kw">var</span>(d<span class="op">$</span>x),<span class="kw">var</span>(d<span class="op">$</span>y),<span class="kw">cov</span>(d<span class="op">$</span>x,d<span class="op">$</span>y)))</span>
+<span id="cb7-18"><a href="#cb7-18"></a><span class="op">+</span><span class="st"> </span>}</span>
+<span id="cb7-19"><a href="#cb7-19"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## Parallel Monte-Carlo of &#39;OUI&#39; at time 10</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod2d =<span class="st"> </span><span class="kw">MCM.sde</span>(OUI,<span class="dt">statistic=</span>sde.fun2d,<span class="dt">time=</span><span class="dv">10</span>,<span class="dt">R=</span><span class="dv">20</span>,<span class="dt">exact=</span>tvalue,<span class="dt">parallel=</span><span class="st">&quot;snow&quot;</span>,<span class="dt">ncpus=</span><span class="dv">2</span>)</span>
+<span id="cb7-21"><a href="#cb7-21"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod2d</span></code></pre></div>
 <pre><code>Itô Sde 2D:
  | dX(t) = 1/mu * (theta - X(t)) * dt + sqrt(sigma) * dW1(t)
  | dY(t) = X(t) * dt + 0 * dW2(t)
@@ -472,28 +536,35 @@ S 0.75505   2.4936 1.7386   0.19159 1.92874  ( 2.1181 , 2.86912 )</code></pre>
 
 PMCM Based on 20 Batches with 500-Realisations at time 10:
 
-       Exact Estimate     Bias Std.Error    RMSE    CI( 2.5 % , 97.5 % )
-m1   1.99991  1.99659 -0.00332   0.00449 0.01985   ( 1.98779 , 2.00539 )
-m2  18.00009 18.01641  0.01632   0.01976 0.08768 ( 17.97768 , 18.05514 )
-S1   0.25000  0.24914 -0.00086   0.00368 0.01608   ( 0.24193 , 0.25635 )
-S2   4.25005  4.18328 -0.06677   0.04920 0.22460   ( 4.08685 , 4.27971 )
-C12  0.24998  0.23573 -0.01425   0.00693 0.03338   ( 0.22215 , 0.24931 )</code></pre>
+       Exact Estimate    Bias Std.Error    RMSE
+m1   1.99991  2.00256 0.00265   0.00475 0.02087
+m2  18.00009 18.04024 0.04015   0.01598 0.08038
+S1   0.25000  0.25229 0.00229   0.00397 0.01746
+S2   4.25005  4.29577 0.04572   0.05856 0.25934
+C12  0.24998  0.25877 0.00879   0.01266 0.05588
+       CI( 2.5 % , 97.5 % )
+m1    ( 1.99325 , 2.01187 )
+m2  ( 18.00892 , 18.07156 )
+S1    ( 0.24451 , 0.26007 )
+S2    ( 4.18099 , 4.41055 )
+C12   ( 0.23396 , 0.28358 )</code></pre>
 </div>
 <div id="three-dimensional-sdes" class="section level2">
 <h2>Three-dimensional SDEs</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>R<span class="op">&gt;</span><span class="st"> </span>mu=<span class="fl">0.5</span>;sigma=<span class="fl">0.25</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>R<span class="op">&gt;</span><span class="st"> </span>fx &lt;-<span class="st"> </span><span class="kw">expression</span>(mu<span class="op">*</span>y,<span class="dv">0</span>,<span class="dv">0</span>) </span>
-<span id="cb9-3"><a href="#cb9-3"></a>R<span class="op">&gt;</span><span class="st"> </span>gx &lt;-<span class="st"> </span><span class="kw">expression</span>(sigma<span class="op">*</span>z,<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb9-4"><a href="#cb9-4"></a>R<span class="op">&gt;</span><span class="st"> </span>Sigma &lt;-<span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="fl">0.3</span>,<span class="op">-</span><span class="fl">0.5</span>,<span class="fl">0.3</span>,<span class="dv">1</span>,<span class="fl">0.2</span>,<span class="op">-</span><span class="fl">0.5</span>,<span class="fl">0.2</span>,<span class="dv">1</span>),<span class="dt">nrow=</span><span class="dv">3</span>,<span class="dt">ncol=</span><span class="dv">3</span>)</span>
-<span id="cb9-5"><a href="#cb9-5"></a>R<span class="op">&gt;</span><span class="st"> </span>modtra &lt;-<span class="st"> </span><span class="kw">snssde3d</span>(<span class="dt">drift=</span>fx,<span class="dt">diffusion=</span>gx,<span class="dt">M=</span><span class="dv">500</span>,<span class="dt">type=</span><span class="st">&quot;str&quot;</span>,<span class="dt">corr=</span>Sigma)</span>
-<span id="cb9-6"><a href="#cb9-6"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## function of the statistic(s) of interest.</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a>R<span class="op">&gt;</span><span class="st"> </span>sde.fun3d &lt;-<span class="st"> </span><span class="cf">function</span>(data, i){</span>
-<span id="cb9-8"><a href="#cb9-8"></a><span class="op">+</span><span class="st">   </span>d &lt;-<span class="st"> </span>data[i,]</span>
-<span id="cb9-9"><a href="#cb9-9"></a><span class="op">+</span><span class="st">   </span><span class="kw">return</span>(<span class="kw">c</span>(<span class="kw">mean</span>(d<span class="op">$</span>x),<span class="kw">median</span>(d<span class="op">$</span>x),<span class="kw">Mode</span>(d<span class="op">$</span>x)))</span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="op">+</span><span class="st"> </span>}</span>
-<span id="cb9-11"><a href="#cb9-11"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## Monte-Carlo at time = 10</span></span>
-<span id="cb9-12"><a href="#cb9-12"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod3d =<span class="st"> </span><span class="kw">MCM.sde</span>(modtra,<span class="dt">statistic=</span>sde.fun3d,<span class="dt">R=</span><span class="dv">10</span>,<span class="dt">parallel=</span><span class="st">&quot;snow&quot;</span>,<span class="dt">ncpus=</span><span class="dv">2</span>)</span>
-<span id="cb9-13"><a href="#cb9-13"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod3d</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1234</span>, <span class="dt">kind =</span> <span class="st">&quot;L&#39;Ecuyer-CMRG&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2"></a>R<span class="op">&gt;</span><span class="st"> </span>mu=<span class="fl">0.5</span>;sigma=<span class="fl">0.25</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>R<span class="op">&gt;</span><span class="st"> </span>fx &lt;-<span class="st"> </span><span class="kw">expression</span>(mu<span class="op">*</span>y,<span class="dv">0</span>,<span class="dv">0</span>) </span>
+<span id="cb9-4"><a href="#cb9-4"></a>R<span class="op">&gt;</span><span class="st"> </span>gx &lt;-<span class="st"> </span><span class="kw">expression</span>(sigma<span class="op">*</span>z,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb9-5"><a href="#cb9-5"></a>R<span class="op">&gt;</span><span class="st"> </span>Sigma &lt;-<span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="fl">0.3</span>,<span class="op">-</span><span class="fl">0.5</span>,<span class="fl">0.3</span>,<span class="dv">1</span>,<span class="fl">0.2</span>,<span class="op">-</span><span class="fl">0.5</span>,<span class="fl">0.2</span>,<span class="dv">1</span>),<span class="dt">nrow=</span><span class="dv">3</span>,<span class="dt">ncol=</span><span class="dv">3</span>)</span>
+<span id="cb9-6"><a href="#cb9-6"></a>R<span class="op">&gt;</span><span class="st"> </span>modtra &lt;-<span class="st"> </span><span class="kw">snssde3d</span>(<span class="dt">drift=</span>fx,<span class="dt">diffusion=</span>gx,<span class="dt">M=</span><span class="dv">500</span>,<span class="dt">type=</span><span class="st">&quot;str&quot;</span>,<span class="dt">corr=</span>Sigma)</span>
+<span id="cb9-7"><a href="#cb9-7"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## function of the statistic(s) of interest.</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>R<span class="op">&gt;</span><span class="st"> </span>sde.fun3d &lt;-<span class="st"> </span><span class="cf">function</span>(data, i){</span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="op">+</span><span class="st">   </span>d &lt;-<span class="st"> </span>data[i,]</span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="op">+</span><span class="st">   </span><span class="kw">return</span>(<span class="kw">c</span>(<span class="kw">mean</span>(d<span class="op">$</span>x),<span class="kw">median</span>(d<span class="op">$</span>x),<span class="kw">Mode</span>(d<span class="op">$</span>x)))</span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="op">+</span><span class="st"> </span>}</span>
+<span id="cb9-12"><a href="#cb9-12"></a>R<span class="op">&gt;</span><span class="st"> </span><span class="co">## Monte-Carlo at time = 10</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod3d =<span class="st"> </span><span class="kw">MCM.sde</span>(modtra,<span class="dt">statistic=</span>sde.fun3d,<span class="dt">R=</span><span class="dv">10</span>,<span class="dt">parallel=</span><span class="st">&quot;snow&quot;</span>,<span class="dt">ncpus=</span><span class="dv">2</span>)</span>
+<span id="cb9-14"><a href="#cb9-14"></a>R<span class="op">&gt;</span><span class="st"> </span>mcm.mod3d</span></code></pre></div>
 <pre><code>Stratonovich Sde 3D:
  | dX(t) = mu * Y(t) * dt + sigma * Z(t) o dB1(t)
  | dY(t) = 0 * dt + 1 o dB2(t)
@@ -507,9 +578,9 @@ C12  0.24998  0.23573 -0.01425   0.00693 0.03338   ( 0.22215 , 0.24931 )</code><
 PMCM Based on 10 Batches with 500-Realisations at time 1:
 
     Estimate Std.Error    CI( 2.5 % , 97.5 % )
-mu1 -0.06978   0.00541 ( -0.08038 , -0.05918 )
-mu2 -0.06619   0.00610 ( -0.07815 , -0.05423 )
-mu3 -0.06723   0.02169 ( -0.10974 , -0.02472 )</code></pre>
+mu1 -0.06544   0.00325 ( -0.07181 , -0.05907 )
+mu2 -0.05929   0.00555 ( -0.07017 , -0.04841 )
+mu3 -0.04464   0.01661  ( -0.0772 , -0.01208 )</code></pre>
 </div>
 </div>
 <div id="the-mem.sde-function" class="section level1">
@@ -641,8 +712,7 @@ Approximation of moment at time 1
 <div id="references" class="section level1">
 <h1>References</h1>
 <ol style="list-style-type: decimal">
-<li><p>Guidoum AC, Boukhetala K (2020). Performing Parallel Monte Carlo and Moment Equations Methods for Ito and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc. Accept Submission to Journal of Statistical Software.</p></li>
-<li><p>Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.7, URL <a href="https://cran.r-project.org/package=Sim.DiffProc" class="uri">https://cran.r-project.org/package=Sim.DiffProc</a>.</p></li>
+<li>Guidoum AC, Boukhetala K (2020). “Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc”. Journal of Statistical Software, 96(2), 1–82. <a href="https://doi.org/10.18637/jss.v096.i02" class="uri">https://doi.org/10.18637/jss.v096.i02</a></li>
 </ol>
 </div>
 <div class="footnotes">

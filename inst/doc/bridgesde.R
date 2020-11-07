@@ -6,6 +6,7 @@ options(prompt="R> ",scipen=16,digits=5,warning=FALSE, message=FALSE,
         width = 70)
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression((1-x)/(1-t))
 g <- expression(x)
 mod <- bridgesde1d(drift=f,diffusion=g,x0=3,y=1,M=1000)
@@ -29,6 +30,7 @@ head(x, n = 3)
 knitr::include_graphics(c("Figures/fig03.png","Figures/fig1008.png"))
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 fx <- expression(-(1+y)*x , -(1+x)*y)
 gx <- expression(0.2*(1-y),0.1*(1-x))
 Sigma <-matrix(c(1,0.3,0.3,1),nrow=2,ncol=2)
@@ -68,6 +70,7 @@ knitr::include_graphics("Figures/fig1011.png")
 #  }
 
 ## -------------------------------------------------------------------
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 fx <- expression(-4*(1+x)*y, 4*(1-y)*x, 4*(1-z)*y)
 gx <- rep(expression(0.2),3)
 mod3 <- bridgesde3d(x0=c(0,-1,0.5),y=c(0,-2,0.5),drift=fx,diffusion=gx,M=1000)
