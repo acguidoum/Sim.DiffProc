@@ -270,19 +270,7 @@ print.MCM.sde <- function(x, digits=NULL, ...)
 		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
         sep="")}
     }} else {
-    if (x$Class=="snssde1d"){
-    Dr <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)))), list(e = x$mod$drift))))
-    DD <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)))), list(e = x$mod$diffusion))))
-    if(x$mod$type=="ito"){
-    cat(Ito," Sde 1D:","\n",
-        " | dX(t) = ", Dr," * dt + ", DD," * dW(t)","\n",
-		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
-        sep="")}else{
-    cat("Stratonovich Sde 1D:","\n",
-        " | dX(t) = ", Dr," * dt + ", DD," o dW(t)","\n",
-		" | t in [",format(x$mod$t0,digits=digits),",",format(x$mod$T,digits=digits),"] with mesh equal to ",format(x$mod$Dt,digits=digits),"\n",
-        sep="")}
-    }else if (x$Class=="snssde2d"){
+    if (x$Class=="snssde2d"){
 	Drx <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$mod$driftx))))
     DDx <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$mod$diffx))))
 	Dry <- deparse(eval(substitute(substitute(e, list(x=quote(X(t)),y=quote(Y(t)))), list(e = x$mod$drifty))))

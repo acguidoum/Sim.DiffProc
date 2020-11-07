@@ -20,7 +20,13 @@ sde.fun1d <- function(data, i){
      return(c(mean(d),var(d)))
 }
 # Parallel MOnte Carlo for mod1
+
+mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=1, exact=list(m=E.mod1(1),S=V.mod1(1)))
+mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5, names=c("Ex","Vx"))
 mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5, exact=list(m=E.mod1(1),S=V.mod1(1)))
+mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5, exact=list(m=E.mod1(1),S=V.mod1(1)),names=c("Ex","Vx"))
+mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5)
+mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5, exact=list(m=E.mod1(1),S=V.mod1(1)),parallel="multicore",ncpus=2)
 mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5, exact=list(m=E.mod1(1),S=V.mod1(1)),parallel="snow",cl= parallel::makeCluster(getOption("cl.cores", 2)),ncpus=2)
 mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5, exact=list(m=E.mod1(1),S=V.mod1(1)),parallel="snow",ncpus=2)
 print(mcm.mod1)
@@ -32,6 +38,8 @@ print(mcm.mod2)
 # plot(s) of Monte Carlo outputs of mod1
 plot(mcm.mod1,index = 1)  # mean
 plot(mcm.mod1,index = 2)  # variance
+
+plot(mcm.mod1,index = c(1,2))
 
 ## ----fig.cap=' MC output of mean and variance of `mod2`', fig.env='figure*'----
 # plot(s) of Monte Carlo outputs of mod2
@@ -58,6 +66,7 @@ sde.fun2d <- function(data, i){
 }
 ## Parallel Monte-Carlo of 'OUI' at time 10
 mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,exact=tvalue)
+mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,exact=tvalue,parallel="multicore",ncpus=2)
 mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,exact=tvalue,parallel="snow",cl= parallel::makeCluster(getOption("cl.cores", 2)),ncpus=2)
 mcm.mod2d = MCM.sde(OUI,statistic=sde.fun2d,time=10,R=5,exact=tvalue,parallel="snow",ncpus=2)
 print(mcm.mod2d)
@@ -139,6 +148,7 @@ sde.fun3d <- function(data, i){
 }
 ## Monte-Carlo at time = 10
 mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5)
+mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5,parallel="multicore",ncpus=2)
 mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5,parallel="snow",cl= parallel::makeCluster(getOption("cl.cores", 2)),ncpus=2)
 mcm.mod3d = MCM.sde(modtra,statistic=sde.fun3d,R=5,parallel="snow",ncpus=2)
 print(mcm.mod3d)
