@@ -91,7 +91,8 @@ points2d(mod2[[1]],pch=19,cex=0.1)
 Sigma <- matrix(c(1, 0.75, 0.75, 1), nrow = 2, ncol = 2)
 mod2 <- lapply(1:2, function(i) 
                 snssde2d(N=50,drift=fx,diffusion=gx,corr=Sigma,Dt=0.005,M=2,method=meth[i]))
-
+print(mod2[[1]])				
+summary(mod2[[1]])
 ##
 
 mod2 <- lapply(2:length(meth), function(i) 
@@ -121,7 +122,9 @@ bconfint(mod2[[1]], at =s)
 Sigma <- matrix(c(1, 0.75, 0.75, 1), nrow = 2, ncol = 2)
 mod2 <- lapply(1:2, function(i) 
                 snssde2d(N=50,drift=fx,diffusion=gx,corr=Sigma,Dt=0.005,M=2,method=meth[i],type="str"))
-
+print(mod2[[1]])				
+summary(mod2[[1]])
+	       
 ######## 3d
 
 fx <- expression(4*(-1-x)*y, 4*(1-y)*x, 4*(1-z)*y)
@@ -151,6 +154,9 @@ plot3D(mod3[[1]],display="persp",main="3-dim bridge sde")
 Sigma <- matrix(c(1,-0.5,-0.25,-0.5,1,0.95,-0.25,0.95,1),nrow=3,ncol=3) 
 mod3 <- lapply(1:2, function(i) 
                 snssde3d(N=50,drift=fx,diffusion=gx,corr=Sigma,M=2,method=meth[i]))
+print(mod3[[1]])				
+summary(mod3[[1]])
+	       
 ##
 
 
@@ -180,7 +186,8 @@ bconfint(mod3[[1]], at =s)
 Sigma <- matrix(c(1,-0.5,-0.25,-0.5,1,0.95,-0.25,0.95,1),nrow=3,ncol=3) 
 mod3 <- lapply(1:2, function(i) 
                 snssde3d(N=50,drift=fx,diffusion=gx,corr=Sigma,M=2,method=meth[i],type="str"))
-
+print(mod3[[1]])				
+summary(mod3[[1]])
 #############################
 s= 0.00458
 f <- expression( 2*(1-x) )
