@@ -53,7 +53,7 @@ moment(mod1, at = s , center= FALSE , order = 4)
 bconfint(mod1, at =s)
 
 ######## 2d
-
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 fx <- expression(4*(-1-x) , x)
 gx <- expression(0.2 , 0)
 
@@ -82,13 +82,14 @@ plot2d(mod2,type="n")
 lines2d(mod2,col=4)
 points2d(mod2,pch=19,cex=0.1)
 
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 Sigma <- matrix(c(1, 0.75, 0.75, 1), nrow = 2, ncol = 2)
 mod2 <- bridgesde2d(drift=fx,diffusion=gx,corr=Sigma,Dt=0.005,M=10,N=50)
 print(mod2)				
 summary(mod2)
 
 ##
-
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mod2 <- bridgesde2d(drift=fx,diffusion=gx,T=5,M=10,N=50,type="str")
 print(mod2)				
 summary(mod2)				
@@ -112,6 +113,7 @@ moment(mod2, at = s , center= TRUE , order = 4)
 moment(mod2, at = s , center= FALSE , order = 4)
 bconfint(mod2, at =s)
 
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 Sigma <- matrix(c(1, 0.75, 0.75, 1), nrow = 2, ncol = 2)
 mod2 <- bridgesde2d(drift=fx,diffusion=gx,corr=Sigma,Dt=0.005,M=10,N=50,type="str")
 print(mod2)				
@@ -122,6 +124,7 @@ summary(mod2)
 fx <- expression(4*(-1-x)*y, 4*(1-y)*x, 4*(1-z)*y)
 gx <- rep(expression(0.2),3)
 
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mod3 <- bridgesde3d(drift=fx,diffusion=gx,x0=c(0,-1,0.5),y=c(0,-2,0.5),M=10,Dt=0.01,N=50)
 print(mod3)				
 summary(mod3)
@@ -142,6 +145,7 @@ plot(mod3)
 bconfint(mod3)
 plot3D(mod3,display="persp",main="3-dim bridge sde")
 
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 Sigma <- matrix(c(1,-0.5,-0.25,-0.5,1,0.95,-0.25,0.95,1),nrow=3,ncol=3) 
 mod3 <- bridgesde3d(drift=fx,diffusion=gx,corr=Sigma,x0=c(0,-1,0.5),y=c(0,-2,0.5),M=10,Dt=0.01,N=50)
 print(mod3)				
@@ -149,7 +153,7 @@ summary(mod3)
 
 ##
 
-
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mod3 <- bridgesde3d(drift=fx,diffusion=gx,x0=c(0,-1,0.5),y=c(0,-2,0.5),M=10,N=50,type="str")
 print(mod3)
 summary(mod3)				
@@ -172,6 +176,7 @@ moment(mod3, at = s , center= TRUE , order = 4)
 moment(mod3, at = s , center= FALSE , order = 4)
 bconfint(mod3, at =s)
 
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 Sigma <- matrix(c(1,-0.5,-0.25,-0.5,1,0.95,-0.25,0.95,1),nrow=3,ncol=3) 
 mod3 <- bridgesde3d(drift=fx,diffusion=gx,corr=Sigma,x0=c(0,-1,0.5),y=c(0,-2,0.5),M=10,Dt=0.01,N=50,type="str")
 print(mod3)				
@@ -182,6 +187,7 @@ summary(mod3)
 f <- expression( 2*(1-x) )
 g <- expression( 1 )
 
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mod1 <- bridgesde1d(drift=f,diffusion=g,x0=2,y=2,M=1,N=50,Dt=0.05,method="predcorr")			
 plot(mod1,type="n")
 lines(mod1,col=2)
@@ -201,7 +207,7 @@ max(mod1)
 
 fx <- expression(4*(-1-x) , x)
 gx <- expression(0.2 , 0)
-
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mod2 <- bridgesde2d(drift=fx,diffusion=gx,M=1,Dt=0.05,N=50)
 plot(mod2,union = FALSE)
 plot(mod2,type="n")
@@ -223,7 +229,7 @@ max(mod2)
 
 fx <- expression(4*(-1-x), 4*(1-y), 4*(1-z))
 gx <- rep(expression(0.2),3)
-
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mod3 <- bridgesde3d(drift=fx,diffusion=gx,M=10,Dt=0.05,N=50,method="predcorr")
 plot(mod3,union = FALSE)
 plot(mod3,type="n")

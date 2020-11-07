@@ -105,4 +105,4 @@ Please send comments, error reports, etc. to the author via the addresses email.
 References
 ----------
 
-1. Guidoum AC, Boukhetala K (2020). "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". Journal of Statistical Software, 96(2), 1--82. https://doi.org/10.18637/jss.v096.i02
+1. Guidoum AC, Boukhetala K (2020). "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". Journal of Statistical Software, 96(2), 1-82. https://doi.org/10.18637/jss.v096.i02
