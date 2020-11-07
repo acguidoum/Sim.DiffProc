@@ -1,19 +1,18 @@
-citHeader("To cite package 'Sim.DiffProc' in publications use: ")
-     
- if(!exists("meta") || is.null(meta)) meta <- packageDescription("Sim.DiffProc")
- year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
- vers <- paste("R package version", meta$Version)
- 
- citEntry(entry="Manual",
-		  title = "Sim.DiffProc: Simulation of Diffusion Processes.",
-		  author = personList(as.person("Arsalane Chouaib Guidoum"),as.person("Kamal Boukhetala")),
-		  year = year,
-		  note = vers,
-		  url  = paste("https://cran.r-project.org/package=Sim.DiffProc"),
-		  textVersion =
-		  paste("Arsalane Chouaib Guidoum and Kamal Boukhetala (",
-				year,
-				"). Sim.DiffProc: Simulation of Diffusion Processes.", vers, ".", "https://cran.r-project.org/package=Sim.DiffProc"
-				, sep=""))
-				
-							
+bibentry(bibtype = "Article",
+  title        = "Performing Parallel Monte Carlo and Moment Equations Methods for It\\^{o} and Stratonovich Stochastic Differential Systems: {R} Package {Sim.DiffProc}",
+  author       = c(person(given = c("Arsalane", "Chouaib"),
+                          family = "Guidoum",
+                          email = "acguidoum@usthb.dz"),
+                   person(given = "Kamal",
+                          family = "Boukhetala",
+                          email = "kboukhetala@usthb.dz")),
+  journal      = "Journal of Statistical Software",
+  year         = "2020",
+  volume       = "96",
+  number       = "2",
+  pages        = "1--82",
+  doi          = "10.18637/jss.v096.i02",
+  
+  header       = "To cite Sim.DiffProc in publications use:"
+)
+

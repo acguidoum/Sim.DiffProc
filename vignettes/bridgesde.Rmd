@@ -78,6 +78,7 @@ dX_t = \frac{1-X_t}{1-t} dt + X_t dW_{t},\quad X_{t_{0}}=3 \quad\text{and}\quad 
 We simulate a flow of $1000$ trajectories, with integration step size $\Delta t = 0.001$, and $x_0 = 3$ at time $t_0 = 0$, $y = 1$ at terminal time $T=1$.
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression((1-x)/(1-t))
 g <- expression(x)
 mod <- bridgesde1d(drift=f,diffusion=g,x0=3,y=1,M=1000)
@@ -134,6 +135,7 @@ $$
 We simulate a flow of $1000$ trajectories, with integration step size $\Delta t = 0.01$:
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 fx <- expression(-(1+y)*x , -(1+x)*y)
 gx <- expression(0.2*(1-y),0.1*(1-x))
 Sigma <-matrix(c(1,0.3,0.3,1),nrow=2,ncol=2)
@@ -205,6 +207,7 @@ dZ_t = 4 (1-Z_{t}) Y_{t} dt + 0.2 dW_{3,t},\quad Z_{t_{0}}=0.5 \quad\text{and}\q
 We simulate a flow of $1000$ trajectories, with integration step size $\Delta t = 0.001$.
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 fx <- expression(-4*(1+x)*y, 4*(1-y)*x, 4*(1-z)*y)
 gx <- rep(expression(0.2),3)
 mod3 <- bridgesde3d(x0=c(0,-1,0.5),y=c(0,-2,0.5),drift=fx,diffusion=gx,M=1000)
@@ -259,4 +262,4 @@ plot(denJ,display="rgl")
 
 1. Bladt, M. and Sorensen, M. (2007). Simple simulation of diffusion bridges with application to likelihood inference for diffusions. Working Paper, University of Copenhagen.
 
-2. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.7, URL https://cran.r-project.org/package=Sim.DiffProc.
+2. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.8, URL https://cran.r-project.org/package=Sim.DiffProc.

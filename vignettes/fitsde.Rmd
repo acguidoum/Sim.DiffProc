@@ -70,6 +70,7 @@ As an example, we consider the Chan-Karolyi-Longstaff-Sanders (CKLS) model:
 with $\theta_{1}=1$, $\theta_{2}=2$, $\theta_{3}=0.5$ and $\theta_{4}=0.3$. Before calling `fitsde`, we generate sampled data $X_{t_{i}}$, with $\Delta t =10^{-4}$, as following:
 
 ```{r}
+set.seed(12345, kind = "L'Ecuyer-CMRG")
 f <- expression( (1+2*x) ) ; g <- expression( 0.5*x^0.3 )
 sim    <- snssde1d(drift=f,diffusion=g,x0=2,N=10^4,Dt=10^-4)
 mydata <- sim$X
@@ -129,6 +130,7 @@ volatility $g(x,\theta) = \theta_{3}$,
 with $\theta_{1}=3$, $\theta_{2}=2$ and $\theta_{3}=0.5$, we generate sampled data $X_{t_{i}}$, with $\Delta t =10^{-2}$, as following:
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression( 3*(2-x) ) ; g <- expression( 0.5 )
 sim <- snssde1d(drift=f,diffusion=g,x0=5,Dt=0.01)
 HWV <- sim$X
@@ -175,6 +177,7 @@ As an example, we consider the following model:
 with: $a(t) = \theta_{1}t$, and we generate sampled data $X_{t_{i}}$, with $\theta_{1}=-2$, $\theta_{2}=0.2$ and time step $\Delta t =10^{-3}$, as following:
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression(-2*x*t) ; g <- expression(0.2*x)
 sim <- snssde1d(drift=f,diffusion=g,N=1000,Dt=0.001,x0=10)
 mydata <- sim$X
@@ -208,6 +211,7 @@ We consider the following Hull-White (extended Vasicek) model:
 with: $a(t) = \theta_{1}t$ and $b(t)=\theta_{2}\sqrt{t}$, the volatility depends on time: $\sigma(t)=\theta_{3}t$. We generate sampled data of $X_t$, with $\theta_{1}=3$, $\theta_{2}=1$ and $\theta_{3}=0.3$, time step $\Delta t =10^{-3}$, as following:
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression(3*t*(sqrt(t)-x)) ; g <- expression(0.3*t)
 sim <- snssde1d(drift=f,diffusion=g,M=1,N=1000,x0=2,Dt=0.001)
 mydata <- sim$X
@@ -238,6 +242,7 @@ Let the following models:
 We generate data from true model with parameters $\underline{\theta}=(2,0.3,0.5)$, initial value $X_{0}=2$ and $\Delta t =10^{-4}$, as following:
 
 ```{r}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression( 2*x )
 g <- expression( 0.3*x^0.5 )
 sim <- snssde1d(drift=f,diffusion=g,M=1,N=10000,x0=2,Dt=0.0001)
@@ -317,6 +322,7 @@ Info
 In Figure 2 we reports the sample mean of the solution of the CKLS model with the estimated parameters and real data, their empirical $95\%$ confidence bands (from the $2.5th$ to the $97.5th$ percentile), we can proceed as follows:
 
 ```{r 02,fig.env='figure*', fig.cap='The path mean of the solution of the CKLS model with the estimated parameters and real data ',fig.width=6,fig.height=4}
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 f <- expression( (2.076-0.263*x) )
 g <- expression( 0.130*x^1.451 )
 mod <- snssde1d(drift=f,diffusion=g,x0=X[1],M=500, N=length(X),t0=1964.471, T=1989.333)
@@ -344,9 +350,9 @@ legend("topleft",c("real data","mean path",paste("bound of", 95,"% confidence"))
 
 # References
 
-1. Brouste A, Fukasawa M, Hino H, Iacus SM, Kamatani K, Koike Y, Masuda H, Nomura R,Ogihara T, Shimuzu Y, Uchida M, Yoshida N (2014). The YUIMA Project: A ComputationalFramework for Simulation and Inference of Stochastic Differential Equations." Journal of Statistical Software, 57(4), 1-51. URL http://www.jstatsoft.org/v57/i04.
+1. Brouste A, Fukasawa M, Hino H, Iacus SM, Kamatani K, Koike Y, Masuda H, Nomura R,Ogihara T, Shimuzu Y, Uchida M, Yoshida N (2014). The YUIMA Project: A ComputationalFramework for Simulation and Inference of Stochastic Differential Equations." Journal of Statistical Software, 57(4), 1-51. URL https://www.jstatsoft.org/v57/i04.
 
-2. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.7, URL https://cran.r-project.org/package=Sim.DiffProc.
+2. Guidoum AC, Boukhetala K (2020). Sim.DiffProc: Simulation of Diffusion Processes. R package version 4.8, URL https://cran.r-project.org/package=Sim.DiffProc.
 
 3. Iacus SM (2008). Simulation and Inference for Stochastic Differential Equations: With R Examples. Springer-Verlag, New York.
 
