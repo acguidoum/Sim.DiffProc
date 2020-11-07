@@ -43,6 +43,7 @@ lines(mod1[[1]],col=2,lwd=2)
 points(mod1[[1]],pch=21,col=5,cex=0.5)
 
 s = 0.0554747
+summary(mod1[[1]], at = s)
 mean(mod1[[1]], at = s)
 moment(mod1[[1]], at = s , center = TRUE , order = 2) ## variance
 Median(mod1[[1]], at = s)
@@ -105,6 +106,7 @@ plot2d(mod2[[1]],type="n")
 lines2d(mod2[[1]],col=4)
 points2d(mod2[[1]],pch=19,cex=0.1)
 
+summary(mod2[[1]], at = s)	
 mean(mod2[[1]], at = s)
 moment(mod2[[1]], at = s , center = TRUE , order = 2) ## variance
 Median(mod2[[1]], at = s)
@@ -170,6 +172,7 @@ lines(mod3[[1]],col=2,lwd=2)
 points(mod3[[1]],pch=21,col=5,cex=0.1)
 
 mean(mod3[[1]], at = s)
+summary(mod3[[1]], at = s)
 moment(mod3[[1]], at = s , center = TRUE , order = 2) ## variance
 Median(mod3[[1]], at = s)
 Mode(mod3[[1]], at = s)
@@ -193,6 +196,9 @@ s= 0.00458
 f <- expression( 2*(1-x) )
 g <- expression( 1 )
 
+mod1 <- snssde1d(drift=f,diffusion=g,x0=2,N=50,M=12,Dt=0.001)			
+plot(mod1)
+
 mod1 <- snssde1d(drift=f,diffusion=g,x0=2,N=50,M=1,Dt=0.001)			
 plot(mod1,type="n")
 lines(mod1,col=2)
@@ -213,6 +219,13 @@ max(mod1,at = s)
 
 fx <- expression(4*(-1-x) , x)
 gx <- expression(0.2 , 0)
+
+mod2 <- snssde2d(drift=fx,diffusion=gx,M=1,N=50,Dt=0.001)
+plot(mod2,union = FALSE)
+plot(mod2,type="n")
+lines(mod2,col=2)
+points(mod2,cex=0.1,pch=19)
+plot2d(mod2)
 
 mod2 <- snssde2d(drift=fx,diffusion=gx,M=5,N=50,Dt=0.001)
 plot(mod2,union = FALSE)
@@ -236,10 +249,19 @@ max(mod2,at = s)
 fx <- expression(4*(-1-x), 4*(1-y), 4*(1-z))
 gx <- rep(expression(0.2),3)
 
+mod3 <- snssde3d(drift=fx,diffusion=gx,N=50,M=1,Dt=0.001)
+plot(mod3,type="n")
+lines(mod3,col=2)
+points(mod3,cex=0.1,pch=19)
+plot3D(mod3,display="rgl")
+plot3D(mod3)
+
 mod3 <- snssde3d(drift=fx,diffusion=gx,N=50,M=5,Dt=0.001)
 plot(mod3,type="n")
 lines(mod3,col=2)
 points(mod3,cex=0.1,pch=19)
+plot3D(mod3,display="rgl")
+plot3D(mod3)
 
 mean(mod3,at = s)
 moment(mod3,at = s, center = TRUE , order = 2) ## variance

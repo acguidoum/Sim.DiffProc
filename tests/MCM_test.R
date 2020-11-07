@@ -21,7 +21,6 @@ sde.fun1d <- function(data, i){
 }
 # Parallel MOnte Carlo for mod1
 
-mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=1, exact=list(m=E.mod1(1),S=V.mod1(1)))
 mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5, names=c("Ex","Vx"))
 mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5, exact=list(m=E.mod1(1),S=V.mod1(1)))
 mcm.mod1 = MCM.sde(model=mod1,statistic=sde.fun1d,R=5, exact=list(m=E.mod1(1),S=V.mod1(1)),names=c("Ex","Vx"))
