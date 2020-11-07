@@ -84,6 +84,8 @@ points2d(mod2,pch=19,cex=0.1)
 
 Sigma <- matrix(c(1, 0.75, 0.75, 1), nrow = 2, ncol = 2)
 mod2 <- bridgesde2d(drift=fx,diffusion=gx,corr=Sigma,Dt=0.005,M=10,N=50)
+print(mod2)				
+summary(mod2)
 
 ##
 
@@ -112,6 +114,8 @@ bconfint(mod2, at =s)
 
 Sigma <- matrix(c(1, 0.75, 0.75, 1), nrow = 2, ncol = 2)
 mod2 <- bridgesde2d(drift=fx,diffusion=gx,corr=Sigma,Dt=0.005,M=10,N=50,type="str")
+print(mod2)				
+summary(mod2)
 
 ######## 3d
 
@@ -140,6 +144,8 @@ plot3D(mod3,display="persp",main="3-dim bridge sde")
 
 Sigma <- matrix(c(1,-0.5,-0.25,-0.5,1,0.95,-0.25,0.95,1),nrow=3,ncol=3) 
 mod3 <- bridgesde3d(drift=fx,diffusion=gx,corr=Sigma,x0=c(0,-1,0.5),y=c(0,-2,0.5),M=10,Dt=0.01,N=50)
+print(mod3)				
+summary(mod3)
 
 ##
 
@@ -168,7 +174,8 @@ bconfint(mod3, at =s)
 
 Sigma <- matrix(c(1,-0.5,-0.25,-0.5,1,0.95,-0.25,0.95,1),nrow=3,ncol=3) 
 mod3 <- bridgesde3d(drift=fx,diffusion=gx,corr=Sigma,x0=c(0,-1,0.5),y=c(0,-2,0.5),M=10,Dt=0.01,N=50,type="str")
-
+print(mod3)				
+summary(mod3)
 
 #############################
 

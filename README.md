@@ -57,7 +57,7 @@ library("Sim.DiffProc")
 Documentation and Examples
 --------------------------
 
-It is a requirement of the R packaging system that every function and data set in a package has a help page. The [Sim.DiffProc](https://cran.r-project.org/package=Sim.DiffProc) package follows this  requirement strictly. In addition to the help pages, the package includes vignettes and demonstration scripts. First read the package vignette Then read the [reference manual.](https://CRAN.R-project.org/package=Sim.DiffProc/Sim.DiffProc.pdf)
+It is a requirement of the R packaging system that every function and data set in a package has a help page. The [Sim.DiffProc](https://doi.org/10.18637/jss.v096.i02) package follows this  requirement strictly. In addition to the help pages, the package includes vignettes and demonstration scripts. First read the package vignette Then read the [reference manual.](https://CRAN.R-project.org/package=Sim.DiffProc/Sim.DiffProc.pdf)
 
 
 
@@ -105,4 +105,4 @@ Please send comments, error reports, etc. to the author via the addresses email.
 References
 ----------
 
-1. Guidoum AC, Boukhetala K (2020). "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". Journal of Statistical Software, 96(2), 1--82. doi:10.18637/jss.v096.i02
+1. Guidoum AC, Boukhetala K (2020). "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". Journal of Statistical Software, 96(2), 1--82. https://doi.org/10.18637/jss.v096.i02
