@@ -13,12 +13,16 @@ Author: Arsalane Chouaib Guidoum [cre, aut],
   Kamal Boukhetala [aut]
 Maintainer: Arsalane Chouaib Guidoum <acguidoum@usthb.dz>
 Depends: R (>= 3.0.0)
-Imports: Deriv (>= 3.8.0), MASS (>= 7.3-30), parallel 
-Suggests: deSolve (>= 1.11), knitr (>= 1.10), rgl (>= 0.93.991), rmarkdown (>= 0.8), scatterplot3d (>= 0.3-36), sm (>= 2.2-5.3)
+Imports: Deriv (>= 3.8.0), MASS (>= 7.3-30), parallel
+Suggests: deSolve (>= 1.11), knitr (>= 1.10), rgl (>= 0.93.991),
+        rmarkdown (>= 0.8), scatterplot3d (>= 0.3-36), sm (>= 2.2-5.3)
 BugReports: https://github.com/acguidoum/Sim.DiffProc/issues
 URL: https://github.com/acguidoum/Sim.DiffProc
 VignetteBuilder: knitr
 Encoding: UTF-8
-Description: It provides users with a wide range of tools to simulate, estimate, analyze, and visualize the dynamics of stochastic differential systems in both forms Ito and Stratonovich. Statistical analysis with parallel Monte Carlo and moment equations methods of SDE's <doi:10.18637/jss.v096.i02>. Enabled many searchers in different domains to use these equations to modeling practical problems in financial and actuarial modeling and other areas of application, e.g., modeling and simulate of first passage time problem in shallow water using the attractive center (Boukhetala K, 1996) ISBN:1-56252-342-2. 
+Description: It provides users with a wide range of tools to simulate, estimate, analyze, and visualize the dynamics of stochastic differential systems in both forms Ito and Stratonovich. Statistical analysis with parallel Monte Carlo and moment equations methods of SDEs <doi:10.18637/jss.v096.i02>. Enabled many searchers in different domains to use these equations to modeling practical problems in financial and actuarial modeling and other areas of application, e.g., modeling and simulate of first passage time problem in shallow water using the attractive center (Boukhetala K, 1996) ISBN:1-56252-342-2. 
 License: GPL (>= 2)
-Classification/MSC: 37H10, 37M10, 60H05, 60H10, 60H35, 60J60, 65C05, 68N15, 68Q10
+Classification/MSC: 37H10, 37M10, 60H05, 60H10, 60H35, 60J60, 65C05,
+        68N15, 68Q10
+NeedsCompilation: yes
+Packaged: 2020-11-07 14:58:47 UTC; AC.Guidoum

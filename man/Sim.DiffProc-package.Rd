@@ -10,7 +10,7 @@
 Simulation of Diffusion Processes
 }
 \description{
-It provides users with a wide range of tools to simulate, estimate, analyze, and visualize the dynamics of stochastic differential systems in both forms Ito and Stratonovich. Statistical analysis with parallel Monte Carlo and moment equations methods of SDE's <doi:10.18637/jss.v096.i02>. Enabled many searchers in different domains to use these equations to modeling practical problems in financial and actuarial modeling and other areas of application, e.g., modeling and simulate of first passage time problem in shallow water using the attractive center (Boukhetala K, 1996) ISBN:1-56252-342-2. 
+It provides users with a wide range of tools to simulate, estimate, analyze, and visualize the dynamics of stochastic differential systems in both forms Ito and Stratonovich. Statistical analysis with parallel Monte Carlo and moment equations methods of SDEs <doi:10.18637/jss.v096.i02>. Enabled many searchers in different domains to use these equations to modeling practical problems in financial and actuarial modeling and other areas of application, e.g., modeling and simulate of first passage time problem in shallow water using the attractive center (Boukhetala K, 1996) ISBN:1-56252-342-2. 
 }
 \details{
 \tabular{ll}{
@@ -51,15 +51,15 @@ For more examples see \code{demo(Sim.DiffProc)}, and for an overview of this pac
 A.C. Guidoum \email{acguidoum@usthb.dz} and K. Boukhetala \email{kboukhetala@usthb.dz} (Dept. Probability and Statistics, USTHB, Algeria).\cr 
 Please send comments, error reports, etc. to the author via the addresses email.
 }
+\section{Citation}{
+   Guidoum AC, Boukhetala K (2020). 
+   "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". 
+   \emph{Journal of Statistical Software}, \bold{96}(2), 1--82. doi:10.18637/jss.v096.i02
+}
 \section{Licence}{
 This package and its documentation are usable under the terms of the "GNU General Public License", a copy of which is distributed with the package.
 }
 \references{
-
-   Guidoum AC, Boukhetala K (2020). 
-   "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". 
-   \emph{Journal of Statistical Software}, \bold{96}(2), 1--82. doi:10.18637/jss.v096.i02
-	
 	
    Argyrakisa, P. and G.H. Weiss (2006).
    A first-passage time problem for many random walkers.
