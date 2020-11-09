@@ -97,10 +97,10 @@ plot(denM)
 plot(denM,hist=TRUE)
 
 # Joint density
-denJ <- dsde3d(mod3d,pdf="J", at= 0.5)
-print(denJ)
-denJ <- dsde3d(mod3d,pdf="J", at= 0.51475)
-print(denJ)
+#denJ <- dsde3d(mod3d,pdf="J", at= 0.5)
+#print(denJ)
+#denJ <- dsde3d(mod3d,pdf="J", at= 0.51475)
+#print(denJ)
 
 ###
 
