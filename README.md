@@ -3,27 +3,19 @@
 
 GitHub      | MacOS      | Linux      | Windows    | Code Coverge | J. Stat. Softw 
 ------------|------------|------------|------------|--------------|-------------
-[![Project Status](https://www.repostatus.org/badges/latest/active.svg?style=popout)](https://github.com/acguidoum/Sim.DiffProc) | ![R](https://github.com/acguidoum/Sim.DiffProc/workflows/R/badge.svg) | [![Travis Build Status](https://travis-ci.org/acguidoum/Sim.DiffProc.svg?branch=master)](https://travis-ci.org/acguidoum/Sim.DiffProc) | [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/16a70vyf8rk7nn1i?svg=true)](https://ci.appveyor.com/project/acguidoum/sim-diffproc-xal8n) | [![codecov](https://codecov.io/gh/acguidoum/Sim.DiffProc/branch/master/graph/badge.svg)](https://codecov.io/gh/acguidoum/Sim.DiffProc) | [![JSS](https://img.shields.io/badge/JSS-10.18637%2Fjss.v096.i02-brightgreen)](https://dx.doi.org/10.18637/jss.v096.i02)
+[![Project Status](https://www.repostatus.org/badges/latest/active.svg?style=popout)](https://github.com/acguidoum/Sim.DiffProc) | [![R](https://github.com/acguidoum/Sim.DiffProc/workflows/R/badge.svg)](https://github.com/acguidoum/Sim.DiffProc/actions) | [![Travis Build Status](https://travis-ci.org/acguidoum/Sim.DiffProc.svg?branch=master)](https://travis-ci.org/acguidoum/Sim.DiffProc) | [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/16a70vyf8rk7nn1i?svg=true)](https://ci.appveyor.com/project/acguidoum/sim-diffproc-xal8n) | [![codecov](https://codecov.io/gh/acguidoum/Sim.DiffProc/branch/master/graph/badge.svg)](https://codecov.io/gh/acguidoum/Sim.DiffProc) | [![JSS](https://img.shields.io/badge/JSS-10.18637%2Fjss.v096.i02-brightgreen)](https://dx.doi.org/10.18637/jss.v096.i02)
 
 ------------------------------------------------------------------------
 
-[![CRAN](https://img.shields.io/cran/l/devtools.svg?style=popout)](https://cran.r-project.org/web/licenses/GPL-2)
-[![minimal R version](https://img.shields.io/badge/R%3E%3D-3.0.0-blue.svg?style=flat-plastic)](https://cran.r-project.org/) 
+License    | Depends | Version   | Published | Ago
+-----------|---------|-----------|-----------|----
+[![CRAN](https://img.shields.io/cran/l/devtools.svg?style=popout)](https://cran.r-project.org/web/licenses/GPL-2) | [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.0.0-blue.svg?style=flat-plastic)](https://cran.r-project.org/) | ![](https://www.r-pkg.org/badges/version/Sim.DiffProc) | ![](https://www.r-pkg.org/badges/last-release/Sim.DiffProc) | ![](https://www.r-pkg.org/badges/ago/Sim.DiffProc)
 
 ------------------------------------------------------------------------
 
-![](https://www.r-pkg.org/badges/version/Sim.DiffProc) 
-![](https://www.r-pkg.org/badges/last-release/Sim.DiffProc)
-![](https://www.r-pkg.org/badges/ago/Sim.DiffProc)
-
-![GitHub](https://img.shields.io/badge/GitHub-4.8~2020/11/07-blue.svg)
-
-------------------------------------------------------------------------
-
-![](https://cranlogs.r-pkg.org/badges/grand-total/Sim.DiffProc?color=yellow)
-![](https://cranlogs.r-pkg.org/badges/Sim.DiffProc?color=yellow)
-![](https://cranlogs.r-pkg.org/badges/last-week/Sim.DiffProc?color=yellow)
-![](https://cranlogs.r-pkg.org/badges/last-day/Sim.DiffProc?color=yellow)
+Total    | Monthly |  Weekly |  Daily
+---------|---------|---------|-----
+[![](https://cranlogs.r-pkg.org/badges/grand-total/Sim.DiffProc?color=yellow)](https://cran.r-project.org/package=Sim.DiffProc) | [![](https://cranlogs.r-pkg.org/badges/Sim.DiffProc?color=yellow)](https://cran.r-project.org/package=Sim.DiffProc) | [![](https://cranlogs.r-pkg.org/badges/last-week/Sim.DiffProc?color=yellow)](https://cran.r-project.org/package=Sim.DiffProc) | [![](https://cranlogs.r-pkg.org/badges/last-day/Sim.DiffProc?color=yellow)](https://cran.r-project.org/package=Sim.DiffProc)
 
 ------------------------------------------------------------------------
 
