@@ -1,8 +1,9 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 
-[![Project Status](https://www.repostatus.org/badges/latest/active.svg?style=popout)](https://github.com/acguidoum/Sim.DiffProc) ![R](https://github.com/acguidoum/Sim.DiffProc/workflows/R/badge.svg) [![Travis Build Status](https://travis-ci.org/acguidoum/Sim.DiffProc.svg?branch=master)](https://travis-ci.org/acguidoum/Sim.DiffProc) [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/16a70vyf8rk7nn1i?svg=true)](https://ci.appveyor.com/project/acguidoum/sim-diffproc-xal8n) [![codecov](https://codecov.io/gh/acguidoum/Sim.DiffProc/branch/master/graph/badge.svg)](https://codecov.io/gh/acguidoum/Sim.DiffProc)
-
+GitHub      | MacOS      | Linux      | Windows    | Code Coverge | J. Stat. Softw 
+------------|------------|------------|------------|--------------|-------------
+[![Project Status](https://www.repostatus.org/badges/latest/active.svg?style=popout)](https://github.com/acguidoum/Sim.DiffProc) | ![R](https://github.com/acguidoum/Sim.DiffProc/workflows/R/badge.svg) | [![Travis Build Status](https://travis-ci.org/acguidoum/Sim.DiffProc.svg?branch=master)](https://travis-ci.org/acguidoum/Sim.DiffProc) | [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/16a70vyf8rk7nn1i?svg=true)](https://ci.appveyor.com/project/acguidoum/sim-diffproc-xal8n) | [![codecov](https://codecov.io/gh/acguidoum/Sim.DiffProc/branch/master/graph/badge.svg)](https://codecov.io/gh/acguidoum/Sim.DiffProc) | [![JSS](https://img.shields.io/badge/JSS-10.18637%2Fjss.v096.i02-brightgreen)](https://dx.doi.org/10.18637/jss.v096.i02)
 
 ------------------------------------------------------------------------
 
@@ -15,7 +16,7 @@
 ![](https://www.r-pkg.org/badges/last-release/Sim.DiffProc)
 ![](https://www.r-pkg.org/badges/ago/Sim.DiffProc)
 
-![Github](https://img.shields.io/badge/Github-4.8(at:2020.11.07)-blue.svg)
+![GitHub](https://img.shields.io/badge/GitHub-4.8~2020/11/07-blue.svg)
 
 ------------------------------------------------------------------------
 
