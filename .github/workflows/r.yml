@@ -7,7 +7,7 @@
 # additional example workflows available for the R community.
 # R version 3.6 and 4.0 on MacOS
 
-name: R
+name: R-CMD-check
 
 on:
   push:
@@ -19,8 +19,11 @@ jobs:
   build:
     runs-on: macOS-latest
     strategy:
+      fail-fast: false
       matrix:
-        r-version: [3.6,4.0]
+        config:
+          - {os: macOS-latest,   r: 'devel'}
+          - {os: macOS-latest,   r: '4.0'}
 
     steps:
       - uses: actions/checkout@v2
