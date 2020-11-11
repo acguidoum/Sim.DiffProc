@@ -74,8 +74,9 @@ citation(package = "Sim.DiffProc")
  
 # To cite package 'Sim.DiffProc' in publications use:
 
-Guidoum AC, Boukhetala K (2020). “Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich 
-  Stochastic Differential Systems: R Package Sim.DiffProc.” Journal of Statistical Software, 96(2), 1-82. doi:10.18637/jss.v096.i02.
+Guidoum AC, Boukhetala K (2020). “Performing Parallel Monte Carlo and Moment Equations Methods for Itô and 
+   Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc.” Journal of Statistical Software, 
+   96(2), 1-82, doi:10.18637/jss.v096.i02.
 
 A BibTeX entry for LaTeX users is
 
