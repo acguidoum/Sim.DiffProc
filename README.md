@@ -70,16 +70,18 @@ Obviously, the package leaves many other fields of stochastic modeling with Ito 
 use `citation()` for information on how to cite the software;
 
 ```r
-citation("Sim.DiffProc")
+citation(package = "Sim.DiffProc")
  
 # To cite package 'Sim.DiffProc' in publications use:
 
-Guidoum AC, Boukhetala K (2020). “Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc.” Journal of Statistical Software, 96(2), 1-82. doi:10.18637/jss.v096.i02.
+Guidoum AC, Boukhetala K (2020). “Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich 
+  Stochastic Differential Systems: R Package Sim.DiffProc.” Journal of Statistical Software, 96(2), 1-82. doi:10.18637/jss.v096.i02.
 
 A BibTeX entry for LaTeX users is
 
   @Article{,
-    title = {Performing Parallel Monte Carlo and Moment Equations Methods for It\^{o} and Stratonovich Stochastic Differential Systems: {R} Package {Sim.DiffProc}},
+    title = {Performing Parallel Monte Carlo and Moment Equations Methods for It\^{o} and Stratonovich Stochastic 
+      Differential Systems: {R} Package {Sim.DiffProc}},
     author = {Arsalane Chouaib Guidoum and Kamal Boukhetala},
     journal = {Journal of Statistical Software},
     year = {2020},
@@ -98,4 +100,4 @@ Please send comments, error reports, etc. to the author via the addresses email.
 References
 ----------
 
-1. Guidoum AC, Boukhetala K (2020). "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". Journal of Statistical Software, 96(2), 1-82. https://doi.org/10.18637/jss.v096.i02
+1. Guidoum AC, Boukhetala K (2020). "Performing Parallel Monte Carlo and Moment Equations Methods for Itô and Stratonovich Stochastic Differential Systems: R Package Sim.DiffProc". Journal of Statistical Software, 96(2), 1-82, https://doi.org/10.18637/jss.v096.i02
