@@ -15,7 +15,7 @@ License    | Depends | Version   | Published | Ago
 
 Total    | Monthly |  Weekly |  Daily
 ---------|---------|---------|-----
-[![](https://cranlogs.r-pkg.org/badges/grand-total/Sim.DiffProc?color=orange)](https://cran.r-project.org/package=Sim.DiffProc) | [![](https://cranlogs.r-pkg.org/badges/Sim.DiffProc?color=orange)](https://cran.r-project.org/package=Sim.DiffProc) | [![](https://cranlogs.r-pkg.org/badges/last-week/Sim.DiffProc?color=orange)](https://cran.r-project.org/package=Sim.DiffProc) | [![](https://cranlogs.r-pkg.org/badges/last-day/Sim.DiffProc?color=orange)](https://cran.r-project.org/package=Sim.DiffProc)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/Sim.DiffProc?color=yellowgreen)](https://cran.r-project.org/package=Sim.DiffProc) | [![](https://cranlogs.r-pkg.org/badges/Sim.DiffProc?color=yellowgreen)](https://cran.r-project.org/package=Sim.DiffProc) | [![](https://cranlogs.r-pkg.org/badges/last-week/Sim.DiffProc?color=yellowgreen)](https://cran.r-project.org/package=Sim.DiffProc) | [![](https://cranlogs.r-pkg.org/badges/last-day/Sim.DiffProc?color=yellowgreen)](https://cran.r-project.org/package=Sim.DiffProc)
 
 ------------------------------------------------------------------------
 
@@ -81,8 +81,8 @@ Guidoum AC, Boukhetala K (2020). “Performing Parallel Monte Carlo and Moment E
 A BibTeX entry for LaTeX users is
 
   @Article{,
-    title = {Performing Parallel Monte Carlo and Moment Equations Methods for It\^{o} and Stratonovich Stochastic 
-      Differential Systems: {R} Package {Sim.DiffProc}},
+    title = {Performing Parallel Monte Carlo and Moment Equations Methods for It\^{o} and Stratonovich 
+      Stochastic Differential Systems: {R} Package {Sim.DiffProc}},
     author = {Arsalane Chouaib Guidoum and Kamal Boukhetala},
     journal = {Journal of Statistical Software},
     year = {2020},
