@@ -8,7 +8,7 @@ library(Sim.DiffProc)
 f <- expression( 2*(1-x) )
 g <- expression( 1 )
 
-
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mod1 <- bridgesde1d(drift=f,diffusion=g,x0=2,y=1,M=10,N=50,Dt=0.05)
 print(mod1)
 summary(mod1)				
@@ -29,7 +29,7 @@ moment(mod1, center= TRUE )
 moment(mod1, center= FALSE , order = 4)
 
 ##
-
+set.seed(1234, kind = "L'Ecuyer-CMRG")
 mod1 <- bridgesde1d(drift=f,diffusion=g,x0=2,y=1,M=10,N=50,T=2,type="str")
 print(mod1)
 summary(mod1)		
