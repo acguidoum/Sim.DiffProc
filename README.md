@@ -3,7 +3,8 @@
 
 GitHub      | MacOS      | Linux      | Windows    | Code Coverge | J. Stat. Softw 
 ------------|------------|------------|------------|--------------|-------------
-[![Project Status](https://www.repostatus.org/badges/latest/active.svg?color=green)](https://github.com/acguidoum/Sim.DiffProc) | [![R](https://github.com/acguidoum/Sim.DiffProc/workflows/R-CMD-check/badge.svg?color=green)](https://github.com/acguidoum/Sim.DiffProc/actions) | [![Travis Build Status](https://travis-ci.org/acguidoum/Sim.DiffProc.svg?branch=master)](https://travis-ci.org/acguidoum/Sim.DiffProc) | [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/16a70vyf8rk7nn1i?svg=true)](https://ci.appveyor.com/project/acguidoum/sim-diffproc-xal8n) | [![codecov](https://codecov.io/gh/acguidoum/Sim.DiffProc/branch/master/graph/badge.svg?color=brightgreen)](https://codecov.io/gh/acguidoum/Sim.DiffProc) | [![JSS](https://img.shields.io/badge/JSS-10.18637%2Fjss.v096.i02-brightgreen)](https://dx.doi.org/10.18637/jss.v096.i02)
+[![Project Status](https://www.repostatus.org/badges/latest/active.svg?color=green)](https://github.com/acguidoum/Sim.DiffProc) | [![R](https://github.com/acguidoum/Sim.DiffProc/workflows/R-CMD-check/badge.svg?color=green)](https://github.com/acguidoum/Sim.DiffProc/actions) | [![Travis Build Status](https://img.shields.io/travis/com/acguidoum/Sim.DiffProc.svg?logo=travis)](https://travis-ci.org/acguidoum/Sim.DiffProc) | [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/16a70vyf8rk7nn1i?svg=true)](https://ci.appveyor.com/project/acguidoum/sim-diffproc-xal8n) | [![codecov](https://codecov.io/gh/acguidoum/Sim.DiffProc/branch/master/graph/badge.svg?color=brightgreen)](https://codecov.io/gh/acguidoum/Sim.DiffProc) | [![JSS](https://img.shields.io/badge/JSS-10.18637%2Fjss.v096.i02-brightgreen)](https://dx.doi.org/10.18637/jss.v096.i02)
+
 
 ------------------------------------------------------------------------
 
